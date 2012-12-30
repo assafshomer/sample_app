@@ -18,7 +18,13 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
     it "should have the correct title" do
       visit '/static_pages/home'
       page.should have_selector('title', 
-                                :text => "#{base_title} | Home")
+                                :text => "#{base_title}")
+    end 
+
+    it "should not end with pipe home" do
+      visit '/static_pages/home'
+      page.should_not have_selector('title', 
+                                :text => "| Home")
     end 
    
 
@@ -39,7 +45,7 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       visit '/static_pages/help'
       page.should have_selector('title', 
                                 :text => "#{base_title} | Help")
-    end
+    end 
   end 
 
   describe "GET 'about'" do
