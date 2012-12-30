@@ -11,5 +11,9 @@ class StaticPagesController < ApplicationController
   	@title="About Us"
   end
 
+  def contact
+  	@title="Contact"
+  end
+
 
 end
