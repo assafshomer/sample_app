@@ -11,21 +11,21 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
     end 
 
     it "should have the content 'Sample App'" do
-      visit '/static_pages/home'
+      visit root_path
       page.should have_content('Sample App')
     end 
 
     it "should have the correct title" do
-      visit '/static_pages/home'
+      visit root_path
       page.should have_selector('title', 
-                                :text => "#{base_title}")
-    end 
+                                text: "#{base_title}")
+    end  
 
     it "should not end with pipe home" do
-      visit '/static_pages/home'
+      visit root_path
       page.should_not have_selector('title', 
-                                :text => "| Home")
-    end 
+                                text: "| Home")
+    end  
    
 
   end
@@ -37,14 +37,14 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
     end 
 
     it "should have the content 'Help'" do
-      visit '/static_pages/help'
+      visit help_path
       page.should have_content('help')
     end
 
     it "should have the correct title" do
-      visit '/static_pages/help'
+      visit help_path
       page.should have_selector('title', 
-                                :text => "#{base_title} | Help")
+                                text: "#{base_title} | Help")
     end 
   end 
 
@@ -56,10 +56,10 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
     end
 
     it "should have the correct title" do
-      visit '/static_pages/about'
+      visit about_path
       page.should have_selector('title', 
-                                :text => "#{base_title} | About Us")
-    end
+                                text: "#{base_title} | About Us")
+    end 
 
   end
 
@@ -71,9 +71,9 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       end
 
       it "should have the correct title" do
-        visit '/static_pages/contact'
+        visit contact_path
         page.should have_selector('title', 
-                                  :text => "#{base_title} | Contact")
+                                  text: "#{base_title} | Contact")
       end 
 
     end
