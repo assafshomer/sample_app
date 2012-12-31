@@ -25,7 +25,7 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       visit root_path
       page.should_not have_selector('title', 
                                 text: "| Home")
-    end  
+    end   
    
 
   end
@@ -46,7 +46,7 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       page.should have_selector('title', 
                                 text: "#{base_title} | Help")
     end 
-  end 
+  end   
 
   describe "GET 'about'" do
 

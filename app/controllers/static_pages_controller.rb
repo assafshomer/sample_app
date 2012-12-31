@@ -3,7 +3,7 @@ class StaticPagesController < ApplicationController
   	# @title="Home"
   end
 
-  def help
+  def help 
   	@title="Help"
   end
 
