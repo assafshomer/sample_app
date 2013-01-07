@@ -6,22 +6,21 @@ describe "User pages" do
 
   describe "signup page" do
     before { visit signup_path } 
+    let(:submit) { "Create account" }      
 
     it { should have_selector('h1',    text: 'Sign Up') }
     it { should have_selector('title', text: full_title('Sign Up')) }
 
-    describe "signup form" do
-
-      before { visit signup_path }
-      
-      let(:submit) { "Create account" }      
+    describe "signup form" do       
 
       describe "invalid user form submissions" do
 
         describe "empty form" do
           it "should not create a new user" do
             expect {click_button submit}.not_to change(User, :count)
-          end
+          end 
+          before {click_button submit}
+          it { should have_selector('div#error_explanation') }         
         end
 
         describe "inavlid email submission" do
@@ -32,8 +31,8 @@ describe "User pages" do
             fill_in "Confirmation",     with: "foobar"          
           end
           it "should not create a new user" do
-            expect {click_button submit}.not_to change(User,:count)  
-          end       
+            expect {click_button submit}.not_to change(User,:count)              
+          end             
         end   
 
         describe "password confirmation not matching" do
@@ -110,7 +109,7 @@ describe "User pages" do
 
       end      
       
-      describe "valid user submission" do
+      describe "valid user submission" do 
         before do
               fill_in "Name",             with: "Example User"  
               fill_in "Email",            with: "example@example.com"
@@ -119,7 +118,13 @@ describe "User pages" do
         end
         it "should create a new user" do
           expect {click_button submit}.to change(User,:count).by(1)  
-        end          
+        end   
+        describe "should show flash" do
+          before {click_button submit }
+          let(:user) { User.find_by_email('example@example.com') }
+          it { should have_selector('h1.alert.alert-success') }  
+        end
+              
       end
 
     end
