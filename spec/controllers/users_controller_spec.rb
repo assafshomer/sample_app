@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe UsersController do
+describe UsersController do 
 
 	render_views
 
-  describe "Get new" do
+  describe "Get new" do 
 		it "should be successful" do
 			get :new
 			response.should be_success
@@ -14,6 +14,6 @@ describe UsersController do
 	it "should have the right title" do
 		visit signup_path
 		page.should have_selector('title',text: "Sign Up")
-	end
+	end 
 
 end
