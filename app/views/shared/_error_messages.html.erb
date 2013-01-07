@@ -1,9 +1,10 @@
-<% if @user.errors.any? %>
+<% error_array=@user.errors.full_messages.delete_if {|m| m=~/digest/} %>
+<% if error_array.any? %>
   <div id="error_explanation">
     <div class="alert alert-error">
-      <u>This form has <%= pluralize(@user.errors.count, "error") %>.</u>
+      <u>This form has <%= pluralize(error_array.count, "error") %>.</u>
       <ul>
-    		<% @user.errors.full_messages.each do |msg| %>
+    		<% error_array.each do |msg| %>
       		<li>*<%= msg %></li>
     		<% end %>
     	</ul>
