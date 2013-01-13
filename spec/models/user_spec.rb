@@ -12,32 +12,34 @@
 require 'spec_helper'
 include TestUtilities
 
-describe "User" do
+describe "users" do
 	before(:each) do 
 		@attr={name: "Example User", email: "user@example.com",
 			password: "foobar", password_confirmation: "foobar"}		
 		@user=User.new(@attr)
 	end
 	
-	subject { @user }
+	subject { @user } 
 
 	it { should respond_to(:name) }
 	it { should respond_to(:email) }
 	it { should respond_to(:password_digest) }
 	it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
-  it {should respond_to(:authenticate)}
+  it { should respond_to(:authenticate)}
+  it { should respond_to(:remember_token) }
 
 	it { should be_valid } #sanity check, our @user is valid
-	describe "shold reject users without a name" do
+
+	describe "should be rejected without a name" do
 	 	before { @user.name=""}
 		it {should_not be_valid}
 	 end 
-	describe "shold reject users without an email" do
+	describe "should be rejected without an email" do
 	 	before { @user.email=""}
 		it {should_not be_valid}
 	 end 
-	describe "disallow names longer than 50 characters" do
+	describe "should not have longer than 50 characters" do
 		before {@user.name="a"*51}
 		it {should_not be_valid}
 	end
@@ -115,6 +117,11 @@ describe "User" do
 		  before { @user.password = @user.password_confirmation = "a" * 5 }
   		it { should be_invalid }
 		end
+	end
+
+	describe "should have a non-blank remember_token" do
+		before { @user.save }
+		its(:remember_token) { should_not be_blank }		
 	end
 
 end 
