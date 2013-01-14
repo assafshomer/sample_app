@@ -1,19 +1,19 @@
 require 'spec_helper'
 
-describe "User pages" do
+describe "User" do
   
   subject { page }
 
-  describe "signup page" do
+  describe "signup" do
     before { visit signup_path } 
     let(:submit) { "Create account" }      
 
     it { should have_selector('h1',    text: 'Sign Up') }
     it { should have_selector('title', text: full_title('Sign Up')) }
 
-    describe "signup form" do       
+    describe "form submission with" do       
 
-      describe "invalid user form submissions" do
+      describe "invalid data" do
 
         describe "empty form" do
           it "should not create a new user" do
@@ -109,7 +109,7 @@ describe "User pages" do
 
       end      
       
-      describe "valid user submission" do 
+      describe "valid data" do 
         before do
               fill_in "Name",             with: "Example User"  
               fill_in "Email",            with: "example@example.com"
@@ -119,10 +119,17 @@ describe "User pages" do
         it "should create a new user" do
           expect {click_button submit}.to change(User,:count).by(1)  
         end   
+        
         describe "should show flash" do
           before {click_button submit }
           let(:user) { User.find_by_email('example@example.com') }
-          it { should have_selector('h1.alert.alert-success') }  
+          it { should have_selector('div.alert.alert-success') }  
+        end
+
+        describe "should be signed in" do
+          before {click_button submit }
+          it { should have_link('Sign out',href: signout_path) }
+          it { should_not have_link('Sign in',href: signin_path) }
         end
               
       end
@@ -138,6 +145,7 @@ describe "User pages" do
     it { should have_selector('h1', text: user.name) }
     it { should have_selector('title', text: user.name) }
   end
+
 
   
 end  
