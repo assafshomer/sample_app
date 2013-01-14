@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Authentication" do 
   subject {page}
  
-  describe "signin" do
+  describe "signing in" do
   	before { visit signin_path }  
 
   	it { should have_selector('h1', text: 'Sign in') }
@@ -34,7 +34,17 @@ describe "Authentication" do
   		it { should have_link('Sign out', href: signout_path) }
   		it { should_not have_link('Sign in', href: signin_path) }
   		it { should have_selector('div.alert.alert-success', content: "Welcome back") }
-  	end
-  	
+
+      describe "followd by signing out" do
+        before { click_link 'Sign out' }
+        it { should have_link 'Sign in', href: signin_path }
+        it { should_not have_link 'Sign out', href: signout_path }
+        it { should_not have_link 'Account' }
+        it { should_not have_selector 'ul.dropdown-menu' }
+      end
+  	end  
+  	 
   end
+
+  
 end
