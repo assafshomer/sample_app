@@ -146,7 +146,16 @@ describe "User" do
     it { should have_selector('title', text: user.name) }
   end
 
-
+  describe "Editing" do
+    let(:user) { FactoryGirl.create(:user) }
+    before { visit edit_user_path(user) }
+    
+    describe "page layout" do
+      it { should have_selector('title', text: "Edit user") }
+      it { should have_selector('h1', text: "Update your profile") }
+      it { should have_link('Change', url: 'http://gravatar.com/emails') }
+    end
+  end
   
 end  
 
