@@ -21,6 +21,11 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
                                 text: "#{base_title}")
     end  
 
+    it "should have the base title EXACTLY" do
+      visit root_path
+      page.should have_selector('title', text: /^ #{base_title}$/)
+    end
+
     it "should not end with pipe home" do
       visit root_path
       page.should_not have_selector('title', 
