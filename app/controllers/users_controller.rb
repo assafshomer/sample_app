@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     
     if @user.update_attributes(params[:user])
       sign_in @user
-      flash[:success] = "User data was scuccessfully updated"
+      flash[:success] = "User data was sucessfully updated"
       redirect_to @user      
     else      
       render 'edit'
