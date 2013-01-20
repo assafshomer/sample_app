@@ -1,4 +1,5 @@
 module TestUtilities
+	
 	def reverse_string_case(string)
 		reversed=string
 		i=0
@@ -11,5 +12,6 @@ module TestUtilities
 			i+=1
 		end
 		reversed
-	end
+	end	
+
 end

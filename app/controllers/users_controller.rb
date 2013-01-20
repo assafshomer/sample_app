@@ -31,5 +31,7 @@ class UsersController < ApplicationController
     @title='Edit user'
     @user=User.find_by_id(params[:id])
   end
+
+  
   
 end
