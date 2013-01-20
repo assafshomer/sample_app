@@ -1,6 +1,4 @@
 require 'spec_helper'
-require '/home/assaf/rails_projects/sample_app/spec/support/test_utilities.rb'
-include TestUtilities
 
 describe "Authentication" do 
   subject {page}

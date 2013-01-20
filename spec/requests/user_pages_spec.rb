@@ -23,7 +23,7 @@ describe "User" do
           it { should have_selector('div#error_explanation') }         
         end
 
-        describe "inavlid email submission" do
+        describe "inavlid email submission" do 
           before do
             fill_in "Name",             with: "assaf"  
             fill_in "Email",            with: "foo.bar"
