@@ -157,10 +157,26 @@ describe "User" do
       it { should have_link('change', href: 'http://gravatar.com/emails') }
     end
 
-    describe "with invalid information" do
-      before { click_button "Save changes" }  
+    describe "with inavlid information" do
+      
+      describe ": blank password and password confirmation" do
+        before { click_button "Save changes" }  
 
-      it { should have_content('error') }
+        it { should have_content('This form has 3 errors') }        
+      end
+
+      describe ": blank form" do
+        before do
+          fill_in "Name",             with: ""  
+          fill_in "Email",            with: ""
+          click_button "Save changes"   
+        end
+
+        it { should have_content('This form has 6 errors') }        
+      end
+
+
+
     end
   end
   
