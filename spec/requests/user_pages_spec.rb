@@ -142,18 +142,25 @@ describe "User" do
   
     let(:user) { FactoryGirl.create(:user) }  
     before { visit user_path(user) }
+
     it { should have_selector('h1', text: user.name) }
     it { should have_selector('title', text: user.name) }
   end
 
-  describe "Editing" do
+  describe "Edit" do
     let(:user) { FactoryGirl.create(:user) }
     before { visit edit_user_path(user) }
     
-    describe "page layout" do
+    describe "page" do
       it { should have_selector('title', text: "Edit user") }
       it { should have_selector('h1', text: "Update your profile") }
-      it { should have_link('Change', url: 'http://gravatar.com/emails') }
+      it { should have_link('change', href: 'http://gravatar.com/emails') }
+    end
+
+    describe "with invalid information" do
+      before { click_button "Save changes" }  
+
+      # it { should have_content('error') }
     end
   end
   
