@@ -50,20 +50,30 @@ describe "Authentication" do
     end
 
     describe "for signed in user" do
-      let(:user) { FactoryGirl.create(:user) }
-      let(:wrong_user) { FactoryGirl.create(:user, name: "Wrong User", email: "wrong@example.com") }
-      before { test_sign_in user }
+       let(:user) { FactoryGirl.create(:user) }
+       let(:wrong_user) { FactoryGirl.create(:user, name: "Wrong User", email: "wrong@example.com") }
+        
+      before { test_sign_in user }      
       
       describe "attempting to edit own settings" do
         before { visit edit_user_path(user) }
         it { should have_selector('title', text: full_title('Edit user')) }
       end
 
+      # describe "attempting to put to the 'update' action of correct user" do
+      #   before { put user_path(user) }
+      #   specify { response.should_not redirect_to(signin_path)}        
+      # end
+
       describe "attempting to edit another user's settings via the interface" do
         before { visit edit_user_path(wrong_user) }
-        it { should_not have_selector 'title', text: full_title('Edit user') }
-        
+        it { should_not have_selector 'title', text: full_title('Edit user') }        
       end
+
+      # describe "attempting to put to the 'update' action of another user" do
+      #   before { put user_path(wrong_user) }
+      #   specify { response.should redirect_to(root_path) }
+      # end 
             
     end      
   end

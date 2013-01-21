@@ -31,11 +31,11 @@ class UsersController < ApplicationController
 
   def edit
     @title='Edit user'
-    @user=User.find_by_id(params[:id])
+    # @user=User.find_by_id(params[:id])
   end
 
   def update
-    @user=User.find_by_id(params[:id])
+    # @user=User.find_by_id(params[:id])
     
     if @user.update_attributes(params[:user])
       sign_in @user
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def verify_correct_user
-    @user=User.find(params[:id])
+    @user=User.find_by_id(params[:id])     
     redirect_to root_path unless current_user?(@user)
   end
 end
