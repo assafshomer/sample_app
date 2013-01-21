@@ -34,23 +34,39 @@ describe "Authentication" do
   end
 
   describe "authorization" do
-      describe "for non signed in users" do
-        let(:user) { FactoryGirl.create(:user) }
+    describe "for non signed in users" do
+      let(:user) { FactoryGirl.create(:user) }
 
-        describe "visiting the edit page" do
-          before { visit edit_user_path(user) }
-          it { should have_selector 'title', text: 'Sign in' }
-          it { should have_selector 'div.alert.alert-notice', text: 'Please sign in' }                
-        end 
+      describe "visiting the edit page" do
+        before { visit edit_user_path(user) }
+        it { should have_selector 'title', text: 'Sign in' }
+        it { should have_selector 'div.alert.alert-notice', text: 'Please sign in' }                
+      end 
 
-        describe "submitting to the update action" do
-          before { put user_path(user) }
-          specify { response.should redirect_to(signin_path) }        
-        end
+      describe "submitting to the update action" do
+        before { put user_path(user) }
+        specify { response.should redirect_to(signin_path) }        
+      end              
+    end
+
+    describe "for signed in user" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:wrong_user) { FactoryGirl.create(:user, name: "Wrong User", email: "wrong@example.com") }
+      before { test_sign_in user }
+      
+      describe "attempting to edit own settings" do
+        before { visit edit_user_path(user) }
+        it { should have_selector('title', text: full_title('Edit user')) }
+      end
+
+      describe "attempting to edit another user's settings via the interface" do
+        before { visit edit_user_path(wrong_user) }
+        it { should_not have_selector 'title', text: full_title('Edit user') }
         
       end
-      
-    end
+            
+    end      
+  end
 
 end
 
