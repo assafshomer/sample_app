@@ -146,9 +146,12 @@ describe "User" do
     it { should have_selector('title', text: user.name) }
   end
 
-  describe "Edit" do
+  describe "Edit" do 
     let(:user) { FactoryGirl.create(:user) }
-    before { visit edit_user_path(user) }
+    before do 
+     test_sign_in user 
+     visit edit_user_path(user) 
+    end
     
     describe "page" do
       it { should have_selector('title', text: "Edit user") }
@@ -187,7 +190,7 @@ describe "User" do
       end
         
       it { should have_selector('title', text: new_name) }
-      it { should have_selector('div.alert.alert-success') }
+      it { should have_selector('div.alert.alert-success', text: /sucess/i) }
       it { should have_link('Sign out', href: signout_path) }
       
       specify { user.reload.name.should == new_name }
