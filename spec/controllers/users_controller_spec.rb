@@ -123,7 +123,8 @@ describe UsersController do
     
     describe "for signed in users" do
 
-      before { test_sign_in user }            
+      before { test_sign_in user } 
+
       describe "attempting to edit their own settings" do
         before { visit edit_user_path(user) }
         it { should have_selector('title', text: "Edit user") }
@@ -148,5 +149,17 @@ describe UsersController do
     end
 
   end 
+
+  describe "specify and controller variables" do
+    let(:user) { FactoryGirl.create(:user)}    
+    before { controller.sign_in(user) }
+    specify { controller.signed_in?.should be_true }
+    specify { controller.current_user.email.should == user.email }
+    
+    describe "signing out" do
+      before { controller.sign_out }
+      specify { controller.signed_in?.should be_false }         
+    end   
+  end
 
 end
