@@ -30,45 +30,44 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       visit root_path
       page.should_not have_selector('title', 
                                 text: "| Home")
+    end 
+  end
+
+
+    describe "GET 'help'" do
+      it "returns http success" do
+        get 'help'
+        response.should be_success
+      end 
+
+      it "should have the content 'Help'" do
+        visit help_path
+        page.should have_content('help')
+      end
+
+      it "should have the correct title" do
+        visit help_path
+        page.should have_selector('title', 
+                                  text: "#{base_title} | Help")
+      end 
     end   
-   
 
-  end
+    describe "GET 'about'" do
 
-  describe "GET 'help'" do
-    it "returns http success" do
-      get 'help'
-      response.should be_success
-    end 
+      it "returns http success" do
+        get 'about'
+        response.should be_success
+      end
 
-    it "should have the content 'Help'" do
-      visit help_path
-      page.should have_content('help')
+      it "should have the correct title" do
+        visit about_path
+        page.should have_selector('title', 
+                                  text: "#{base_title} | About Us")
+      end 
+
     end
 
-    it "should have the correct title" do
-      visit help_path
-      page.should have_selector('title', 
-                                text: "#{base_title} | Help")
-    end 
-  end   
-
-  describe "GET 'about'" do
-
-    it "returns http success" do
-      get 'about'
-      response.should be_success
-    end
-
-    it "should have the correct title" do
-      visit about_path
-      page.should have_selector('title', 
-                                text: "#{base_title} | About Us")
-    end 
-
-  end
-
-  describe "GET 'contact'" do
+    describe "GET 'contact'" do
 
       it "returns http success" do
         get 'contact'
@@ -82,4 +81,6 @@ let(:base_title) { "Ruby on Rails Tutorial Sample App" }
       end 
 
     end
+
+    
 end

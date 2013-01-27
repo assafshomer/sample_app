@@ -137,7 +137,45 @@ describe "User" do
     end
   end
 
-  
-  
+
+
+  describe "users" do
+
+    describe "no link before signing in" do
+      before {visit root_path}
+      it { should_not have_link 'Users', href: users_path }      
+    end
+
+    describe "list" do
+      
+      before(:each) do
+        test_sign_in FactoryGirl.create(:user)
+        FactoryGirl.create(:user, name: "Bob", email: "bob@example.com")
+        FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")        
+      end
+
+      describe "find link to list after signing in" do
+        before {visit root_path}
+        it { should have_link 'Users', href: users_path }              
+      end
+
+      describe "should have titles " do
+
+        before { visit users_path }
+        
+        it { should have_selector('title', text: "All users") }
+        it { should have_selector('h1', text: "Listing users") }
+        it { should have_link 'New User', href: new_user_path }
+
+        it "and should list all users" do
+          User.all.each do |user|
+          page.should have_selector('li',text: user.name)
+          end         
+        end 
+      end
+      
+    end    
+  end
+   
 end  
 
