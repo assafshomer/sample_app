@@ -85,6 +85,8 @@ describe UsersController do
 
   describe "authentication of edit/update actions" do
   	let(:user) { FactoryGirl.create(:user) }
+    let(:wrong_user) { FactoryGirl.create(:user, name: "Wrong User", email: "wrong@example.com") }
+
   	
     it "should denty access to 'edit" do
       get :edit, id: user
@@ -98,6 +100,23 @@ describe UsersController do
       flash[:notice].should =~ /sign in/i
     end
 
-  end
+
+    it "should redirect to the edit page after signin if correct user" do    
+      visit edit_user_path(user)
+      fill_in "Email",    with: user.email 
+      fill_in "Password", with: user.password 
+      click_button 'Sign in'    
+      response.should render_template('users/edit')
+    end
+
+    it "should redirect to the root after signin if wrong user" do          
+      visit edit_user_path(user)
+      fill_in "Email",    with: wrong_user.email
+      fill_in "Password", with: wrong_user.password 
+      click_button 'Sign in'    
+      page.should have_selector('h1',text: /to the sample app/i)
+    end
+
+  end 
 
 end
