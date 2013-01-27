@@ -25,4 +25,8 @@ module SessionsHelper
 		self.current_user=nil # I don't think this is necessary
 		cookies.delete(:remember_token)		
 	end
+
+	def deny_access
+		redirect_to signin_path, notice: "Please sign in."		
+	end
 end

@@ -49,7 +49,7 @@ class UsersController < ApplicationController
   private
 
   def signed_in_user
-    redirect_to signin_path, notice: "Please sign in." unless signed_in?    
+    deny_access unless signed_in?    
   end
 
   def verify_correct_user
