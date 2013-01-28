@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_filter :signed_in_user,       only: [:edit, :update, :index]
   before_filter :verify_correct_user,  only: [:edit, :update]
   before_filter :non_admins,           only: :destroy
+  before_filter :no_visits,            only: [:new, :create]
 
 	def index
 		@title="All users"
@@ -75,5 +76,9 @@ class UsersController < ApplicationController
     # but the before filter occurs before it, so @current_user is nil at that time. However, 
     # the method current_user assigns to @current_user the user that just posted to
     # test_sign_in in @current_user is null.
+  end
+
+  def no_visits
+    redirect_to root_path unless !signed_in?
   end
 end

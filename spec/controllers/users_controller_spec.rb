@@ -39,8 +39,9 @@ describe UsersController do
     describe "page" do
       it { should have_selector('title', text: "Edit user") }
       it { should have_selector('h1', text: "Update your profile") }
-      it { should have_link('change', href: 'http://gravatar.com/emails') }
-    end
+      it { should have_link('change', href: 'http://gravatar.com/emails', 
+                                    target: "_blank") } # doesn't actually test the _blank
+    end  
 
     describe "with inavlid information" do
       
@@ -89,7 +90,7 @@ describe UsersController do
     let(:wrong_user) { FactoryGirl.create(:user, name: "Wrong User", email: "wrong@example.com") }
 
   	describe "for users that are not yet signed in" do
-      it "should denty access to 'edit' and redirect to signin" do
+      it "should deny access to 'edit' and redirect to signin" do
         get :edit, id: user
         response.should redirect_to(signin_path)  
         flash[:notice].should =~ /sign in/i    
@@ -143,8 +144,19 @@ describe UsersController do
         it "should deny access to 'update' and redirect to root" do
           put :update, id: wrong_user, user: {}
           page.should have_selector('h1',text: /to the sample app/i)              
-        end    
+        end     
       end
+
+      before { controller.sign_in user }
+      it "should deny access to 'new' and redirect to root" do
+        get :new
+        response.should redirect_to(root_path)             
+      end  
+
+      it "should deny access to 'new' and redirect to root" do
+        post :create, user: {}
+        response.should redirect_to(root_path)             
+      end  
 
       describe "for signed in non-admins" do      
       let(:non_admin) { FactoryGirl.create(:user) }

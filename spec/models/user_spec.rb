@@ -9,6 +9,7 @@
 #  updated_at      :datetime         not null
 #  password_digest :string(255)
 #  remember_token  :string(255)
+#  admin           :boolean          default(FALSE)
 #
 
 require 'spec_helper'
@@ -129,11 +130,20 @@ describe "User" do
 	end
 
 	describe "admins" do
-		before do
-		  @user.save!
-		  @user.toggle!(:admin)
+		describe "can be created by toggling a non-admin" do
+			before do
+		  	@user.save!
+		  	@user.toggle!(:admin)
+			end
+			it { should be_admin }			
 		end
-		it { should be_admin }
-	end
 
+		describe "accessible attriubtes" do
+			it "should not allow access to the 'admin' attribute" do
+				expect do
+					User.new(name: "my name", email: "admin@admin.org", admin: true)
+				end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+			end			
+		end
+	end
 end 
