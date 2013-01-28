@@ -137,14 +137,25 @@ describe "User" do
     end
   end
 
+  describe "Index" do
 
-
-  describe "users" do
-
-    describe "no link before signing in" do
-      before {visit root_path}
-      it { should_not have_link 'Users', href: users_path }      
+    describe "before signing in" do
+      describe "no link on header" do
+        before {visit root_path}
+        it { should_not have_link 'Users', href: users_path }    
+      end
+      describe "deny access to users index" do
+        before { visit users_path }
+        it { should have_selector('title', text: "Sign in")}
+        
+        it "should deny access to users index" do
+          get 'users'
+          response.should redirect_to(signin_path)          
+        end
+      end 
     end
+
+   
 
     describe "list after signing in" do
       
@@ -154,18 +165,19 @@ describe "User" do
         FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")        
       end
 
-      describe "find link to list" do
+      describe "find link to users list" do
         before {visit root_path}
         it { should have_link 'Users', href: users_path }              
       end
 
-      describe "should have titles " do
+      describe "list layout " do
 
         before { visit users_path }
 
         it { should have_selector('title', text: "All users") }
         it { should have_selector('h1', text: "Listing users") }
         it { should have_link 'New User', href: new_user_path }
+        it { should_not have_link 'delete' }
 
         it "and should list all users" do
           User.all.each do |user|
@@ -183,13 +195,41 @@ describe "User" do
               page.should have_selector('li', text: user.name)
               page.should have_link 'Email' , href: "mailto:#{user.email}"
             end            
-          end
-          
-        end
+          end          
+        end        
       end
       
+      describe "delete links" do
+        describe "as admin user" do
+          let(:admin) { FactoryGirl.create(:user, admin: true) }
+          let(:nonadmin) { FactoryGirl.create(:user) }
+          before do
+            test_sign_in admin
+            visit users_path
+          end
+          it "should be present for all other users" do
+            User.all.each do |user|
+              page.should have_link 'delete', href: user_path(user) unless user==admin        
+            end
+          end
+
+          it "should delete the user" do
+            expect {click_link('delete')}.to change(User, :count).by(-1)            
+          end
+
+          it "redirect to the users list and flash if successfuly deleted the user " do
+            click_link('delete')
+            page.should have_selector('h1' , text: "Listing users")
+            page.should have_selector('div.alert.alert-success', text: "deleted")
+          end
+
+        end
+      end
+
     end    
   end
-   
+  
+
+
 end  
 
