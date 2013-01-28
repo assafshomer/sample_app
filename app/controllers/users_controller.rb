@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 
 	def index
 		@title="All users"
-		@users=User.all
+		# @users=User.all.sort_by {|user| user.name}    
+    @users=User.paginate(page: params[:page], :per_page => 10).order('name')    
 	end
 
 

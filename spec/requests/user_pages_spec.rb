@@ -146,7 +146,7 @@ describe "User" do
       it { should_not have_link 'Users', href: users_path }      
     end
 
-    describe "list" do
+    describe "list after signing in" do
       
       before(:each) do
         test_sign_in FactoryGirl.create(:user)
@@ -154,7 +154,7 @@ describe "User" do
         FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")        
       end
 
-      describe "find link to list after signing in" do
+      describe "find link to list" do
         before {visit root_path}
         it { should have_link 'Users', href: users_path }              
       end
@@ -162,7 +162,7 @@ describe "User" do
       describe "should have titles " do
 
         before { visit users_path }
-        
+
         it { should have_selector('title', text: "All users") }
         it { should have_selector('h1', text: "Listing users") }
         it { should have_link 'New User', href: new_user_path }
@@ -172,6 +172,19 @@ describe "User" do
           page.should have_selector('li',text: user.name)
           end         
         end 
+
+        describe "pagination" do
+          before(:all) { 30.times {FactoryGirl.create(:user)}  }
+          after(:all) { User.delete_all }
+
+          it { should have_selector('div.pagination') }
+          it "should list all users" do
+            User.paginate(page: 1, :per_page => 10).order('name').each do |user|
+              page.should have_selector('li', text: user.name)
+            end            
+          end
+          
+        end
       end
       
     end    
