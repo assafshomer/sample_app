@@ -203,7 +203,7 @@ describe "User" do
         describe "as admin user" do
           let(:admin) { FactoryGirl.create(:user, admin: true) }
           let(:nonadmin) { FactoryGirl.create(:user) }
-          before do
+          before(:each) do
             test_sign_in admin
             visit users_path
           end
@@ -222,7 +222,6 @@ describe "User" do
             page.should have_selector('h1' , text: "Listing users")
             page.should have_selector('div.alert.alert-success', text: "deleted")
           end
-
         end
       end
 

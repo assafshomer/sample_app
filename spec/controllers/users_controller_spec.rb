@@ -145,11 +145,18 @@ describe UsersController do
           page.should have_selector('h1',text: /to the sample app/i)              
         end    
       end
-      
+
+      describe "for signed in non-admins" do      
+      let(:non_admin) { FactoryGirl.create(:user) }
+      before { controller.sign_in(user) }
+        it "attempting to submit a delete request to the destroy action" do
+          delete :destroy, id: non_admin 
+          response.should redirect_to(root_path)      
+        end
+      end
     end
-
   end 
-
+  
   describe "specify and controller variables" do
     let(:user) { FactoryGirl.create(:user)}    
     before { controller.sign_in(user) }

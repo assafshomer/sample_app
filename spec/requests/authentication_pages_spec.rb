@@ -37,7 +37,7 @@ describe "Authentication" do
   end
 
   describe "authorization" do
-    describe "for non signed in users" do
+    describe "for users that are not signed in" do
       let(:user) { FactoryGirl.create(:user) }
 
       describe "visiting the edit page" do
@@ -55,12 +55,8 @@ describe "Authentication" do
         before { visit users_path }
         it { should have_selector('title',text: 'Sign in') }        
       end
-
-    end    
+    end        
   end
-
-
-
 end
 
 

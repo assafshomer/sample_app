@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :signed_in_user,       only: [:edit, :update, :index]
   before_filter :verify_correct_user,  only: [:edit, :update]
+  before_filter :non_admins,           only: :destroy
 
 	def index
 		@title="All users"
@@ -64,5 +65,15 @@ class UsersController < ApplicationController
   def verify_correct_user
     @user=User.find_by_id(params[:id])     
     redirect_to root_path unless current_user?(@user)
+  end
+
+  def non_admins
+    redirect_to root_path unless current_user.admin? 
+    # note this will not work if instead we try to use @current_user.admin? even though 
+    # the instance variable @current_user is available in this context. The reason is that 
+    # it is only set to something not nil due to test_sign_in AFTER we hit the create action
+    # but the before filter occurs before it, so @current_user is nil at that time. However, 
+    # the method current_user assigns to @current_user the user that just posted to
+    # test_sign_in in @current_user is null.
   end
 end
