@@ -181,6 +181,7 @@ describe "User" do
           it "should list all users" do
             User.paginate(page: 1, :per_page => 10).order('name').each do |user|
               page.should have_selector('li', text: user.name)
+              page.should have_link 'Email' , href: "mailto:#{user.email}"
             end            
           end
           
