@@ -194,7 +194,8 @@ describe "User" do
             User.paginate(page: 1, :per_page => 10).order('name').each do |user|
               page.should have_selector('li', text: user.name)
               page.should have_link 'Email' , href: "mailto:#{user.email}"
-            end            
+              page.should have_link(user.name, href: user_path(user.id))
+            end             
           end          
         end        
       end
