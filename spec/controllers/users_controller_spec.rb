@@ -101,17 +101,23 @@ describe UsersController do
         response.should redirect_to(signin_path)      
         flash[:notice].should =~ /sign in/i
       end
+
+      it "should deny access to the users list and redirect to signin" do
+        get :index
+        response.should redirect_to(signin_path)      
+        flash[:notice].should =~ /sign in/i
+      end
     end
     
 
     describe "friendly forwarding" do
-      it "should redirect to the edit page after signin if correct user" do    
+      it "should redirect to the edit page after immediate signin if correct user" do    
         visit edit_user_path(user)
         fill_in "Email",    with: user.email 
         fill_in "Password", with: user.password 
         click_button 'Sign in'    
         response.should render_template('users/edit')
-      end
+      end     
 
       it "should redirect to the root after signin if wrong user" do          
         visit edit_user_path(user)
@@ -119,6 +125,23 @@ describe UsersController do
         fill_in "Password", with: wrong_user.password 
         click_button 'Sign in'    
         page.should have_selector('h1',text: /to the sample app/i)
+      end
+
+      describe "after a failed attempt to sign in" do
+        before do
+          visit users_path
+          fill_in "Email",    with: "despicable@me.com"
+          fill_in "Password", with: user.password 
+          click_button 'Sign in'  
+          fill_in "Email",    with: user.email
+          fill_in "Password", with: user.password 
+          click_button 'Sign in'      
+        end
+        it "should redirect to the user's profile page" do                
+          page.should render_template "users/show"
+          page.should have_selector('h1', text: user.name)                    
+        end        
+        specify {current_path.should==user_path(user) }
       end
     end
     
