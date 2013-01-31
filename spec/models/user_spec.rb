@@ -160,6 +160,19 @@ describe "User" do
 		it "should return microposts in reversed order" do
 			@user.microposts.should==[newer_mp, older_mp]			
 		end
+
+		it "should destroy associated microposts" do
+			microposts=@user.microposts.dup
+			@user.destroy
+			microposts.should_not be_empty
+			microposts.size.should==2
+			microposts.each do |micropost|
+				Micropost.find_by_id(micropost.id).should be_nil
+				lambda do
+					Micropost.find(micropost.id)
+				end.should raise_error(ActiveRecord::RecordNotFound)
+			end								
+		end
 	end
 
 end 
