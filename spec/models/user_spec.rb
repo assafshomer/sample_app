@@ -34,7 +34,7 @@ describe "User" do
   it { should respond_to(:admin) }
   it { should respond_to(:microposts) }
 
-	it { should be_valid } #sanity check, our @user is valid
+	it { should be_valid } 
 	it { should_not be_admin }
 
 	describe "should be rejected without a name" do
@@ -147,4 +147,19 @@ describe "User" do
 			end			
 		end
 	end
+
+	describe "microposts association" do
+		before { @user.save }
+		let!(:older_mp) do
+			FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+		end
+		let!(:newer_mp) do
+			FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+		end
+
+		it "should return microposts in reversed order" do
+			@user.microposts.should==[newer_mp, older_mp]			
+		end
+	end
+
 end 
