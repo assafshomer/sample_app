@@ -14,12 +14,29 @@ require 'spec_helper'
 describe Micropost do
   let(:user) { FactoryGirl.create(:user) }
   before do
-    @micropost=Micropost.new(content: "lorem ipsum", user_id: user.id)
+    @micropost=user.microposts.build(content: "Lorem ipsum")
   end
 
   subject {@micropost}
 
   it { should respond_to(:content) }
   it { should respond_to(:user_id) }
+  it { should respond_to(:user) }
+  its(:user) { should==user }
 
+  it { should be_valid }
+  describe "without user_id" do
+  	before { @micropost.user_id=nil }
+  	it { should_not be_valid }
+  end
+
+  describe "accessible attributes" do
+  	it "-user_id should not be mass assigned" do
+  		expect do
+  		  Micropost.new(content: "lorem", user_id: 1)
+  		end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)  		
+  	end
+
+  	
+  end
 end 
