@@ -17,15 +17,27 @@ describe UsersController do
 	end 
 
 	describe "profile page" do
-  
-    let(:user) { FactoryGirl.create(:user) }  
-    before(:each) do
-      test_sign_in user
-      visit user_path(user)
+    describe "for non-admin" do
+      let(:user) { FactoryGirl.create(:user) }  
+      before(:each) do
+        test_sign_in user
+        visit user_path(user)
+      end
+
+      it { page.should have_selector('h1', text: user.name) }
+      it { page.should have_selector('title', text: user.name) }
     end
 
-    it { page.should have_selector('h1', text: user.name) }
-    it { page.should have_selector('title', text: user.name) }
+    describe "for admins" do
+      let(:admin) { FactoryGirl.create(:user, admin: true) }  
+      before(:each) do
+        test_sign_in admin
+        visit user_path(admin)
+      end
+
+      it { page.should have_selector('div.administrator', text: "(administrator)") }      
+    end
+    
   end
 
   describe "Edit" do 
@@ -33,7 +45,7 @@ describe UsersController do
     let(:user) { FactoryGirl.create(:user) }
     before do 
      test_sign_in user 
-     visit edit_user_path(user) 
+     visit edit_user_path(user)  
     end
     
     describe "page" do

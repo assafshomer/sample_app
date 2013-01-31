@@ -208,9 +208,10 @@ describe "User" do
             test_sign_in admin
             visit users_path
           end
-          it "should be present for all other users" do
+          it "should be present for all *other* users" do
             User.all.each do |user|
-              page.should have_link 'delete', href: user_path(user) unless user==admin        
+              page.should have_link 'delete', href: user_path(user) unless user==admin  
+              page.should_not have_link 'delete', href: user_path(user) if user==admin      
             end
           end
 
