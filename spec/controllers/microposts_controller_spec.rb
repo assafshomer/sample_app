@@ -13,4 +13,11 @@ describe MicropostsController do
 		end		
 	end
 
+# for some reason this test doesn't pass when in here,  but does when in auth_pages_spec
+	# describe "in the Microposts controller" do
+ #    describe "submitting to the create action" do
+ #      before { post microposts_path }
+ #      specify { response.should redirect_to(signin_path) }
+ #    end
+ #  end   
 end
