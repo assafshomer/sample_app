@@ -164,7 +164,8 @@ describe UsersController do
         fill_in "Email",    with: wrong_user.email
         fill_in "Password", with: wrong_user.password 
         click_button 'Sign in'    
-        page.should have_selector('h1',text: /to the sample app/i)
+        # page.should have_selector('h1',text: /to the sample app/i)
+        response.should render_template('static_pages/home')
       end
 
       describe "after a failed attempt to sign in" do
@@ -201,12 +202,14 @@ describe UsersController do
         it { should_not have_selector('h1', text: "Update your profile") }    
 
         it "should denty access to 'edit' and redirect to root" do
-          page.should have_selector('h1',text: /to the sample app/i)           
+          # page.should have_selector('h1',text: /to the sample app/i)  
+          response.should render_template('static_pages/home')         
         end
 
         it "should deny access to 'update' and redirect to root" do
           put :update, id: wrong_user, user: {}
-          page.should have_selector('h1',text: /to the sample app/i)              
+          # page.should have_selector('h1',text: /to the sample app/i)
+          response.should redirect_to(root_path)
         end     
       end
 

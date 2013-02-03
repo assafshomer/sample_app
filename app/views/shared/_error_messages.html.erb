@@ -1,4 +1,4 @@
-<% error_array=@user.errors.full_messages.delete_if {|m| m=~/digest/} %>
+<% error_array=object.errors.full_messages.delete_if {|m| m=~/digest/} %>
 <% if error_array.any? %>
   <div id="error_explanation">
     <div class="alert alert-error">
