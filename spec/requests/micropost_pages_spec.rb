@@ -24,7 +24,16 @@ describe "MicropostPages" do
 			before { fill_in "micropost_content", with: "Lorem ipsum" }
 			it "should create a new micropost" do
 				expect {click_button 'Post'}.to change(Micropost, :count).by(1)
-			end			 
+			end		
+
+			describe "should redirect to the home page" do
+				before do
+					fill_in "micropost_content", with: "Lorem ipsum"
+					click_button 'Post' 
+				end 
+				it { should have_selector('div.alert.alert-success',text: "published successfully" ) }
+			end
+			
 		end 
 		
 	end

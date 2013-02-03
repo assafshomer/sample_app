@@ -24,23 +24,34 @@ describe MicropostsController do
 	describe "micropost creation" do
 		subject { page }
 
-		let(:user) { FactoryGirl.create(:user) }
+		let(:user) { FactoryGirl.create(:user) }		
 
-		before do
-			test_sign_in user
-			visit root_path	
-			@attr={content: ""}
-		end
-
-		describe "with invalid data" do			
+		describe "with invalid data" do		
+			before do
+				controller.sign_in(user)
+				visit root_path	
+				@attr={content: ""}
+			end	
 			it "should not create a micropost" do
-				lambda do					
+				lambda do
 					post :create, micropost: @attr
 				end.should_not change(Micropost, :count)				
-			end			 
-		end		
-	end
+			end
+		end
 
+		describe "with valid data" do		
+			before do
+				controller.sign_in(user)
+				visit root_path	
+				@attr={content: "Lorem ipsum dolor sit amet"}
+			end	
+			it "should create a micropost" do
+				lambda do
+					post :create, micropost: @attr
+				end.should change(Micropost, :count).by(1)
+			end
+		end
+	end
 
 
 end
