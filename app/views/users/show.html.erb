@@ -1,21 +1,30 @@
 <div class="row">
-  <aside class="span4">
-    <section>
-    	<table>
-    		<tr>
-    			<td>
-    				 <%= gravatar_for @user %>
-    			</td>
-    			<td>     				
-			      <h1>
-			      	<%= @user.name %>			      	
-			      </h1>
-		      	<% if @user.admin? %>
-    					<div class="administrator"><i>(administrator)<i></div>
-    				<% end %>
-      		</td>      		
-    		</tr>
-    	</table>      
-    </section>
-  </aside>
+	<aside class="span4">
+		<section>   
+			<table>
+				<tr>
+					<td>
+					<%= gravatar_for @user %>
+					</td>
+					<td>                    
+						<h1>
+						<%= @user.name %>                   
+						</h1>
+					<% if @user.admin? %>
+						<div class="administrator"><i>(administrator)<i></div>
+					<% end %>
+					</td>           
+				</tr>		
+			</table>			
+		</section>
+	</aside>
+	<div class="span8">
+		<% if @user.microposts.any? %>				
+			<h3>Microposts <%= @user.microposts.count %></h3>				
+			<ol class="microposts">
+				<%= render @microposts %> 					
+			</ol>		
+			<%= will_paginate @microposts %>						
+		<% end %>				
+	</div>	
 </div>

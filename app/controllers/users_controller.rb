@@ -7,13 +7,14 @@ class UsersController < ApplicationController
 	def index
 		@title="All users"
 		# @users=User.all.sort_by {|user| user.name}    
-    @users=User.paginate(page: params[:page], :per_page => 10).order('name')    
+    @users=User.paginate(page: params[:page], per_page: 10).order('name')    
 	end
 
 
 	def show		 
   	@user=User.find(params[:id])  	
-  	@title=@user.name 
+  	@microposts=@user.microposts.paginate(page: params[:page], per_page: 5)
+    @title=@user.name 
   end
 
   def new

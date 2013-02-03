@@ -6,8 +6,8 @@
       <td>|</td> 
       <td><%= mail_to user.email, 'Email' %></td>      
       <% if (current_user.admin? && !current_user?(user) )%>
-      	<td>|</td> 
-      	<td><%= link_to 'delete', user, method: :delete, data: {confirm: "Sure?"} %></td>
+        <td>|</td> 
+        <td><%= link_to 'delete', user, method: :delete, data: {confirm: "Sure?"} %></td>
       <% end %>
     </tr> 
   </table><br/>      
