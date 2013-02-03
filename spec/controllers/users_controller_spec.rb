@@ -49,8 +49,10 @@ describe UsersController do
         test_sign_in user
         visit user_path(user)
       end
-      it { should have_selector('span.content', content: mp1.content) }
-      it { should have_selector('span.content', content: mp2.content) }       
+      it { should have_selector('li', text: mp1.content) }
+      it { should have_selector('li', text: mp2.content) }
+      it { should have_selector('span.content', text: mp1.content) }
+      it { should have_selector('span.content', text: mp2.content) }       
       it { should have_content user.microposts.count }  
       it { should_not have_selector('div.pagination') }                         
     end
