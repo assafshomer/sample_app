@@ -33,6 +33,7 @@ describe "User" do
   it { should respond_to(:remember_token) }
   it { should respond_to(:admin) }
   it { should respond_to(:microposts) }
+  it { should respond_to(:feed) }
 
 	it { should be_valid } 
 	it { should_not be_admin }
@@ -172,6 +173,15 @@ describe "User" do
 					Micropost.find(micropost.id)
 				end.should raise_error(ActiveRecord::RecordNotFound)
 			end								
+		end
+		describe "feed" do
+			let(:unfollowed_user) { FactoryGirl.create(:user) }
+			let(:unfollowed_post) { FactoryGirl.create(:micropost, user: unfollowed_user) }
+			
+			its(:feed) { should include(newer_mp) }
+			its(:feed) { should include(older_mp) }
+			its(:feed) { should_not include(unfollowed_post) }
+
 		end
 	end
 

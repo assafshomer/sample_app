@@ -15,6 +15,26 @@ describe "Static pages" do
     let(:heading) {'Sample App'}
     it_should_behave_like "all static pages"
     it { should_not have_selector 'title', text: '| Home' }
+
+    describe "for non signed in users should show the signup button" do
+      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
+      it { should have_link('Sign up now!') }
+    end
+
+    describe "for signed in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        test_sign_in user
+        visit root_path
+      end
+      it "should render the user's feed" do
+        user.feed.each do |item|
+          page.should have_selector("li##{item.id}",text: item.content)
+        end
+      end
+    end
   end
 
   describe "Help page" do
