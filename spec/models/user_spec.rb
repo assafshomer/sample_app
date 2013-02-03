@@ -36,7 +36,7 @@ describe "User" do
 
 	it { should be_valid } 
 	it { should_not be_admin }
-
+	
 	describe "should be rejected without a name" do
 	 	before { @user.name=""}
 		it {should_not be_valid}

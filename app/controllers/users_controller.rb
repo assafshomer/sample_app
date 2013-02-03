@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :signed_in_user,       only: [:edit, :update, :index, :show]
+  before_filter :authenticate,       only: [:edit, :update, :index, :show]
   before_filter :verify_correct_user,  only: [:edit, :update]
   before_filter :non_admins,           only: :destroy
   before_filter :no_visits,            only: [:new, :create]
@@ -59,10 +59,6 @@ class UsersController < ApplicationController
   end
   
   private
-
-  def signed_in_user
-    deny_access unless signed_in?    
-  end
 
   def verify_correct_user
     @user=User.find_by_id(params[:id])     
