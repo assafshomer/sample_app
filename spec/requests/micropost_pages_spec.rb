@@ -32,10 +32,16 @@ describe "MicropostPages" do
 					click_button 'Post' 
 				end 
 				it { should have_selector('div.alert.alert-success',text: "published successfully" ) }
-			end
-			
-		end 
-		
-	end
+			end	
+		end	
+	end	
+
+	describe "micropost deletion" do
+		let!(:mp) { FactoryGirl.create(:micropost, user: user, content: 'Lorem') }
+		before {visit root_path}
+		it "should remove the micropost" do
+			expect {click_link('delete')}.to change(Micropost, :count).by(-1)			
+		end		 
+	end 
 
 end
