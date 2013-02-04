@@ -8,12 +8,12 @@ class MicropostsController < ApplicationController
 			flash[:success]="Post published successfully"
 			redirect_to root_path		
 		else	
-			# @feed_items=[]
-			@feed_items=current_user.feed.paginate(page: params[:page])
+			@feed_items=[]
+			# @feed_items=current_user.feed.paginate(page: params[:page], per_page: 5)
 			render 'static_pages/home'
 		end
 	end
-
+	
 	def destroy
 	end
 end

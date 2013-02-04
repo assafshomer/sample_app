@@ -21,7 +21,7 @@ describe MicropostsController do
  #    end
  #  end   
 
-	describe "micropost creation" do
+	describe "creation" do
 		subject { page }
 
 		let(:user) { FactoryGirl.create(:user) }		
@@ -53,5 +53,8 @@ describe MicropostsController do
 		end
 	end
 
+	describe "deletion" do
+		
+	end
 
 end
