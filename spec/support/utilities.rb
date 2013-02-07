@@ -13,6 +13,6 @@ include ApplicationHelper
 
 	def test_post(content)		
 		visit root_path
-		fill_in 'micropost_content' with: content
+		fill_in 'micropost_content',  with: content
 		click_button 'Post'		
 	end
