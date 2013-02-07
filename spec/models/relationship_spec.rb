@@ -34,6 +34,19 @@ describe Relationship do
 		its(:follower) { should == follower }
 		its(:followed) { should == followed }
 	end
+
+	describe "validations" do
+		describe "reject if no follower_id" do
+			before { relationship.follower=nil }
+			it { should_not be_valid }
+		end
+		describe "reject if no followed_id" do
+			before { relationship.followed=nil }
+			it { should_not be_valid }
+		end
+		
+	end
+
 end
 
 	
