@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate,       only: [:edit, :update, :index, :show]
+  before_filter :authenticate,       except: [:new, :create, :destroy]
   before_filter :verify_correct_user,  only: [:edit, :update]
   before_filter :non_admins,           only: :destroy
   before_filter :no_visits,            only: [:new, :create]
@@ -14,8 +14,27 @@ class UsersController < ApplicationController
 	def show		 
   	@user=User.find(params[:id])  	
   	@microposts=@user.microposts.paginate(page: params[:page], per_page: 10)
-    @title=@user.name 
+    @title=@user.name
+    @followed_user=current_user.relationships.find_by_followed_id(@user.id)
+    @followed_user ||= current_user.relationships.build(followed_id: @user.id)
   end
+
+  def following
+    @title='Following'
+    @user=User.find(params[:id])
+    @users=@user.followed_users.paginate(page: params[:page], per_page: 10)
+    @users_100=@user.followed_users.first(100)
+    render 'show_follow'
+  end
+
+  def followers
+    @title='Followers'
+    @user=User.find(params[:id])
+    @users=@user.followers.paginate(page: params[:page], per_page: 10)
+    @users_100=@user.followers.first(100)
+    render 'show_follow'
+  end
+
 
   def new
   	@title='Sign Up'

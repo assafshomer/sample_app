@@ -230,7 +230,32 @@ describe "User" do
     end    
   end
   
+  describe "following/followers" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    before { user.follow!(other_user) }
 
+    describe "following page" do
+     before(:each) do
+       test_sign_in user
+       visit following_user_path(user)
+     end
+      it { should have_selector('title', text: 'Following') }
+      it { should have_selector('h3',text: 'Following') }
+      it { should have_link(other_user.name, href: user_path(other_user)) }
+    end
+
+    describe "followers page" do
+     before(:each) do
+       test_sign_in other_user
+       visit followers_user_path(other_user)
+     end
+      it { should have_selector('title', text: 'Followers') }
+      it { should have_selector('h3',text: 'Followers') }
+      it { should have_link(user.name, href: user_path(user)) }
+    end
+ 
+  end
 
 end  
 

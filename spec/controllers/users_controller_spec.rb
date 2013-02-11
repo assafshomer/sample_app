@@ -154,6 +154,16 @@ describe UsersController do
         response.should redirect_to(signin_path)      
         flash[:notice].should =~ /sign in/i
       end
+
+      it "should denty access to the followers page" do
+        get :followers, id: 1
+        response.should redirect_to(signin_path)
+      end
+
+      it "should denty access to the following page" do
+        get :following, id: 1
+        response.should redirect_to(signin_path)
+      end
     end
     
 
