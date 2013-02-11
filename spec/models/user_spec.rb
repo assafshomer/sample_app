@@ -24,70 +24,76 @@ describe "User" do
 	
 	subject { @user } 
 
-	it { should respond_to(:name) }
-	it { should respond_to(:email) }
-	it { should respond_to(:password_digest) }
-	it { should respond_to(:password) }
-  it { should respond_to(:password_confirmation) }
-  it { should respond_to(:authenticate)}
-  it { should respond_to(:remember_token) }
-  it { should respond_to(:admin) }
-  it { should respond_to(:microposts) }
-  it { should respond_to(:feed) }
-  it { should respond_to(:relationships) }
+	describe "methods" do
+		it { should respond_to(:name) }
+		it { should respond_to(:email) }
+		it { should respond_to(:password_digest) }
+		it { should respond_to(:password) }
+	  it { should respond_to(:password_confirmation) }
+	  it { should respond_to(:authenticate)}
+	  it { should respond_to(:remember_token) }
+	  it { should respond_to(:admin) }
+	  it { should respond_to(:microposts) }
+	  it { should respond_to(:feed) }
+	  it { should respond_to(:relationships) }
+	  it { should respond_to(:followed_users) }
+	  it { should respond_to(:follow!) }
+	  it { should respond_to(:unfollow!) } 
+	end
 
 	it { should be_valid } 
 	it { should_not be_admin }
-	
-	describe "should be rejected without a name" do
-	 	before { @user.name=""}
-		it {should_not be_valid}
-	 end 
-	describe "should be rejected without an email" do
-	 	before { @user.email=""}
-		it {should_not be_valid}
-	 end 
-	describe "should not have longer than 50 characters" do
-		before {@user.name="a"*51}
-		it {should_not be_valid}
-	end
-	describe "when email is well formatted, valid" do
-		it "should be valid" do
-			good_addresses=%w[assaf@example.com 123@456.org 123@456.890 _assaf@email.com]
-			good_addresses.each do |valid_address|
-				@user.email=valid_address
-				@user.should be_valid
-			end
-		end		
-	end
-	describe "when email is well formatted, valid" do
-		it "should be invalid" do
-			bad_addresses=%w[assaf_at_wrong.place !@foo.bar abc@example.org. .assaf@.gmail -hypen@-hypen dot@..dot...org dot@..dot.org]
-			bad_addresses.each do |invalid_address|
-				@user.email=invalid_address
-				@user.should_not be_valid
-			end
-		end		
-	end
 
-	describe "when email address is already taken" do
-		before do
-			user_with_same_email=@user.dup
-			user_with_same_email.email=@user.email.upcase
-			user_with_same_email.save
+	describe "valid data" do
+		describe "should be rejected without a name" do
+		 	before { @user.name=""}
+			it {should_not be_valid}
+		end 
+		describe "should be rejected without an email" do
+		 	before { @user.email=""}
+			it {should_not be_valid}
+		end 
+		describe "should not have longer than 50 characters" do
+			before {@user.name="a"*51}
+			it {should_not be_valid}
+		end	
+		describe "when email is well formatted, valid" do
+			it "should be valid" do
+				good_addresses=%w[assaf@example.com 123@456.org 123@456.890 _assaf@email.com]
+				good_addresses.each do |valid_address|
+					@user.email=valid_address
+					@user.should be_valid
+				end
+			end		
 		end
-			it {should_not be_valid}					
-	end
-
-	describe "when email address is different only by case" do
-		before do
-			user_with_same_email=@user.dup
-			user_with_same_email.email=reverse_string_case(@user.email)
-			user_with_same_email.save
+		describe "when email is well formatted, valid" do
+			it "should be invalid" do
+				bad_addresses=%w[assaf_at_wrong.place !@foo.bar abc@example.org. .assaf@.gmail -hypen@-hypen dot@..dot...org dot@..dot.org]
+				bad_addresses.each do |invalid_address|
+					@user.email=invalid_address
+					@user.should_not be_valid
+				end
+			end		
 		end
-			it {should_not be_valid}					
-	end
 
+		describe "when email address is already taken" do
+			before do
+				user_with_same_email=@user.dup
+				user_with_same_email.email=@user.email.upcase
+				user_with_same_email.save
+			end
+				it {should_not be_valid}					
+		end
+
+		describe "when email address is different only by case" do
+			before do
+				user_with_same_email=@user.dup
+				user_with_same_email.email=reverse_string_case(@user.email)
+				user_with_same_email.save
+			end
+				it {should_not be_valid}					
+		end			
+	end
 	describe "user authentication" do
 		
 		describe "reject users with no password" do
@@ -187,8 +193,21 @@ describe "User" do
 	end
 
 	describe "relationships" do
-
-		
+		let(:followed) {FactoryGirl.create(:user)}
+		before(:each) do			
+			@user.save
+			@user.follow!(followed)
+		end		
+		describe "following" do
+			it { should be_following(followed) }
+			its(:followed_users) { should include(followed) }					
+		end
+		describe "unfollowing" do
+			before { @user.unfollow!(followed) }
+			it { should_not be_following(followed) }
+			its(:followed_users) { should_not include(followed) }
+			
+		end
 	end
 
 end 

@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_secure_password
   has_many :microposts, dependent: :destroy
   has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+  has_many :followed_users, through: :relationships, source: :followed
 
 	before_save { |user| user.email = email.downcase } 
   before_save :create_remember_token
@@ -36,6 +37,18 @@ class User < ActiveRecord::Base
     Micropost.where('user_id=?', id)
   end
 
+  def follow!(user)
+    self.relationships.create!(followed_id: user.id)
+  end
+
+  def following?(user)
+    !!self.relationships.find_by_followed_id(user)    
+  end
+
+  def unfollow!(user)
+    self.relationships.find_by_followed_id(user).destroy
+  end
+  
   private
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64      
