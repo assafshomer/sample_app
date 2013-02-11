@@ -37,6 +37,8 @@ describe "User" do
 	  it { should respond_to(:feed) }
 	  it { should respond_to(:relationships) }
 	  it { should respond_to(:followed_users) }
+	  it { should respond_to(:reversed_relationships) }
+	  it { should respond_to(:followers) }
 	  it { should respond_to(:follow!) }
 	  it { should respond_to(:unfollow!) } 
 	end
@@ -205,8 +207,13 @@ describe "User" do
 		describe "unfollowing" do
 			before { @user.unfollow!(followed) }
 			it { should_not be_following(followed) }
-			its(:followed_users) { should_not include(followed) }
-			
+			its(:followed_users) { should_not include(followed) }			
+		end
+
+		describe "followers" do
+			subject{followed}
+			it { should be_followed(@user) }
+			its(:followers) { should include(@user) }			
 		end
 	end
 
