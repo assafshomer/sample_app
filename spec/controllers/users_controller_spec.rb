@@ -16,65 +16,6 @@ describe UsersController do
 		page.should have_selector('title',text: "Sign Up")
 	end 
 
-	describe "profile page" do
-    
-    subject {page}
-    describe "access" do
-      describe "for non-admin" do
-        let(:user) { FactoryGirl.create(:user) }  
-        before(:each) do
-          test_sign_in user
-          visit user_path(user)
-        end
-
-        it { should have_selector('h1', text: user.name) }
-        it { should have_selector('title', text: user.name) }
-      end
-
-      describe "for admins" do
-        let(:admin) { FactoryGirl.create(:user, admin: true) }  
-        before(:each) do
-          test_sign_in admin
-          visit user_path(admin)
-        end
-        it { should have_selector('div.administrator', text: "(administrator)") }      
-      end 
-    end
-      
-    describe "microposts list" do
-      let(:user) { FactoryGirl.create(:user) }
-      describe "layout" do
-        
-        let!(:mp1) { FactoryGirl.create(:micropost, user: user, content: "foo bar") }
-        let!(:mp2) { FactoryGirl.create(:micropost, user: user, content: "baz quux") }      
-        
-        before(:each) do        
-          test_sign_in user
-          visit user_path(user)
-        end
-        it { should have_selector('li', text: mp1.content) }
-        it { should have_selector('li', text: mp2.content) }
-        it { should have_selector('span.content', text: mp1.content) }
-        it { should have_selector('span.content', text: mp2.content) }       
-        it { should have_content user.microposts.count }  
-        it { should_not have_selector('div.pagination') }     
-        it { should have_link('delete', href: micropost_path(mp1)) }    
- 
-      end
-
-      describe "with pagination" do
-        
-        15.times {|n| let!(:"mipo#{n}") { FactoryGirl.create(:micropost, user: user, content: "foobazquux")} }
-        before(:each) do        
-          test_sign_in user
-          visit user_path(user)
-        end  
-
-        it { should have_selector('div.pagination') }         
-      end 
-    end
-  end
-
   describe "Edit" do 
   	subject { page }
     let(:user) { FactoryGirl.create(:user) }
@@ -130,6 +71,7 @@ describe UsersController do
     end
   end
 
+  
 
   describe "authentication of edit/update actions" do
     subject { page }

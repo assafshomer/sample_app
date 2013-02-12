@@ -15,8 +15,8 @@ class UsersController < ApplicationController
   	@user=User.find(params[:id])  	
   	@microposts=@user.microposts.paginate(page: params[:page], per_page: 10)
     @title=@user.name
-    @followed_user=current_user.relationships.find_by_followed_id(@user.id)
-    @followed_user ||= current_user.relationships.build(followed_id: @user.id)
+    @followed_user_relationship=current_user.relationships.find_by_followed_id(@user.id)
+    @followed_user_relationship ||= current_user.relationships.build(followed_id: @user.id)
   end
 
   def following
