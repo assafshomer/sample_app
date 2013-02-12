@@ -34,12 +34,23 @@ namespace :db do
 		end
 	end
 
+	# def make_relationships
+	# 	user=User.first
+	# 	followers_of_user=User.all[1..25]
+	# 	followed_by_user=User.all[10..20]
+	# 	followers_of_user.each {|follower| follower.follow!(user)}	
+	# 	followed_by_user.each {|followed| user.follow!(followed)}	
+	# end
+
 	def make_relationships
-		user=User.first
-		followers_of_user=User.all[1..25]
-		followed_by_user=User.all[10..20]
-		followers_of_user.each {|follower| follower.follow!(user)}	
-		followed_by_user.each {|followed| user.follow!(followed)}	
+		users=User.all
+		users.each do |user|
+			number_of_followed=rand(Math::sqrt(User.count))
+			followed_users=users.sample(number_of_followed)
+			followed_users.each do |followed_user|
+				user.follow!(followed_user)
+			end
+		end
 	end
 
 end
