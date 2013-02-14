@@ -12,17 +12,32 @@ describe RelationshipsController do
 		end 
 	end
 
-	describe "creating the relationship using POST 'create'" do
+
+	describe "creating relationships" do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:followed_user) { FactoryGirl.create(:user) }
-		before { controller.sign_in(user) }		
-		it "should create the relationship" do
-			lambda do
-				post :create, relationship: {followed_id: followed_user.id}
-			end.should change(Relationship, :count).by(1)
-		end
+		before { controller.sign_in(user) }	
+		describe "using POST 'create'" do		
+			it "should create the relationship" do
+				lambda do
+					post :create, relationship: {followed_id: followed_user.id}
+				end.should change(Relationship, :count).by(1)
+			end
+		end	
+		describe "with Ajax" do
+	   	it "should increment the Relationship count" do
+	      expect do
+	        xhr :post, :create, relationship: { followed_id: followed_user.id }
+	      end.to change(Relationship, :count).by(1)
+	    end
+	    # it "should respond with success" do
+	    #   xhr :post, :create, relationship: { followed_id: followed_user.id }
+	    #   response.should be_success
+	    # end
+	  end
 	end
-	describe "destroying the relationship using delete 'destroy'" do
+	
+	describe "destroying a relationship" do
 		let(:user) { FactoryGirl.create(:user) }
 		let(:followed_user) { FactoryGirl.create(:user) }
 		before(:each) do
@@ -30,10 +45,26 @@ describe RelationshipsController do
 		  user.follow!(followed_user)
 		  @relationship=user.relationships.find_by_followed_id(followed_user.id)
 		end
-		it "should destroy the relationship" do
-			lambda do
-				delete :destroy, id: @relationship.id
-			end.should change(Relationship, :count).by(-1)
+		describe "using delete 'destroy'" do		
+			it "should destroy the relationship" do
+				lambda do
+					delete :destroy, id: @relationship.id
+				end.should change(Relationship, :count).by(-1)
+			end
 		end
+		describe "with Ajax" do
+    it "should decrement the Relationship count" do
+      expect do
+        xhr :delete, :destroy, id: @relationship.id
+      end.to change(Relationship, :count).by(-1)
+    end
+
+    # it "should respond with success" do
+    #   xhr :delete, :destroy, id: @relationship.id
+    #   response.should be_success
+    # end
+  end
 	end
+
+
 end
