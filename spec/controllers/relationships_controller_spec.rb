@@ -30,10 +30,10 @@ describe RelationshipsController do
 	        xhr :post, :create, relationship: { followed_id: followed_user.id }
 	      end.to change(Relationship, :count).by(1)
 	    end
-	    # it "should respond with success" do
-	    #   xhr :post, :create, relationship: { followed_id: followed_user.id }
-	    #   response.should be_success
-	    # end
+	    it "should respond with success" do
+	      xhr :post, :create, relationship: { followed_id: followed_user.id }
+	      response.should be_success
+	    end
 	  end
 	end
 	
@@ -59,10 +59,10 @@ describe RelationshipsController do
       end.to change(Relationship, :count).by(-1)
     end
 
-    # it "should respond with success" do
-    #   xhr :delete, :destroy, id: @relationship.id
-    #   response.should be_success
-    # end
+    it "should respond with success" do
+      xhr :delete, :destroy, id: @relationship.id
+      response.should be_success
+    end
   end
 	end
 
