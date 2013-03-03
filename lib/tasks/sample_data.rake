@@ -3,8 +3,7 @@ namespace :db do
 	task populate: :environment do 
 		make_users
 		make_microposts
-		make_relationships
-		
+		make_relationships		
 	end
 
 	def make_users
@@ -25,11 +24,16 @@ namespace :db do
 	end
 
 	def make_microposts
-		users=User.all(limit: 6)
+		users=User.all
 		users.each do |user|
-			50.times do |blurb|
-				blurb=Faker::Lorem.sentence(5)
-				user.microposts.create!(content: blurb)				
+			number_of_posts=rand(50)			
+			number_of_posts.times do |blurb|
+				number_of_lines=rand(5)
+				hours_created_ago=rand(100)
+				blurb=Faker::Lorem.sentence(number_of_lines)
+				micropost=user.microposts.create!(content: blurb)	
+				micropost.created_at=hours_created_ago.hour.ago		
+				micropost.save	
 			end
 		end
 	end
@@ -45,12 +49,14 @@ namespace :db do
 	def make_relationships
 		users=User.all
 		users.each do |user|
-			number_of_followed=rand(Math::sqrt(User.count))
+			number_of_followed=rand(50)
 			followed_users=users.sample(number_of_followed)
 			followed_users.each do |followed_user|
 				user.follow!(followed_user)
 			end
 		end
 	end
+
+
 
 end
