@@ -186,11 +186,21 @@ describe "User" do
 		describe "feed" do
 			let(:unfollowed_user) { FactoryGirl.create(:user) }
 			let(:unfollowed_post) { FactoryGirl.create(:micropost, user: unfollowed_user) }
-			
+			let(:followed_user) { FactoryGirl.create(:user) }
+			let(:followed_post) { FactoryGirl.create(:micropost, user:followed_user, content: "foo") }
+			before(:each) do
+				@user.follow!(followed_user)
+				3.times {|x| FactoryGirl.create(:micropost, user: followed_user, content: "fake post #{x}")}
+			end
 			its(:feed) { should include(newer_mp) }
 			its(:feed) { should include(older_mp) }
 			its(:feed) { should_not include(unfollowed_post) }
-
+			its(:feed) { should include(followed_post)}
+			its(:feed) do
+				followed_user.microposts.each do |micropost|
+					should include(micropost)
+				end
+			end
 		end
 	end
 

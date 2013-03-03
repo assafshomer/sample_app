@@ -12,6 +12,7 @@
 require 'spec_helper'
 
 describe Micropost do
+  
   let(:user) { FactoryGirl.create(:user) }
   before do
     @micropost=user.microposts.build(content: "Lorem ipsum")
@@ -21,7 +22,9 @@ describe Micropost do
 
   it { should respond_to(:content) }
   it { should respond_to(:user_id) }
-  it { should respond_to(:user) }
+  it { should respond_to(:user) }  
+  it { Micropost.should respond_to(:from_users_followed_by) }
+  
   its(:user) { should==user }
 
   it { should be_valid }
