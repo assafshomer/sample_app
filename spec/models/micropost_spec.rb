@@ -46,6 +46,11 @@ describe Micropost do
   		before { @micropost.content="   "}
   		it { should_not be_valid }  		
   	end
+
+    describe "should be longer than a single character" do
+      before { @micropost.content="." }
+      it { should_not be_valid }
+    end
   	
   	describe "should be less than 140 chars" do
   		before { @micropost.content= "a" * 141 }

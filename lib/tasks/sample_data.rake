@@ -30,7 +30,8 @@ namespace :db do
 			number_of_posts.times do |blurb|
 				number_of_lines=rand(1..15)
 				hours_created_ago=rand(1..100)
-				blurb=Faker::Lorem.sentence(number_of_lines)[1..140]				
+				blurb=Faker::Lorem.sentence(number_of_lines)[1..140]
+				blurb="short post" unless blurb.length>5
 				micropost=user.microposts.create!(content: blurb)	
 				micropost.created_at=hours_created_ago.hour.ago		
 				micropost.save	

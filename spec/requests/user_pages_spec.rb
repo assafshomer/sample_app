@@ -185,6 +185,13 @@ describe "User" do
           end         
         end 
 
+        it "should list the number of microposts for each user" do
+          User.all.each do |user|
+            page.should have_selector('td#micropost_count',
+                                       text: "#{user.microposts.count} microposts")
+          end
+        end
+
         describe "pagination" do
           before(:all) { 30.times {FactoryGirl.create(:user)}  }
           after(:all) { User.delete_all }

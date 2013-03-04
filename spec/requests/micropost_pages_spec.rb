@@ -4,11 +4,16 @@ describe "MicropostPages" do
 	subject { page }
 
 	let(:user) { FactoryGirl.create(:user) }
+	before(:each) do
+	  test_sign_in user
+	  visit root_path
+	end	
 
-	before { test_sign_in user }
+	describe "empty micropost text area" do
+		it { should have_selector('textarea', text: "") }
+	end
 
-	describe "micropost creation" do
-		before { visit root_path }
+	describe "micropost creation" do		
 
 		describe "with invalid data" do
 			it "should not create a new micropost" do

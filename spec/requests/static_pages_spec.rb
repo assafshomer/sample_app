@@ -35,6 +35,12 @@ describe "Static pages" do
           page.should have_link('delete', href: micropost_path(item))
         end  
       end
+      it "should have a link to the profile page" do
+        page.should have_link('view my profile', href: user_path(user))
+      end
+      it "should show a micropost count" do
+        page.should have_selector('span', text: "#{user.microposts.count} microposts")
+      end
 
       describe "following/followers counts" do
         let(:other_user) { FactoryGirl.create(:user) }

@@ -9,6 +9,8 @@
         <td>|</td> 
         <td><%= link_to 'delete', user, method: :delete, data: {confirm: "Sure?"} %></td>
       <% end %>
+      <td>|</td> 
+      <td id="micropost_count"><%= user.microposts.count %> microposts</td>   
     </tr> 
   </table><br/>      
 </li> 
