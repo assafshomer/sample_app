@@ -74,6 +74,7 @@ describe "Static pages" do
     visit root_path
     click_link "About"
     page.should have_selector 'title', text: full_title('About Us')
+    page.should have_selector('img.gravatar#assaf')
     click_link "Help"
     page.should have_selector 'title', text: full_title('Help')
     click_link "Contact"
@@ -83,6 +84,6 @@ describe "Static pages" do
     click_link "Sign up now!"
     page.should have_selector 'title', text: full_title('Sign Up')
     click_link "sample app"
-    page.should have_selector 'h2', text: 'This is the home page for'
+    page.should have_selector 'h2', text: 'This is the home page of my sample application'
   end
 end

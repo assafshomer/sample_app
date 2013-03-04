@@ -26,11 +26,11 @@ namespace :db do
 	def make_microposts
 		users=User.all
 		users.each do |user|
-			number_of_posts=rand(50)			
+			number_of_posts=rand(1..50)			
 			number_of_posts.times do |blurb|
-				number_of_lines=rand(5)
-				hours_created_ago=rand(100)
-				blurb=Faker::Lorem.sentence(number_of_lines)
+				number_of_lines=rand(1..15)
+				hours_created_ago=rand(1..100)
+				blurb=Faker::Lorem.sentence(number_of_lines)[1..140]				
 				micropost=user.microposts.create!(content: blurb)	
 				micropost.created_at=hours_created_ago.hour.ago		
 				micropost.save	
