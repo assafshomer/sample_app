@@ -1,0 +1,5 @@
+<div class="field">
+	<%= form.text_area :content, placeholder: "Compose new micropost..." %>
+</div>
+<div><%= form.hidden_field :in_reply_to %></div>
+<%= form.submit 'Post', class: "btn btn-large btn-primary", id: "Post_button" %>

@@ -1,0 +1,7 @@
+<div class="field">
+	<div><%= form.hidden_field :in_reply_to, value: in_reply_to_id %></div>
+	<% replied_to_user=User.find_by_id(in_reply_to_id) %>
+	<%= form.text_area :content, value: "@#{replied_to_user.name}" %>
+</div>
+<%= form.submit 'Reply', class: "btn btn-large btn-primary", 	id: "Reply_button",
+																													 title: "Reply to #{replied_to_user.name}" %>

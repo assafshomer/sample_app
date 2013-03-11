@@ -204,6 +204,33 @@ describe "User" do
 		end
 	end
 
+describe "replies" do			
+	let!(:first_user) { FactoryGirl.create(:user) }
+	let!(:post_by_first) { FactoryGirl.create(:micropost, user: first_user, 
+																										content: "post by first user") }
+	let!(:other_user) { FactoryGirl.create(:user) }
+	let!(:post_by_other) { FactoryGirl.create(:micropost, 
+																									user: other_user,
+																							 content: "post by other user") }
+	let!(:reply_post) { FactoryGirl.create(:micropost,	 user: first_user,
+																									 	content: "reply by first user to post by other user",
+																								in_reply_to: other_user.id) }	
+	let!(:follower) { FactoryGirl.create(:user) }
+
+	before { follower.follow!(first_user) }
+	it "should be included in the feed of the replying user" do
+		first_user.feed.should include(reply_post)
+		first_user.feed.should include(post_by_first)
+	end
+	it "should be included in the feed of the replied to user" do
+		other_user.feed.should include(reply_post)	
+	end
+	it "should not be included in followers of the replying user that are not the replied to user" do
+		follower.feed.should include(post_by_first)		
+		follower.feed.should_not include(reply_post)		
+	end
+end
+
 	describe "relationships" do
 		let(:followed) {FactoryGirl.create(:user)}
 		before(:each) do			

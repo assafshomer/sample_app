@@ -4,4 +4,5 @@
 		Posted <%= time_ago_in_words(micropost.created_at) %> ago
 	</span>
 	<%= render 'shared/delete_link', micropost: micropost %>
+	<%= render 'shared/reply_link' , micropost: micropost %>
 </li>

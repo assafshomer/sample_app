@@ -1,0 +1,3 @@
+<% unless current_user?(micropost.user) %>	
+	<%= link_to "reply", root_path(in_reply_to_id: micropost.user.id) %>
+<% end %>

@@ -51,8 +51,21 @@ describe "Static pages" do
         it { should have_link('1 followers', href: followers_user_path(user)) }
         it { should have_link('0 following', href: following_user_path(user)) }
       end
-
     end
+
+    describe "microposts of other users" do
+      let(:user) { FactoryGirl.create(:user) }
+      let(:other_user) { FactoryGirl.create(:user) }      
+      before(:each) do
+        FactoryGirl.create(:micropost, user: other_user, content: "foobaz")
+        test_sign_in user 
+        visit user_path(other_user)               
+      end 
+      it { page.should have_content(other_user.name) }
+      it { page.should have_selector('h3', text: "Microposts #{other_user.microposts.count}") }
+      it { page.should have_link('reply') } 
+    end
+
   end
 
   describe "Help page" do

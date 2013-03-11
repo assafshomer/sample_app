@@ -36,7 +36,12 @@ class User < ActiveRecord::Base
 
   def feed
     # self.microposts
-    Micropost.from_users_followed_by(self)
+    # Micropost.from_users_followed_by(self)
+    Micropost.smart_feed(self)
+  end
+
+  def add_to_feed(micropost)
+    self.feed << micropost unless self.feed.find_index(micropost)    
   end
 
   def follow!(user)

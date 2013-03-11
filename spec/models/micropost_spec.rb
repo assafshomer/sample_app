@@ -2,11 +2,12 @@
 #
 # Table name: microposts
 #
-#  id         :integer          not null, primary key
-#  content    :string(255)
-#  user_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  content     :string(255)
+#  user_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  in_reply_to :integer
 #
 
 require 'spec_helper'
@@ -24,6 +25,7 @@ describe Micropost do
   it { should respond_to(:user_id) }
   it { should respond_to(:user) }  
   it { Micropost.should respond_to(:from_users_followed_by) }
+  it { should respond_to(:in_reply_to) } 
   
   its(:user) { should==user }
 

@@ -68,25 +68,7 @@
         specify { user.reload.name.should == new_name }
         specify { user.reload.email.should == new_email }       
       end
-    end
-
-    describe "other users page" do
-      subject{page}
-      let(:user) { FactoryGirl.create(:user) }
-      let(:other_user) { FactoryGirl.create(:user) }    
-      let(:post_by_other) { FactoryGirl.create(:micropost, user: other_user, content: "foobar") }
-      before do
-       test_sign_in user 
-       visit user_path(other_user)  
-      end
-      describe "should show their micropost list" do
-        it { should have_selector('li', content: post_by_other.content)}
-      end
-      describe "should containt a reply link" do
-        # it { should have_link('reply') }
-      end
-
-    end
+    end    
 
     describe "authentication of edit/update actions" do
       subject { page }
