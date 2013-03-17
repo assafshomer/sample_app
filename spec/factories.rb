@@ -24,4 +24,10 @@ FactoryGirl.define do
 		user
 	end
 
+	factory :message do
+		content "message"
+		sender User.first
+		recipient User.last				
+	end
+
 end

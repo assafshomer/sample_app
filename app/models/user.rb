@@ -24,6 +24,13 @@ class User < ActiveRecord::Base
                                          source: :followed
   has_many :followers,                  through: :reversed_relationships,
                                          source: :follower
+  has_many :messages,               foreign_key: "sender_id",
+                                      dependent: :destroy,
+                                     class_name: "Message"
+  has_many :recieved_messages,      foreign_key: "recipient_id", 
+                                      dependent: :destroy, 
+                                     class_name: "Message"                                     
+
 
 	before_save { |user| user.email = email.downcase } 
   before_save :create_remember_token
