@@ -4,13 +4,12 @@ class MicropostsController < ApplicationController
 	before_filter :authorize, 		only: [:destroy]
 
 	def create
-		@micropost=current_user.microposts.build(params[:micropost])
+		@micropost=current_user.microposts.build(params[:micropost]) # params are content and in_reply_to
 		if @micropost.save
 			flash[:success]="Post published successfully"
 			redirect_to root_path		
 		else	
-			@feed_items=[]
-			# @feed_items=current_user.feed.paginate(page: params[:page], per_page: 5)
+			@feed_items=[]	
 			render 'static_pages/home'
 		end
 	end
