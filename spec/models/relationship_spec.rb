@@ -44,7 +44,10 @@ describe Relationship do
 			before { relationship.followed=nil }
 			it { should_not be_valid }
 		end
-		
+		describe "reject if following itself" do
+			before { relationship.followed_id=relationship.follower_id}
+			it { should_not be_valid }
+		end
 	end
 
 end

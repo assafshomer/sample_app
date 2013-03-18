@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     @title='Following'
     @user=User.find(params[:id])
     @users=@user.followed_users.paginate(page: params[:page], per_page: 10)
-    @users_100=@user.followed_users.first(100)
+    @users_100=@user.followed_users.first(100) #for the status area
     render 'show_follow'
   end
 

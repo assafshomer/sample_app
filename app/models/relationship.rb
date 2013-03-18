@@ -17,4 +17,15 @@ class Relationship < ActiveRecord::Base
 
   validates :followed_id, presence: true
   validates :follower_id, presence: true
+  validate :not_following_himself
+
+  private
+  def following_himself?
+  	follower_id==followed_id
+  end
+
+  def not_following_himself
+  	errors.add(:followed_id, "A user cannot follow himself") if following_himself?
+  end
+
 end

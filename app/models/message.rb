@@ -19,13 +19,15 @@ class Message < ActiveRecord::Base
   validates :sender_id, presence: true
   validates :recipient_id, presence: true
   validates :content, presence: true, length: {maximum: 140, minimum: 2}
-  validate :recipient_is_follower?
+  validate :recipient_follows_sender?
 
-  def recipient_is_follower?
-  	if  !recipient.nil? and !sender.nil?
-  		error_msg="'#{sender.name}' cannot send '#{recipient.name}' a message because '#{recipient.name}' is not following '#{sender.name}'"
-  		errors.add(:recipient_id,error_msg ) unless recipient.following?(sender)
-  	end  	
-  end  
+  private
+  
+	  def recipient_follows_sender?
+	  	if  !recipient.nil? and !sender.nil?
+	  		error_msg="'#{sender.name}' cannot send '#{recipient.name}' a message because '#{recipient.name}' is not following '#{sender.name}'"
+	  		errors.add(:recipient_id,error_msg ) unless recipient.following?(sender)
+	  	end  	
+	  end  
   
 end
