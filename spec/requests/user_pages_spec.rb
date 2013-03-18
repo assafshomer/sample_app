@@ -400,14 +400,27 @@ describe "User" do
           describe "should redirect to the sender's messages page" do
             before { click_button 'Send message' }
             it { should have_selector('h2', text: "messages for #{sender.name}") }
+            describe "and show the new message on the messages page" do
+              it { should have_selector('span.message',
+               text: "test message from #{sender.name}") }
+            end
           end
           describe "should show a success flash" do
             before { click_button 'Send message' }
             it { should have_selector('div.alert.alert-success', 
               text: "message to #{recipient.name} was sent successfuly") }
           end
-        end
 
+        end
+      end
+
+      describe "for non followers" do
+        before do 
+          recipient.unfollow!(sender)
+          visit user_path(recipient)
+        end
+        it { should_not have_selector('textarea#message_content', text: "")}
+        it { should_not have_selector('input#message_button') }
       end
 
       

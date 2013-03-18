@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe "MessagePages" do
 	let!(:sender) { FactoryGirl.create(:user) }
-	let!(:recipient) { FactoryGirl.create(:user) }	
+	let!(:recipient) { FactoryGirl.create(:user) }
+
   subject {page}
   before(:each) do
     test_sign_in(sender)
@@ -45,4 +46,15 @@ describe "MessagePages" do
   		specify {times.should ==times.sort.reverse}
   	end
   end  
+  describe "should show messages sent to the user" do
+  	let!(:third_user) { FactoryGirl.create(:user) }	
+  	before do
+  		 sender.follow!(third_user)
+  		 @msg_from_third_user=FactoryGirl.create(:message, 
+  		 			content: "message from #{third_user.name}", 
+  		 			 sender: third_user, recipient: sender)
+  		 visit messages_path
+  	end
+  	it { should have_selector('span.message', text: @msg_from_third_user.content) }
+  end
 end
