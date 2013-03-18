@@ -1,5 +1,11 @@
 SampleApp::Application.routes.draw do
   
+  get "messages/new"
+
+  get "messages/index"
+
+  get "messages/create"
+
   resources :users do
     member do
       get :following, :followers
@@ -8,7 +14,8 @@ SampleApp::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]  
-  
+  resources :messages, only: [:create, :index]
+
   root              to: 'static_pages#home'
   
   match "/help",    to: 'static_pages#help'

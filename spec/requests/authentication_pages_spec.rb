@@ -15,6 +15,7 @@ describe "Authentication" do
   		it { should have_selector('title', text: 'Sign in')}
   		it { should have_selector('div.alert.alert-error', text: 'Invalid') }	
       it { should_not have_link('Users', href: users_path) }
+      it { should_not have_link('Messages', href: messages_path) }
       it { should_not have_link('Profile') }
       it { should_not have_link('Settings') }
       it { should_not have_link('Sign out', href: signout_path) }
@@ -33,6 +34,7 @@ describe "Authentication" do
       it { should have_selector('title', text: user.name) }
 
       it { should have_link('Users', href: users_path) }
+      it { should have_link('Messages', href: messages_path) }
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) } 	 
@@ -60,6 +62,11 @@ describe "Authentication" do
         it { should have_selector('title',text: 'Sign in') }        
       end
 
+      describe "visiting the messages index" do
+        before { visit messages_path }
+        it { should have_selector('title',text: 'Sign in') }        
+      end
+
       describe "in the Microposts controller" do
 
         describe "submitting to the create action" do
@@ -83,6 +90,13 @@ describe "Authentication" do
           before { delete relationship_path(1) }
           specify { response.should redirect_to(signin_path) }
         end
+      end 
+
+      describe "in the Messages controller" do
+        describe "submitting to the create action" do
+          before { post messages_path }
+          specify { response.should redirect_to(signin_path) }
+        end     
       end 
 
       describe "getting the followers page" do

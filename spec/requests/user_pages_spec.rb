@@ -31,7 +31,7 @@ describe "User" do
             fill_in "Confirmation",     with: "foobar"          
           end
           it "should not create a new user" do
-            expect {click_button submit}.not_to change(User,:count)              
+            expect {click_button submit}.not_to change(User,:count)            
           end             
         end   
 
