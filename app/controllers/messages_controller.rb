@@ -6,6 +6,8 @@ class MessagesController < ApplicationController
   end
 
   def index
+  	@title="Messages"
+  	@messages=current_user.messages
   end
 
   def create

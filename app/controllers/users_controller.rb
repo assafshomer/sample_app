@@ -10,7 +10,6 @@ class UsersController < ApplicationController
     @users=User.paginate(page: params[:page], per_page: 10).order('name')    
 	end
 
-
 	def show		 
   	@user=User.find(params[:id])  	
   	@microposts=@user.microposts.paginate(page: params[:page], per_page: 10)
@@ -34,7 +33,6 @@ class UsersController < ApplicationController
     @users_100=@user.followers.first(100)
     render 'show_follow'
   end
-
 
   def new
   	@title='Sign Up'

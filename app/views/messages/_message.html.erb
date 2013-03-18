@@ -1,0 +1,7 @@
+<li>
+	<span class="message"><%= wrap(message.content) %></span>
+	<span class="timestamp">
+		Sent <%= time_ago_in_words(message.created_at) %> 
+		ago to <%= message.recipient.name %>
+	</span>	
+</li>

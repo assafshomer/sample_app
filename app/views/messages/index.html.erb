@@ -1,2 +1,6 @@
-<h1>Messages#index</h1>
-<p>Find me in app/views/messages/index.html.erb</p>
+<h1>Messages</h1>
+<h2><%= @messages.count %> messages for <%= current_user.name %></h2>
+	<ol class="microposts">
+		<%= render @messages %> 					
+	</ol>	
+

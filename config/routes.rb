@@ -1,10 +1,4 @@
 SampleApp::Application.routes.draw do
-  
-  get "messages/new"
-
-  get "messages/index"
-
-  get "messages/create"
 
   resources :users do
     member do
