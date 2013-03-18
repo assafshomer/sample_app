@@ -10,7 +10,7 @@ describe "MicropostPages" do
 	end	
 
 	describe "empty micropost text area" do
-		it { should have_selector('textarea', text: "") }
+		it { should have_selector('textarea#micropost_content', text: "") }		
 	end
 
 	describe "micropost form should have a 'Post' button" do
@@ -27,6 +27,7 @@ describe "MicropostPages" do
 			describe "error message" do
 				before { click_button 'Post' }
 				it { should have_content('error') }
+				it { should have_selector('div.alert.alert-error') }
 			end
 		end
 
@@ -38,10 +39,11 @@ describe "MicropostPages" do
 
 			describe "should redirect to the home page" do
 				before do
-					fill_in "micropost_content", with: "Lorem ipsum"
+					# fill_in "micropost_content", with: "Lorem ipsum"
 					click_button 'Post' 
 				end 
-				it { should have_selector('div.alert.alert-success',text: "published successfully" ) }
+				it { should have_selector('div.alert.alert-success',
+					text: "published successfully" ) }
 			end	
 		end	
 	end	

@@ -347,10 +347,10 @@ describe "User" do
         end
       end
       describe "clicking on the 'Unfollow' button" do  
-      before(:each) do
-        follower.follow!(followed)
-        visit user_path(followed)
-      end
+        before(:each) do
+          follower.follow!(followed)
+          visit user_path(followed)
+        end
         it "should increase the list of followed users of the follower by 1" do
           expect do
             click_button 'Unfollow'
@@ -368,6 +368,52 @@ describe "User" do
       end 
 
     end
+
+    describe "message button and form" do
+      let!(:sender) { FactoryGirl.create(:user) }
+      let!(:recipient) { FactoryGirl.create(:user) }
+      before(:each) do
+        test_sign_in sender
+        recipient.follow!(sender)
+        visit user_path(recipient)
+      end
+      it { should have_selector('textarea#message_content', text: "")}
+      it { should have_selector('input#message_button') }
+
+      describe "message creation" do
+        describe "with invalid data" do
+          it "clicking the button should not increse message count" do
+            expect {click_button 'Send message'}.not_to change(Message, :count).by(1)
+          end
+          describe "error message" do
+            before { click_button 'Send message' }
+            it { should have_selector('div.alert.alert-error', text: 'error') }
+          end
+        end
+        describe "with valid data" do
+          before { fill_in "message_content", with: "test message from #{sender.name}" }
+          it "clicking it should increse sender message count" do
+            expect do
+              click_button 'Send message'              
+            end.to change(Message, :count).by(1)
+          end
+          describe "should redirect to the sender's messages page" do
+            before { click_button 'Send message' }
+            it { should have_selector('h2', text: "messages for #{sender.name}") }
+          end
+          describe "should show a success flash" do
+            before { click_button 'Send message' }
+            it { should have_selector('div.alert.alert-success', 
+              text: "message to #{recipient.name} was sent successfuly") }
+          end
+        end
+
+      end
+
+      
+    end
+
+
   end
 
 end  
