@@ -4,6 +4,7 @@ namespace :db do
 		make_users
 		make_microposts
 		make_relationships		
+		make_messages		
 	end
 
 	def make_users
@@ -39,6 +40,25 @@ namespace :db do
 		end
 	end
 
+	def make_messages
+		users=User.first(50)
+		users.each do |user|
+			number_of_messages=rand(1..5)
+			followers=user.followers.first(5)
+			followers.each do |follower|
+				number_of_messages.times do |blurb|
+					number_of_lines=rand(1..15)
+					hours_created_ago=rand(1..100)
+					blurb=Faker::Lorem.sentence(number_of_lines)[1..140]
+					blurb="hello #{user.name}" unless blurb.length>5
+					message=user.messages.create!(content: blurb, recipient_id: follower.id)
+					message.created_at=hours_created_ago.hour.ago
+					message.save
+				end				
+			end
+		end
+	end
+
 	# def make_relationships
 	# 	user=User.first
 	# 	followers_of_user=User.all[1..25]
@@ -53,7 +73,7 @@ namespace :db do
 			number_of_followed=rand(50)
 			followed_users=users.sample(number_of_followed)
 			followed_users.each do |followed_user|
-				user.follow!(followed_user)
+				user.follow!(followed_user) unless followed_user==user
 			end
 		end
 	end

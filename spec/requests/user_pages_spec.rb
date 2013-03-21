@@ -425,7 +425,7 @@ describe "User" do
           end
           describe "should redirect to the sender's messages page" do
             before { click_button 'Send' }
-            it { should have_selector('h2', text: "messages for #{sender.name}") }
+            it { should have_selector('h2', text: " for #{sender.name}") }
             describe "and show the new message on the messages page" do
               it { should have_selector('span.message',
                text: "test message from #{sender.name}") }

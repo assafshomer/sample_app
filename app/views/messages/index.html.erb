@@ -1,5 +1,5 @@
 <h1>Messages</h1>
-<h2><%= @messages.count %> messages for <%= current_user.name %></h2>
+<h2><%= pluralize(@messages.count, "message") %> for <%= current_user.name %></h2>
 	<ol class="microposts">
 		<%= render @messages %> 					
 	</ol>	
