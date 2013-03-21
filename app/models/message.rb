@@ -22,14 +22,18 @@ class Message < ActiveRecord::Base
   validate :recipient_follows_sender?
 
   default_scope order: 'messages.created_at DESC'
+  scope :inbox, lambda{|user| mailbox(user)}  
 
-  private
-  
+  private  
 	  def recipient_follows_sender?
 	  	if  !recipient.nil? and !sender.nil?
 	  		error_msg="'#{sender.name}' cannot send '#{recipient.name}' a message because '#{recipient.name}' is not following '#{sender.name}'"
 	  		errors.add(:recipient_id,error_msg ) unless recipient.following?(sender)
 	  	end  	
 	  end  
+
+  def self.mailbox(user)
+    where("recipient_id=#{user.id} OR sender_id=#{user.id}")    
+  end
   
 end

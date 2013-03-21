@@ -1,0 +1,5 @@
+<div class="field">
+	<%= form.text_area :content, placeholder: "Send a direct message to #{message.recipient.name}..." %>
+</div>
+<div><%= form.hidden_field :recipient_id %></div>
+<%= form.submit 'Send', class: "btn btn-large btn-primary", id: "Send_button" %>

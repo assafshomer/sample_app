@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
     Micropost.smart_feed(self)
   end
 
+  def mailbox
+    Message.inbox(self)
+  end
+
   def add_to_feed(micropost)
     self.feed << micropost unless self.feed.find_index(micropost)    
   end

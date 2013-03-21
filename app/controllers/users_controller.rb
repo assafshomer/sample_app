@@ -13,6 +13,7 @@ class UsersController < ApplicationController
 	def show		 
   	@user=User.find(params[:id])  	
   	@microposts=@user.microposts.paginate(page: params[:page], per_page: 10)
+    @message=current_user.messages.build(recipient_id: @user.id) if @user.following?(current_user)
     @title=@user.name
     @followed_user_relationship=current_user.relationships.find_by_followed_id(@user.id)
     @followed_user_relationship ||= current_user.relationships.build(followed_id: @user.id)

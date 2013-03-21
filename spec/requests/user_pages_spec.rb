@@ -404,15 +404,15 @@ describe "User" do
         visit user_path(recipient)
       end
       it { should have_selector('textarea#message_content', text: "")}
-      it { should have_selector('input#message_button') }
+      it { should have_selector('input#Send_button', title: 'Send') }      
 
       describe "message creation" do
         describe "with invalid data" do
           it "clicking the button should not increse message count" do
-            expect {click_button 'Send message'}.not_to change(Message, :count).by(1)
+            expect {click_button 'Send'}.not_to change(Message, :count).by(1)
           end
           describe "error message" do
-            before { click_button 'Send message' }
+            before { click_button 'Send' }
             it { should have_selector('div.alert.alert-error', text: 'error') }
           end
         end
@@ -420,11 +420,11 @@ describe "User" do
           before { fill_in "message_content", with: "test message from #{sender.name}" }
           it "clicking it should increse sender message count" do
             expect do
-              click_button 'Send message'              
+              click_button 'Send'              
             end.to change(Message, :count).by(1)
           end
           describe "should redirect to the sender's messages page" do
-            before { click_button 'Send message' }
+            before { click_button 'Send' }
             it { should have_selector('h2', text: "messages for #{sender.name}") }
             describe "and show the new message on the messages page" do
               it { should have_selector('span.message',
@@ -432,9 +432,9 @@ describe "User" do
             end
           end
           describe "should show a success flash" do
-            before { click_button 'Send message' }
+            before { click_button 'Send' }
             it { should have_selector('div.alert.alert-success', 
-              text: "message to #{recipient.name} was sent successfuly") }
+              text: "Direct message sent successfuly to #{recipient.name}") }
           end
         end
       end
