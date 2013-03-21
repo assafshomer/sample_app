@@ -45,7 +45,8 @@ describe "MessagePages" do
   		let!(:times) { sender.messages.map(&:created_at) }
   		specify {times.should ==times.sort.reverse}
   	end
-  end  
+  end 
+   
   describe "should show messages sent to the user" do
   	let!(:third_user) { FactoryGirl.create(:user) }	
   	before do

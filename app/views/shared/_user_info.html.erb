@@ -1,12 +1,35 @@
-<a href="<%= user_path(current_user) %>">
-	<%= gravatar_for current_user, size: 30 %>
-</a>
-<h1>
-	<%= current_user.name %>
-</h1>
-<span>
-	<%= link_to "view my profile", current_user %>
-</span>
-<span>
-	<%= pluralize(current_user.microposts.count, "micropost") %>
-</span>
+<table>
+	<tr>
+		<td>
+			<a href="<%= user_path(user) %>">
+				<%= gravatar_for user, size: 60 %>
+			</a>
+		</td>
+		<td>
+			<h1>
+				<%= user.name %>
+			</h1>
+			<% if user.admin? %>
+				<div class="administrator"><i>(administrator)<i></div>
+			<% end %>						
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span>
+				<%= link_to "view my profile", user %>
+			</span>		
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<span>
+				<%= pluralize(user.microposts.count, "micropost") %>
+			</span>	
+		</td>	
+	</tr>
+</table>
+
+
+
+

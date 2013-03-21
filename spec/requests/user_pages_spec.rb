@@ -242,7 +242,7 @@ describe "User" do
     let(:other_user) { FactoryGirl.create(:user) }
     before { user.follow!(other_user) }
 
-    describe "following page" do
+    describe "following page for signed in user" do
      before(:each) do
        test_sign_in user
        visit following_user_path(user)
@@ -252,7 +252,7 @@ describe "User" do
       it { should have_link(other_user.name, href: user_path(other_user)) }
     end
 
-    describe "followers page" do
+    describe "followers page for signed in user" do
      before(:each) do
        test_sign_in other_user
        visit followers_user_path(other_user)
@@ -286,6 +286,33 @@ describe "User" do
         end
         it { should have_selector('div.administrator', text: "(administrator)") }      
       end 
+    end
+
+    describe "followers/following links" do
+      describe "for current user" do
+        let!(:user) { FactoryGirl.create(:user) }
+        before(:each) do
+          test_sign_in user
+          visit user_path(user)
+        end
+        it { should have_link("#{user.followed_users.count} following", href: following_user_path(user)) }
+        it { should have_link("#{user.followers.count} followers", href: followers_user_path(user)) }
+      end 
+      describe "for other users" do
+        let!(:user) { FactoryGirl.create(:user) }
+        let!(:other_user) { FactoryGirl.create(:user) }
+        before(:each) do
+          test_sign_in user
+          visit user_path(other_user)
+        end
+        it { should_not have_link("#{other_user.followed_users.count} following", 
+                                  href: following_user_path(other_user)) }
+        it { should_not have_link("#{other_user.followers.count} followers", 
+                                  href: followers_user_path(other_user)) }
+        it { should have_content("#{other_user.followed_users.count} following") }
+        it { should have_content("#{other_user.followers.count} followers") }
+      end 
+      
     end
       
     describe "microposts list" do
@@ -366,7 +393,6 @@ describe "User" do
           it { should have_selector('input#Follow_button') }
         end
       end 
-
     end
 
     describe "message button and form" do
@@ -410,7 +436,6 @@ describe "User" do
             it { should have_selector('div.alert.alert-success', 
               text: "message to #{recipient.name} was sent successfuly") }
           end
-
         end
       end
 
@@ -421,13 +446,8 @@ describe "User" do
         end
         it { should_not have_selector('textarea#message_content', text: "")}
         it { should_not have_selector('input#message_button') }
-      end
-
-      
+      end      
     end
-
-
   end
-
 end  
 

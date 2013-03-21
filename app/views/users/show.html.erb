@@ -1,21 +1,7 @@
 <div class="row">
 	<aside class="span4">
 		<section>   
-			<table>
-				<tr>
-					<td>
-					<%= gravatar_for @user %>
-					</td>
-					<td>                    
-						<h1>
-						<%= @user.name %>                   
-						</h1>
-					<% if @user.admin? %>
-						<div class="administrator"><i>(administrator)<i></div>
-					<% end %>
-					</td>           
-				</tr>		
-			</table>			
+			<%= render 'shared/user_info', user: @user %>
 		</section>
 		<section>
 			<%= render 'shared/stats' %>
