@@ -429,6 +429,7 @@ describe "User" do
             describe "and show the new message on the messages page" do
               it { should have_selector('span.message',
                text: "test message from #{sender.name}") }
+              it { should have_selector('span.timestamp', text: "from #{sender.name} to #{recipient.name}") }
             end
           end
           describe "should show a success flash" do
