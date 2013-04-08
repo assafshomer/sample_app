@@ -9,7 +9,7 @@ describe Mailer do
     Mailer.prepare_email(address, subject).deliver
   end
 
-  it "should send an email with correct parameters" do
+  it "should send an email with correct subject and to/from address" do
   	 Mailer.deliveries.last.subject.should == subject	     
      Mailer.deliveries.last.to.should == []<<address 
      Mailer.deliveries.last.from.should ==  []<<"me@sample.app"

@@ -5,8 +5,4 @@ class Mailer < ActionMailer::Base
   	mail(to: address, subject: subject)  	
   end
 
-  def random_email
-  	mail(to: fake_address, subject: fake_subject)  	
-  end
-
 end
