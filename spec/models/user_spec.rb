@@ -256,7 +256,7 @@ describe "User" do
 		end
 	end
 
-  describe "follower notifications" do
+  describe "upon following" do
     let!(:user) { FactoryGirl.create(:user) } 
     let!(:follower) { FactoryGirl.create(:user) }
     it "should send an email" do
@@ -272,7 +272,6 @@ describe "User" do
       its(:to) { should == []<< user.email }
       its(:subject) { should=="#{follower.name} is now following you" }     
       its(:body) { should =~ /stop receiving/ }
-    end   
-  end 
-
+    end    
+  end
 end 

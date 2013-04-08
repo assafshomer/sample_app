@@ -295,8 +295,10 @@ describe "User" do
           test_sign_in user
           visit user_path(user)
         end
-        it { should have_link("#{user.followed_users.count} following", href: following_user_path(user)) }
-        it { should have_link("#{user.followers.count} followers", href: followers_user_path(user)) }
+        it { should have_link("#{user.followed_users.count} following",
+         href: following_user_path(user)) }
+        it { should have_link("#{user.followers.count} followers", 
+          href: followers_user_path(user)) }
       end 
       describe "for other users" do
         let!(:user) { FactoryGirl.create(:user) }
@@ -368,10 +370,23 @@ describe "User" do
             click_button 'Follow'
           end.to change(followed.followers, :count).by(1)
         end
+        it "should send a notification to the followed user" do
+          expect do
+            click_button 'Follow'
+          end.to change(Mailer.deliveries, :count).by(1)
+        end       
         describe "should toggle the button" do
           before { click_button 'Follow' }
           it { should have_selector('input#Unfollow_button') }
         end
+        describe "notification email" do
+          before { click_button 'Follow' }
+          it "should have right parameters" do
+            Mailer.deliveries.last.to.should == []<<followed.email
+            Mailer.deliveries.last.subject =~ /"#{follower.name} is now following you"/
+            Mailer.deliveries.last.from ==  []<<"me@sample.app"
+          end
+        end        
       end
       describe "clicking on the 'Unfollow' button" do  
         before(:each) do
@@ -388,6 +403,11 @@ describe "User" do
             click_button 'Unfollow'
           end.to change(followed.followers, :count).by(-1)
         end
+        # it "should send a notification to the followed user" do
+        #   expect do            
+        #     click_button 'Unfollow'            
+        #   end.to change(Mailer.deliveries, :count).by(1)
+        # end         
         describe "should toggle the button back" do
           before { click_button 'Unfollow' }
           it { should have_selector('input#Follow_button') }
