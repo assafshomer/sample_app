@@ -61,6 +61,7 @@ class User < ActiveRecord::Base
 
   def follow!(user)
     self.relationships.create!(followed_id: user.id)
+    # notify(user)
   end
 
   def following?(user)
@@ -78,5 +79,12 @@ class User < ActiveRecord::Base
   private
     def create_remember_token
       self.remember_token = SecureRandom.urlsafe_base64      
+    end
+
+    def notify(user)
+      message="#{self.name} is now following you"  
+      thread=Thread.new do
+        Mailer.prepare_email(user.email,message).deliver        
+      end      
     end
 end

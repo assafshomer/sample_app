@@ -17,8 +17,7 @@ describe Mailer do
 
   it "should increment the deliveries array" do
   	lambda do  		
-  		Mailer.prepare_email(fake_address, fake_subject).deliver
+  		Mailer.prepare_email(address, subject).deliver
   	end.should change(Mailer.deliveries, :count).by(1)
   end
-  
 end
