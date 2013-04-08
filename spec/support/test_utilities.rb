@@ -14,4 +14,21 @@ module TestUtilities
 		reversed
 	end	
 
+
+	def fake_address
+		size=rand(3..6)			
+		prefix=('a'..'z').to_a.shuffle[0..size].join
+		suffix=('a'..'z').to_a.shuffle[0..size].join
+		format=('a'..'z').to_a.shuffle[0..2].join
+		"#{prefix}@#{suffix}.#{format}"				
+	end
+
+	def fake_subject
+		Faker::Lorem.sentence(1)
+	end
+
+	def fake_content
+		Faker::Lorem.sentence(5)		
+	end
+
 end
