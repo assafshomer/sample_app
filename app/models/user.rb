@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
 
   def follow!(user)
     self.relationships.create!(followed_id: user.id)
-    # notify(user)
+    notify(user)
   end
 
   def following?(user)
@@ -83,8 +83,6 @@ class User < ActiveRecord::Base
 
     def notify(user)
       message="#{self.name} is now following you"  
-      thread=Thread.new do
-        Mailer.prepare_email(user.email,message).deliver        
-      end      
+      thread=Thread.new {Mailer.prepare_email(user.email,message).deliver}     
     end
 end
