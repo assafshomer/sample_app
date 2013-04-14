@@ -275,7 +275,8 @@ describe "User" do
       end      
       its(:to) { should == []<< user.email }
       its(:subject) { should=="Hello #{user.name}, #{follower.name} is now following you" }     
-      its(:body) { should =~ /stop receiving/ }
+      specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
+      specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
     end    
   end
 
@@ -290,18 +291,19 @@ describe "User" do
     it "should send an email" do
       lambda do
         follower.unfollow!(user)
-        sleep (0.00001).second
+        sleep (0.0001).second
       end.should change(Mailer.deliveries, :count).by(1)
     end
     describe "should send an email with the right parameters" do
-      subject {Mailer.deliveries.last}
+      subject {Mailer.deliveries.last}      
       before(:each) do        
         follower.unfollow!(user)
-        sleep (0.00001).second    
+        sleep (0.0001).second    
       end      
       its(:to) { should == []<< user.email }
       its(:subject) { should=="Hello #{user.name}, #{follower.name} is no longer following you" }     
-      its(:body) { should =~ /stop receiving/ }
+      specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
+      specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
     end    
   end
 
