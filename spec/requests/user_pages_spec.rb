@@ -353,6 +353,7 @@ describe "User" do
     describe "follow/unfollow buttons" do
       let(:follower) { FactoryGirl.create(:user) }
       let(:followed) { FactoryGirl.create(:user) }
+      let!(:other_followed) { FactoryGirl.create(:user) }
       before(:each) do
         test_sign_in(follower)
         visit user_path(followed)        
@@ -376,7 +377,7 @@ describe "User" do
               click_button 'Follow'
               sleep (0.1).second
             end.to change(Mailer.deliveries, :count).by(1)
-          end                 
+          end                
         end      
         describe "should toggle the button" do
           before { click_button 'Follow' }
@@ -409,6 +410,7 @@ describe "User" do
             click_button 'Unfollow'                     
           end.to change(followed.followers, :count).by(-1)
         end
+        # This test keeps failing intermittently, I'm not sure why
         # describe "notification" do           
         #   it "should be sent" do
         #     expect do
@@ -433,6 +435,28 @@ describe "User" do
           end
         end         
       end 
+    end
+
+    describe "opted out users should not recieve notifications" do
+      let!(:follower) { FactoryGirl.create(:user) }
+      let!(:followed) { FactoryGirl.create(:user) }
+      before do
+        followed.toggle(:recieve_notifications)
+      end
+      it "from users starting to follow them" do
+        expect do
+          follower.follow!(followed)
+          sleep 1.second
+        end.not_to change(Mailer.deliveries, :count)
+      end
+      it "from users stopping to follow them" do
+        expect do
+          follower.follow!(followed)
+          sleep (0.001).second
+          follower.unfollow!(followed)
+          sleep (0.001).second
+        end.not_to change(Mailer.deliveries, :count)
+      end      
     end
 
     describe "message button and form" do

@@ -4,7 +4,7 @@ namespace :db do
 		make_users
 		make_microposts
 		make_relationships		
-		make_messages		
+		make_messages			
 	end
 
 	def make_users
@@ -69,15 +69,14 @@ namespace :db do
 
 	def make_relationships
 		users=User.all
-		users.each do |user|
+		users.each do |user|								
 			number_of_followed=rand(50)
 			followed_users=users.sample(number_of_followed)
 			followed_users.each do |followed_user|
+				followed_user.toggle(:recieve_notifications)	
 				user.follow!(followed_user) unless followed_user==user
-			end
+				followed_user.toggle(:recieve_notifications)	
+			end			
 		end
 	end
-
-
-
 end

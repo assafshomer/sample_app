@@ -59,12 +59,12 @@ class UsersController < ApplicationController
   def update
     # @user=User.find_by_id(params[:id])
     
-    if @user.update_attributes(params[:user])
+    if @user.update_attributes(params[:user])      
       sign_in @user
       flash[:success] = "User data was sucessfully updated"
       redirect_to @user      
-    else      
-      render 'edit'
+    else                      
+      render 'edit'      
     end
   end
 

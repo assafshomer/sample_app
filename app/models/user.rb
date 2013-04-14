@@ -62,8 +62,8 @@ class User < ActiveRecord::Base
 
   def follow!(user)
     self.relationships.create!(followed_id: user.id)
-    message="#{self.name} is now following you"  
-    notify(user, message)
+    message="Hello #{user.name}, #{self.name} is now following you"  
+    notify(user, message) if user.recieve_notifications?
   end
 
   def following?(user)
@@ -72,8 +72,8 @@ class User < ActiveRecord::Base
 
   def unfollow!(user)
     self.relationships.find_by_followed_id(user).destroy
-    message="#{self.name} is no longer following you"  
-    notify(user, message)
+    message="Hello #{user.name}, #{self.name} is no longer following you"  
+    notify(user, message) if user.recieve_notifications?
   end
 
   def followed?(user)

@@ -274,7 +274,7 @@ describe "User" do
   			sleep (0.00001).second      
       end      
       its(:to) { should == []<< user.email }
-      its(:subject) { should=="#{follower.name} is now following you" }     
+      its(:subject) { should=="Hello #{user.name}, #{follower.name} is now following you" }     
       its(:body) { should =~ /stop receiving/ }
     end    
   end
@@ -300,7 +300,7 @@ describe "User" do
         sleep (0.00001).second    
       end      
       its(:to) { should == []<< user.email }
-      its(:subject) { should=="#{follower.name} is no longer following you" }     
+      its(:subject) { should=="Hello #{user.name}, #{follower.name} is no longer following you" }     
       its(:body) { should =~ /stop receiving/ }
     end    
   end
