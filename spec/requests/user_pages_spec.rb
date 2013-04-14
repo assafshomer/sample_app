@@ -355,7 +355,7 @@ describe "User" do
       let(:followed) { FactoryGirl.create(:user) }
       before(:each) do
         test_sign_in(follower)
-        visit user_path(followed)
+        visit user_path(followed)        
       end
       it { should have_selector('input#Follow_button') }
       describe "clicking on the 'Follow' button" do        
@@ -370,17 +370,23 @@ describe "User" do
             click_button 'Follow'
           end.to change(followed.followers, :count).by(1)
         end
-        it "should send a notification to the followed user" do
-          expect do
-            click_button 'Follow'
-          end.to change(Mailer.deliveries, :count).by(1)
-        end       
+        describe "notification" do          
+          it "should be sent" do
+            expect do
+              click_button 'Follow'
+              sleep (0.1).second
+            end.to change(Mailer.deliveries, :count).by(1)
+          end                 
+        end      
         describe "should toggle the button" do
           before { click_button 'Follow' }
           it { should have_selector('input#Unfollow_button') }
         end
         describe "notification email" do
-          before { click_button 'Follow' }
+          before(:each) do            
+            click_button 'Follow'
+            sleep (0.001).second
+          end
           it "should have right parameters" do
             Mailer.deliveries.last.to.should == []<<followed.email
             Mailer.deliveries.last.subject =~ /"#{follower.name} is now following you"/
@@ -391,7 +397,7 @@ describe "User" do
       describe "clicking on the 'Unfollow' button" do  
         before(:each) do
           follower.follow!(followed)
-          visit user_path(followed)
+          visit user_path(followed)                  
         end
         it "should increase the list of followed users of the follower by 1" do
           expect do
@@ -400,18 +406,32 @@ describe "User" do
         end
         it "should increase the list of followers of the followed user by 1" do
           expect do
-            click_button 'Unfollow'
+            click_button 'Unfollow'                     
           end.to change(followed.followers, :count).by(-1)
         end
-        # it "should send a notification to the followed user" do
-        #   expect do            
-        #     click_button 'Unfollow'            
-        #   end.to change(Mailer.deliveries, :count).by(1)
-        # end         
+        describe "notification" do           
+          it "should be sent" do
+            expect do
+              click_button 'Unfollow' 
+              sleep (0.01).second             
+            end.to change(Mailer.deliveries, :count).by(1)
+          end                 
+        end             
         describe "should toggle the button back" do
           before { click_button 'Unfollow' }
           it { should have_selector('input#Follow_button') }
         end
+        describe "notification email" do
+          before(:each) do            
+            click_button 'Unfollow'
+            sleep (0.001).second
+          end
+          it "should have right parameters" do
+            Mailer.deliveries.last.to.should == []<<followed.email
+            Mailer.deliveries.last.subject =~ /"#{follower.name} is no longer following you"/
+            Mailer.deliveries.last.from ==  []<<"me@sample.app"
+          end
+        end         
       end 
     end
 

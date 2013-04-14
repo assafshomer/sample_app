@@ -258,7 +258,7 @@ describe "User" do
 
   describe "upon following" do
     let!(:user) { FactoryGirl.create(:user) } 
-    let!(:follower) { FactoryGirl.create(:user) }
+    let!(:follower) { FactoryGirl.create(:user) }    
     it "should send an email" do
       lambda do
         follower.follow!(user)
@@ -276,4 +276,31 @@ describe "User" do
       its(:body) { should =~ /stop receiving/ }
     end    
   end
+
+  describe "upon unfollowing" do
+    let!(:user) { FactoryGirl.create(:user) } 
+    let!(:follower) { FactoryGirl.create(:user) }
+    before do
+	    follower.follow!(user)
+  		sleep (0.00001).second
+  		
+    end
+    it "should send an email" do
+      lambda do
+        follower.unfollow!(user)
+        sleep (0.00001).second
+      end.should change(Mailer.deliveries, :count).by(1)
+    end
+    describe "should send an email with the right parameters" do
+      subject {Mailer.deliveries.last}
+      before(:each) do        
+        follower.unfollow!(user)
+        sleep (0.00001).second    
+      end      
+      its(:to) { should == []<< user.email }
+      its(:subject) { should=="#{follower.name} is no longer following you" }     
+      its(:body) { should =~ /stop receiving/ }
+    end    
+  end
+
 end 
