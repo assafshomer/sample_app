@@ -15,7 +15,7 @@ namespace :db do
 		assaf.toggle!(:admin)
 		99.times do |n|
 			name=Faker::Name.name
-			email="example-#{n+1}@example.org"
+			email="example-#{n+2}@example.org"
 			password="password"
 			User.create!(name: name, 
 										email: email, 
