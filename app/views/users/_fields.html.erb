@@ -6,8 +6,14 @@
 	<%= f.label :email %>
 	<%= f.text_field :email %>
 
+
 	<%= f.label :password %>
 	<%= f.password_field :password %>			
 
 	<%= f.label :password_confirmation, "Confirmation" %>
 	<%= f.password_field :password_confirmation %>
+
+<% if current_user  %>
+	<%= f.label :recieve_notifications %> 
+	<%= f.check_box :recieve_notifications %> 
+<% end %>

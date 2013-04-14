@@ -149,7 +149,12 @@
         describe "attempting to edit their own settings" do
           before { visit edit_user_path(user) }
           it { should have_selector('title', text: "Edit user") }
-          it { should have_selector('h1', text: "Update your profile") }        
+          it { should have_selector('h1', text: "Update your profile") }   
+          it { should have_selector('input#user_name') }
+          it { should have_selector('input#user_email') }
+          it { should have_selector('input#user_password') }
+          it { should have_selector('input#user_password_confirmation') }
+          it { should have_selector('input#user_recieve_notifications') }
         end
 
         describe "attempting to edit another user's settings" do
