@@ -262,12 +262,14 @@ describe "User" do
     it "should send an email" do
       lambda do
         follower.follow!(user)
+        sleep (0.00001).second
       end.should change(Mailer.deliveries, :count).by(1)
     end
     describe "should send an email with the right parameters" do
       subject {Mailer.deliveries.last}
       before(:each) do
-        follower.follow!(user)        
+        follower.follow!(user)  
+  			sleep (0.00001).second      
       end      
       its(:to) { should == []<< user.email }
       its(:subject) { should=="#{follower.name} is now following you" }     
