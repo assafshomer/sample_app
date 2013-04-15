@@ -8,6 +8,9 @@ describe "Authentication" do
 
   	it { should have_selector('h1', text: 'Sign in') }
   	it { should have_selector('title', text: 'Sign in') }  
+    it { should have_selector('input#session_email') }
+    it { should have_selector('input#session_password') }
+    it { should have_selector('input#session_remember_me') }
 
   	describe "with invalid info" do
   		before { click_button "Sign in" }
@@ -38,9 +41,20 @@ describe "Authentication" do
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Sign out', href: signout_path) }
       it { should_not have_link('Sign in', href: signin_path) } 	 
-
     end   
+
+    # describe "remember me" do
+    #   let!(:user) { FactoryGirl.create(:user) }
+    #   before do
+    #     sign_in user 
+    #     get user_path(user)               
+    #   end
+    #   specify {response.cookies.should be_nil}
+    # end
+
   end
+
+
 
   describe "authorization" do
     describe "for users that are not signed in" do

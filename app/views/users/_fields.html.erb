@@ -14,8 +14,8 @@
 	<%= f.password_field :password_confirmation %>
 
 <% if current_user  %>
-<div class="checkbox">
-	<%= f.check_box :recieve_notifications %>
-	<%= f.label :recieve_notifications, 'Notify when I gain or lose followers' %>	
-</div>
+	<div class="checkbox">
+		<%= f.check_box :recieve_notifications %>
+		<%= f.label :recieve_notifications, 'Notify when I gain or lose followers' %>	
+	</div>
 <% end %>
