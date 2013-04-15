@@ -285,8 +285,7 @@ describe "User" do
     let!(:follower) { FactoryGirl.create(:user) }
     before do
 	    follower.follow!(user)
-  		sleep (0.00001).second
-  		
+  		sleep (0.00001).second  		
     end
     it "should send an email" do
       lambda do

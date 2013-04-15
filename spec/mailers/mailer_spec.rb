@@ -7,6 +7,7 @@ describe Mailer do
   let!(:subject) { "test email #{fake_subject}" }
   before do    
     Mailer.prepare_email(address, subject).deliver
+    sleep (0.001).second
   end
 
   it "should send an email with correct subject and to/from address" do
