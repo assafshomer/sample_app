@@ -375,7 +375,7 @@ describe "User" do
           it "should be sent" do
             expect do
               click_button 'Follow'
-              sleep (0.1).second
+              sleep (0.0001).second
             end.to change(Mailer.deliveries, :count).by(1)
           end                
         end      
@@ -386,7 +386,7 @@ describe "User" do
         describe "notification email" do
           before(:each) do            
             click_button 'Follow'
-            sleep (0.001).second
+            sleep (0.0001).second
           end
           it "should have right parameters" do
             Mailer.deliveries.last.to.should == []<<followed.email

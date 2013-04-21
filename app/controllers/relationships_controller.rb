@@ -1,11 +1,13 @@
 class RelationshipsController < ApplicationController
-
+	include MailersHelper
 	before_filter :authenticate, only: [:create, :destroy]
 
 	def create
 		# raise response.inspect
 		@user=User.find_by_id(params[:relationship][:followed_id])
 		current_user.follow!(@user)
+		message="Hello #{@user.name}, #{current_user.name} is now following you"
+		notify(@user,message) if @user.recieve_notifications?
 		respond_to do |format|
 			format.html { redirect_to @user }
 			format.js
@@ -15,9 +17,12 @@ class RelationshipsController < ApplicationController
 		# raise params.inspect		
 		@user=Relationship.find_by_id(params[:id]).followed
 		current_user.unfollow!(@user)
+		message="Hello #{@user.name}, #{current_user.name} is no longer following you"
+		notify(@user,message) if @user.recieve_notifications?
 		respond_to do |format|
 			format.html {	redirect_to @user}
 			format.js
 		end
 	end
+	
 end

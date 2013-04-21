@@ -62,8 +62,6 @@ class User < ActiveRecord::Base
 
   def follow!(user)
     self.relationships.create!(followed_id: user.id)
-    message="Hello #{user.name}, #{self.name} is now following you"  
-    notify(user, message) if user.recieve_notifications?
   end
 
   def following?(user)
@@ -72,8 +70,6 @@ class User < ActiveRecord::Base
 
   def unfollow!(user)
     self.relationships.find_by_followed_id(user).destroy
-    message="Hello #{user.name}, #{self.name} is no longer following you"  
-    notify(user, message) if user.recieve_notifications?
   end
 
   def followed?(user)
@@ -100,9 +96,4 @@ class User < ActiveRecord::Base
     #   generate_token(:remember_token)
     # end
 
-    def notify(user, message)      
-      # Mailer.prepare_email(user.email,message).deliver 
-      thread=Thread.new {Mailer.prepare_email(user.email,message).deliver} 
-      # thread.join if Rails.env.test?    
-    end
 end

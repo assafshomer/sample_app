@@ -10,13 +10,14 @@ describe "Authentication" do
   	it { should have_selector('title', text: 'Sign in') }  
     it { should have_selector('input#session_email') }
     it { should have_selector('input#session_password') }
-    it { should have_selector('input#session_remember_me') }
-    # it { should have_link('forgot?', href: new_password_reset_path) }
+    it { should have_selector('input#session_remember_me') }    
     it { should have_link('forgot?', href: reset_password_path) }
 
     describe "forgot password link" do
       before { click_link 'forgot?' }  
       it { should have_selector('title', text: 'Reset password') }
+      it { should have_selector('input#password_reset_email') }
+      it { should have_selector('input#reset_password_button') }
     end
 
   	describe "with invalid info" do

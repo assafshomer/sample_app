@@ -258,52 +258,53 @@ describe "User" do
 		end
 	end
 
-  describe "upon following" do
-    let!(:user) { FactoryGirl.create(:user) } 
-    let!(:follower) { FactoryGirl.create(:user) }    
-    it "should send an email" do
-      lambda do
-        follower.follow!(user)
-        sleep (0.00001).second
-      end.should change(Mailer.deliveries, :count).by(1)
-    end
-    describe "should send an email with the right parameters" do
-      subject {Mailer.deliveries.last}
-      before(:each) do
-        follower.follow!(user)  
-  			sleep (0.00001).second      
-      end      
-      its(:to) { should == []<< user.email }
-      its(:subject) { should=="Hello #{user.name}, #{follower.name} is now following you" }     
-      specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
-      specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
-    end    
-  end
+	#### All this was removed after mailing was moved from user model to relationships controller
+  # describe "upon following" do
+  #   let!(:user) { FactoryGirl.create(:user) } 
+  #   let!(:follower) { FactoryGirl.create(:user) }    
+  #   it "should send an email" do
+  #     lambda do
+  #       follower.follow!(user)
+  #       sleep (0.1).second
+  #     end.should change(Mailer.deliveries, :count).by(1)
+  #   end
+  #   describe "should send an email with the right parameters" do
+  #     subject {Mailer.deliveries.last}
+  #     before(:each) do
+  #       follower.follow!(user)  
+  # 			sleep (0.01).second      
+  #     end      
+  #     its(:to) { should == []<< user.email }
+  #     its(:subject) { should=="Hello #{user.name}, #{follower.name} is now following you" }     
+  #     specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
+  #     specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
+  #   end    
+  # end
 
-  describe "upon unfollowing" do
-    let!(:user) { FactoryGirl.create(:user) } 
-    let!(:follower) { FactoryGirl.create(:user) }
-    before do
-	    follower.follow!(user)
-  		sleep (0.00001).second  		
-    end
-    it "should send an email" do
-      lambda do
-        follower.unfollow!(user)
-        sleep (0.0001).second
-      end.should change(Mailer.deliveries, :count).by(1)
-    end
-    describe "should send an email with the right parameters" do
-      subject {Mailer.deliveries.last}      
-      before(:each) do        
-        follower.unfollow!(user)
-        sleep (0.0001).second    
-      end      
-      its(:to) { should == []<< user.email }
-      its(:subject) { should=="Hello #{user.name}, #{follower.name} is no longer following you" }     
-      specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
-      specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
-    end    
-  end
+  # describe "upon unfollowing" do
+  #   let!(:user) { FactoryGirl.create(:user) } 
+  #   let!(:follower) { FactoryGirl.create(:user) }
+  #   before do
+	 #    follower.follow!(user)
+  # 		sleep (0.001).second  		
+  #   end
+  #   it "should send an email" do
+  #     lambda do
+  #       follower.unfollow!(user)
+  #       sleep (0.01).second
+  #     end.should change(Mailer.deliveries, :count).by(1)
+  #   end
+  #   describe "should send an email with the right parameters" do
+  #     subject {Mailer.deliveries.last}      
+  #     before(:each) do        
+  #       follower.unfollow!(user)
+  #       sleep (0.01).second    
+  #     end      
+  #     its(:to) { should == []<< user.email }
+  #     its(:subject) { should=="Hello #{user.name}, #{follower.name} is no longer following you" }     
+  #     specify {Mailer.deliveries.last.html_part.body =~ /stop recieving/}
+  #     specify {Mailer.deliveries.last.text_part.body =~ /stop recieving/}
+  #   end    
+  # end
 
 end 
