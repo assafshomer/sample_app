@@ -27,7 +27,8 @@ class Message < ActiveRecord::Base
   private  
 	  def recipient_follows_sender?
 	  	if  !recipient.nil? and !sender.nil?
-	  		error_msg="'#{sender.name}' cannot send '#{recipient.name}' a message because '#{recipient.name}' is not following '#{sender.name}'"
+	  		error_msg="'#{sender.name}' cannot send '#{recipient.name}' 
+        a message because '#{recipient.name}' is not following '#{sender.name}'"
 	  		errors.add(:recipient_id,error_msg ) unless recipient.following?(sender)
 	  	end  	
 	  end  
