@@ -105,7 +105,7 @@ describe "Authentication" do
           before { delete relationship_path(1) }
           specify { response.should redirect_to(signin_path) }
         end
-      end 
+      end     
 
       describe "in the Messages controller" do
         describe "submitting to the create action" do
