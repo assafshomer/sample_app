@@ -190,7 +190,7 @@
         before { controller.sign_in(user) }
           it "attempting to submit a delete request to the destroy action" do
             delete :destroy, id: non_admin 
-            response.should redirect_to(root_path)      
+            response.should redirect_to(root_path)                 
           end
         end
       end
@@ -201,11 +201,24 @@
       before { controller.sign_in(user) }
       specify { controller.signed_in?.should be_true }
       specify { controller.current_user.email.should == user.email }
+      specify { cookies['remember_token'].should == user.remember_token }
+      describe "GET index" do
+        it "should assign current_user to the current user" do
+          get :index
+          assigns(:current_user).should == user          
+        end
+      end      
+      # specify { cookies['set_cookies'].should be_nil }
+      # specify { cookies.should be_nil }      
       
+      # describe "cookiess" do
+      #   before { visit user_path(user) }         
+      #   specify {response.headers.should be_nil}
+      # end   
+
       describe "signing out" do
         before { controller.sign_out }
         specify { controller.signed_in?.should be_false }         
       end   
     end
-
   end

@@ -26,7 +26,7 @@ describe "Authentication" do
   		describe "after visiting another page" do
   			before { click_link "Home" }
   			it { should_not have_selector('div.alert.alert-error') }  			
-  		end
+  		end      
   	end
 
   	describe "with valid information" do
@@ -40,18 +40,13 @@ describe "Authentication" do
       it { should have_link('Messages', href: messages_path) }
       it { should have_link('Profile', href: user_path(user)) }
       it { should have_link('Sign out', href: signout_path) }
-      it { should_not have_link('Sign in', href: signin_path) } 	 
+      it { should_not have_link('Sign in', href: signin_path) } 
+
+      # describe "cookies" do
+      #   before { get user_path(user) }         
+      #   specify {response.headers["Set-Cookie"].should =~ /remember_token/}        
+      # end       
     end   
-
-    # describe "remember me" do
-    #   let!(:user) { FactoryGirl.create(:user) }
-    #   before do
-    #     sign_in user 
-    #     get user_path(user)               
-    #   end
-    #   specify {response.cookies.should be_nil}
-    # end
-
   end
 
 
