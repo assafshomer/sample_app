@@ -9,6 +9,7 @@ SampleApp::Application.routes.draw do
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]  
   resources :messages, only: [:create, :index]
+  resources :password_resets, only: [:new, :create]
 
   root              to: 'static_pages#home'
   

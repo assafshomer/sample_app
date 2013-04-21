@@ -90,15 +90,15 @@ class User < ActiveRecord::Base
       end while User.exists?(column: self[column])
     end
 
-    # def create_remember_token
-    #   begin
-    #     self.remember_token = SecureRandom.urlsafe_base64      
-    #   end while User.exists?(remember_token: self.remember_token)
-    # end
-
     def create_remember_token
-      self.generate_token(:remember_token)
+      begin
+        self.remember_token = SecureRandom.urlsafe_base64          
+      end while User.exists?(remember_token: self.remember_token)
     end
+
+    # def create_remember_token
+    #   generate_token(:remember_token)
+    # end
 
     def notify(user, message)      
       # Mailer.prepare_email(user.email,message).deliver 

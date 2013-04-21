@@ -11,7 +11,12 @@ describe "Authentication" do
     it { should have_selector('input#session_email') }
     it { should have_selector('input#session_password') }
     it { should have_selector('input#session_remember_me') }
-    it { should have_link('forgot?') }
+    it { should have_link('forgot?', href: new_password_reset_path) }
+
+    describe "forgot password link" do
+      before { click_link 'forgot?' }  
+      it { should have_selector('title', text: 'Reset password') }
+    end
 
   	describe "with invalid info" do
   		before { click_button "Sign in" }
@@ -27,7 +32,7 @@ describe "Authentication" do
   		describe "after visiting another page" do
   			before { click_link "Home" }
   			it { should_not have_selector('div.alert.alert-error') }  			
-  		end      
+  		end    
   	end
 
   	describe "with valid information" do
