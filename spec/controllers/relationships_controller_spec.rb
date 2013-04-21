@@ -18,6 +18,12 @@ describe RelationshipsController do
 		let(:followed_user) { FactoryGirl.create(:user) }
 		before { controller.sign_in(user) }	
 		describe "using POST 'create'" do		
+			it "should send a notification email" do
+				lambda do
+					post :create, relationship: {followed_id: followed_user.id}
+					sleep (0.01).second
+				end.should change(Mailer.deliveries, :count).by(1)
+			end			
 			it "should create the relationship" do
 				lambda do
 					post :create, relationship: {followed_id: followed_user.id}
@@ -25,6 +31,12 @@ describe RelationshipsController do
 			end
 		end	
 		describe "with Ajax" do
+			it "should send a notification email" do
+				lambda do
+					xhr :post, :create, relationship: { followed_id: followed_user.id }
+					sleep (0.01).second
+				end.should change(Mailer.deliveries, :count).by(1)
+			end
 	   	it "should increment the Relationship count" do
 	      expect do
 	        xhr :post, :create, relationship: { followed_id: followed_user.id }
@@ -34,6 +46,7 @@ describe RelationshipsController do
 	      xhr :post, :create, relationship: { followed_id: followed_user.id }
 	      response.should be_success
 	    end
+
 	  end
 	end
 	
@@ -45,6 +58,12 @@ describe RelationshipsController do
 		  user.follow!(followed_user)
 		  @relationship=user.relationships.find_by_followed_id(followed_user.id)
 		end
+		it "should send a notification email" do
+			lambda do
+				delete :destroy, id: @relationship.id
+				sleep (0.01).second
+			end.should change(Mailer.deliveries, :count).by(1)
+		end
 		describe "using delete 'destroy'" do		
 			it "should destroy the relationship" do
 				lambda do
@@ -53,6 +72,12 @@ describe RelationshipsController do
 			end
 		end
 		describe "with Ajax" do
+		it "should send a notification email" do
+			lambda do
+				xhr :delete, :destroy, id: @relationship.id
+				sleep (0.01).second
+			end.should change(Mailer.deliveries, :count).by(1)
+		end			
     it "should decrement the Relationship count" do
       expect do
         xhr :delete, :destroy, id: @relationship.id
