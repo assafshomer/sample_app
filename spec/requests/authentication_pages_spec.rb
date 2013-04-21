@@ -11,6 +11,7 @@ describe "Authentication" do
     it { should have_selector('input#session_email') }
     it { should have_selector('input#session_password') }
     it { should have_selector('input#session_remember_me') }
+    it { should have_link('forgot?') }
 
   	describe "with invalid info" do
   		before { click_button "Sign in" }
