@@ -80,11 +80,24 @@ class User < ActiveRecord::Base
     self.reversed_relationships.find_by_follower_id(user)
   end
 
+
+
   private
-    def create_remember_token
+
+    def generate_token(column)
       begin
-        self.remember_token = SecureRandom.urlsafe_base64      
-      end while User.exists?(remember_token: self.remember_token)
+        self[column] = SecureRandom.urlsafe_base64
+      end while User.exists?(column: self[column])
+    end
+
+    # def create_remember_token
+    #   begin
+    #     self.remember_token = SecureRandom.urlsafe_base64      
+    #   end while User.exists?(remember_token: self.remember_token)
+    # end
+
+    def create_remember_token
+      self.generate_token(:remember_token)
     end
 
     def notify(user, message)      
