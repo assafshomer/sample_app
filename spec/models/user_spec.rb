@@ -45,6 +45,7 @@ describe "User" do
 	  it { should respond_to(:unfollow!) } 
 	  it { should respond_to(:messages) } #messages sent by the user
 	  it { should respond_to(:recieved_messages) }
+	  it { should respond_to(:password_resets) }
 	end
 
 	it { should be_valid } 

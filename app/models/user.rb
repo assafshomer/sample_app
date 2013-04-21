@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many :recieved_messages,      foreign_key: "recipient_id", 
                                       dependent: :destroy, 
                                      class_name: "Message"                                     
-
+  has_many :password_resets, dependent: :destroy                                     
 
 	before_save { |user| user.email = email.downcase } 
   before_save :create_remember_token
@@ -76,15 +76,7 @@ class User < ActiveRecord::Base
     self.reversed_relationships.find_by_follower_id(user)
   end
 
-
-
   private
-
-    def generate_token(column)
-      begin
-        self[column] = SecureRandom.urlsafe_base64
-      end while User.exists?(column: self[column])
-    end
 
     def create_remember_token
       begin
