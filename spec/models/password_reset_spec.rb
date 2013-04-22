@@ -23,4 +23,16 @@ describe PasswordReset do
   it { should respond_to('user_id') }
   its(:user_id) { should == user.id }
 
+  describe "validations" do
+  	let!(:reset) { FactoryGirl.create(:password_reset) }
+  	let!(:max_user_id) { User.all.map(&:id).max }
+  	subject {reset}
+  	describe "valid" do	  
+	  	it { should be_valid }
+  	end
+  	describe "invalid" do	  	
+  		before { reset.user_id=max_user_id+100 }
+	  	it { should_not be_valid }
+  	end  	
+  end
 end

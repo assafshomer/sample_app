@@ -30,4 +30,9 @@ FactoryGirl.define do
 		recipient User.last				
 	end
 
+	factory :password_reset do
+		password_reset_token "foobar"
+		user
+	end
+
 end

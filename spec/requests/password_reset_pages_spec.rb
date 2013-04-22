@@ -34,9 +34,23 @@ describe "PasswordResetPages" do
 				before { click_button 'Send email' }
 	      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
 	      it { should have_selector('div.alert.alert-success', 
-	      	text: /An email with a link to reset your password/i) }
-	      it { should have_link('Sign in', href: signin_path) }							
+	      	text: /A password reset link was sent/i) }
+	      it { should have_link('Sign in', href: signin_path) }
+	      describe "flash doesn't linger" do
+	      	before { visit current_path }	
+	      	it { should_not have_selector('div.alert') }							
+				end							
 			end
+			describe "invalid user should redirect home and flash failure" do
+				before  do
+					user.destroy
+					click_button 'Send email'
+				end
+	      it { should have_selector('h1', text: /Reset password/i) }  
+	      it { should have_selector('div.alert.alert-error', 
+	      	text: /No user with email address /i) }
+	      it { should have_selector('input#reset_password_button') }	
+			end					
 		end
 
 		describe "submitting invalid email" do
@@ -62,7 +76,11 @@ describe "PasswordResetPages" do
 	      it { should have_selector('div.alert.alert-error', 
 	      	text: /No user with email address /i) }
 	      it { should have_selector('input#reset_password_button') }							
-			end											
+			end
+	      describe "flash doesn't linger" do
+	      	before { visit current_path }	
+	      	it { should_not have_selector('div.alert') }							
+				end															
 		end
 	
 		describe "submitting should send an email with the right parameters" do

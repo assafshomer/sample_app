@@ -12,17 +12,13 @@ class PasswordResetsController < ApplicationController
       @password_reset=@user.password_resets.build  	
       if @password_reset.save!
         notify(@user,"password reset token : #{@password_reset.password_reset_token}" ) if @user
-        flash[:success] = "An email with a link to reset your password 
-                          was sent to #{@user.email}..."
-      redirect_to root_path                          
-      else
-        # flash[:error] = "Failed to send a password reset link"
-        # render 'static_pages/home'
+        flash[:success] = "A password reset link was sent to #{@user.email}"
+        redirect_to root_path
       end  
     else
       flash[:error] = "No user with email address 
                       \'#{params[:password_reset][:email]}\' was found"	
-      render 'new'                      
+      redirect_to reset_password_path                      
     end      
   end
 end
