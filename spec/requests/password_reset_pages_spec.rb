@@ -4,15 +4,24 @@ describe "PasswordResetPages" do
 	subject { page }
 	describe "password reset form" do
 		let!(:user) { FactoryGirl.create(:user) }
+
+		describe "should have the right fields" do
+			before { visit reset_password_path }
+      it { should have_selector('title', text: 'Reset password') }
+      it { should have_selector('input#password_reset_email') }
+      it { should have_selector('input#reset_password_button') }			
+		end
+
 		describe "submitting valid user email" do
 			before do
 			  visit reset_password_path
 			  fill_in 'Email', with: user.email
 			end
+
 			it "should send an email" do
 				expect do
 					click_button 'Send email'
-					sleep (0.01).second					
+					sleep (0.05).second					
 				end.to change(Mailer.deliveries, :count).by(1)
 			end
 			it "should create a new password reset entry in the database" do
@@ -21,8 +30,16 @@ describe "PasswordResetPages" do
 					sleep (0.01).second					
 				end.to change(PasswordReset, :count).by(1)
 			end
+			describe "should redirect home and flash sucess" do
+				before { click_button 'Send email' }
+	      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
+	      it { should have_selector('div.alert.alert-success', 
+	      	text: /An email with a link to reset your password/i) }
+	      it { should have_link('Sign in', href: signin_path) }							
+			end
 		end
-		describe "submitting with invalid user email" do
+
+		describe "submitting invalid email" do
 			before do
 			  visit reset_password_path
 			  fill_in 'Email', with: 'fake'
@@ -38,7 +55,14 @@ describe "PasswordResetPages" do
 					click_button 'Send email'
 					sleep (0.01).second					
 				end.not_to change(PasswordReset, :count)
-			end								
+			end
+			describe "should stay on password reset page and flash error" do
+				before { click_button 'Send email' }
+	      it { should have_selector('h1', text: /Reset password/i) }  
+	      it { should have_selector('div.alert.alert-error', 
+	      	text: /No user with email address /i) }
+	      it { should have_selector('input#reset_password_button') }							
+			end											
 		end
 	
 		describe "submitting should send an email with the right parameters" do
@@ -50,7 +74,7 @@ describe "PasswordResetPages" do
 				sleep (0.01).second			     
       end      
       its(:to) { should == []<< user.email }
-      its(:subject) { should =~ /password reset/ }      
+      its(:subject) { should =~ /password reset token :/ }      
     end
 	end
 
