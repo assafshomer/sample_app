@@ -9,9 +9,5 @@ include ApplicationHelper
 	  # 										:password => "foobar", 
 	  # 										:password_confirmation => "foobar"
 	end
-
-	def test_post(content)		
-		visit root_path
-		fill_in 'micropost_content',  with: content
-		click_button 'Post'		
-	end
+	
+end

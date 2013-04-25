@@ -374,8 +374,7 @@ describe "User" do
         describe "notification" do          
           it "should be sent" do
             expect do
-              click_button 'Follow'
-              sleep (0.0001).second
+              click_button 'Follow'              
             end.to change(Mailer.deliveries, :count).by(1)
           end                
         end      
@@ -385,8 +384,7 @@ describe "User" do
         end
         describe "notification email" do
           before(:each) do            
-            click_button 'Follow'
-            sleep (0.0001).second
+            click_button 'Follow'           
           end
           it "should have right parameters" do
             Mailer.deliveries.last.to.should == []<<followed.email
@@ -414,8 +412,7 @@ describe "User" do
         # describe "notification" do           
         #   it "should be sent" do
         #     expect do
-        #       click_button 'Unfollow' 
-        #       sleep (1).second             
+        #       click_button 'Unfollow'                   
         #     end.to change(Mailer.deliveries, :count).by(1)
         #   end                 
         # end             
@@ -426,7 +423,7 @@ describe "User" do
         describe "notification email" do
           before(:each) do            
             click_button 'Unfollow'
-            sleep (0.001).second
+            
           end
           it "should have right parameters" do
             Mailer.deliveries.last.to.should == []<<followed.email
@@ -451,10 +448,8 @@ describe "User" do
       end
       it "from users stopping to follow them" do
         expect do
-          follower.follow!(followed)
-          sleep (0.001).second
-          follower.unfollow!(followed)
-          sleep (0.001).second
+          follower.follow!(followed)          
+          follower.unfollow!(followed)          
         end.not_to change(Mailer.deliveries, :count)
       end      
     end

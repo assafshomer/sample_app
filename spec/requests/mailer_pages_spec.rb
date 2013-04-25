@@ -26,7 +26,7 @@ describe "Mailer Pages" do
 			it "should not send emails upon following" do
 	      lambda do
 	        click_button 'Follow'   
-	        sleep (0.001).seconds
+	        
 	        # Mailer.deliveries.should == ['blah']    
 	      end.should_not change(Mailer.deliveries, :count)
 			end
