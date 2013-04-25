@@ -1,7 +1,7 @@
 include ApplicationHelper
 
 	def test_sign_in(user)
-		controller.sign_out if signed_in?
+		# controller.sign_out if signed_in?
 		visit signin_path
 		fill_in "Email",		with: user.email 
 	  fill_in "Password", with: user.password 

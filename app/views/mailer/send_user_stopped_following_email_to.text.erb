@@ -1,0 +1,7 @@
+<% user=User.find_by_email(@address) %>
+<% if user %>
+	Hellow <%= user.name  %>
+<% else %>
+	Hello there
+<% end %>
+<%= @subject %>

@@ -18,9 +18,10 @@ class Mailer < ActionMailer::Base
 	end
 
 	def send_password_reset_email(password_reset)
-		subject="password reset token : #{password_reset.password_reset_token}"
-		user=User.find_by_id(password_reset.user_id)
-		send_email(user.email,subject)
+		@user=User.find_by_id(password_reset.user_id)
+		@password_reset_token=password_reset.password_reset_token
+		subject="password reset token : #{@password_reset_token}"		
+		send_email(@user.email,subject)
 	end
 
 	private

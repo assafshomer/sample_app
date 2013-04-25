@@ -20,20 +20,18 @@ describe "PasswordResetPages" do
 
 			it "should send an email" do
 				expect do
-					click_button 'Send email'
-					sleep (0.05).second					
+					click_button 'Send email'					
 				end.to change(Mailer.deliveries, :count).by(1)
 			end
 			it "should create a new password reset entry in the database" do
 				expect do
-					click_button 'Send email'
-					
+					click_button 'Send email'					
 				end.to change(PasswordReset, :count).by(1)
 			end
 			describe "should redirect home and flash sucess" do
 				before { click_button 'Send email' }
 	      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
-	      it { should have_selector('div.alert.alert-success', 
+	      it { should have_selector('div.alert.alert-notice', 
 	      	text: /A password reset link was sent/i) }
 	      it { should have_link('Sign in', href: signin_path) }
 	      describe "flash doesn't linger" do
@@ -60,14 +58,12 @@ describe "PasswordResetPages" do
 			end
 			it "should not send an email" do
 				expect do
-					click_button 'Send email'
-				
+					click_button 'Send email'				
 				end.not_to change(Mailer.deliveries, :count)
 			end
 			it "should not create a new password reset entry in the database" do
 				expect do
-					click_button 'Send email'
-				
+					click_button 'Send email'				
 				end.not_to change(PasswordReset, :count)
 			end
 			describe "should stay on password reset page and flash error" do
@@ -88,11 +84,15 @@ describe "PasswordResetPages" do
       before(:each) do
       	visit reset_password_path
 		  	fill_in 'Email', with: user.email  
-  			click_button 'Send email'
-				
+  			click_button 'Send email'				
       end      
       its(:to) { should == []<< user.email }
-      its(:subject) { should =~ /password reset token :/ }      
+      its(:subject) { should =~ /password reset token :/ }
+      it "and the right body" do
+      	Mailer.deliveries.last.html_part.body.should =~ /to reset your password please click/i   
+      	Mailer.deliveries.last.html_part.body.should have_selector('b', text: "#{user.name}") 
+      	Mailer.deliveries.last.html_part.body.should have_link('Reset password') 	
+      end      
     end
 	end
 

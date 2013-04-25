@@ -11,9 +11,8 @@ class PasswordResetsController < ApplicationController
     if @user
       @password_reset=@user.password_resets.build  	
       if @password_reset.save!
-        Mailer.send_password_reset_email(@password_reset) if @user
-        flash[:success] = "A password reset link was sent to #{@user.email}"
-        redirect_to root_path
+        Mailer.send_password_reset_email(@password_reset) if @user        
+        redirect_to root_path, notice: "A password reset link was sent to #{@user.email}"
       end  
     else
       flash[:error] = "No user with email address 
