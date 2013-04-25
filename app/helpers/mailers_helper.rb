@@ -1,10 +1,10 @@
 module MailersHelper
 	
-	def notify(user, message) 		           
+	def notify(address, subject) 		           
   	if Rails.env.test?
-  		Mailer.prepare_email(user.email,message).deliver if user
+  		Mailer.prepare_email(address,subject).deliver 
   	else
-  		thread=Thread.new {Mailer.prepare_email(user.email,message).deliver} if user      		
+  		thread=Thread.new {Mailer.prepare_email(address,subject).deliver} 
   	end
 	end
 	

@@ -11,7 +11,7 @@ class PasswordResetsController < ApplicationController
     if @user
       @password_reset=@user.password_resets.build  	
       if @password_reset.save!
-        notify(@user,"password reset token : #{@password_reset.password_reset_token}" ) if @user
+        notify(@user.email,"password reset token : #{@password_reset.password_reset_token}" ) if @user
         flash[:success] = "A password reset link was sent to #{@user.email}"
         redirect_to root_path
       end  
