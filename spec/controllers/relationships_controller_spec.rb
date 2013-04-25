@@ -19,8 +19,7 @@ describe RelationshipsController do
 			describe "using POST 'create'" do		
 				it "should send a notification email" do
 					lambda do
-						post :create, relationship: {followed_id: followed_user.id}
-						
+						post :create, relationship: {followed_id: followed_user.id}						
 					end.should change(Mailer.deliveries, :count).by(1)
 				end			
 				it "should create the relationship" do
@@ -32,8 +31,7 @@ describe RelationshipsController do
 			describe "with Ajax" do
 				it "should send a notification email" do
 					lambda do
-						xhr :post, :create, relationship: { followed_id: followed_user.id }
-						
+						xhr :post, :create, relationship: { followed_id: followed_user.id }						
 					end.should change(Mailer.deliveries, :count).by(1)
 				end
 		   	it "should increment the Relationship count" do
@@ -59,8 +57,7 @@ describe RelationshipsController do
 			end
 			it "should send a notification email" do
 				lambda do
-					delete :destroy, id: @relationship.id
-					
+					delete :destroy, id: @relationship.id					
 				end.should change(Mailer.deliveries, :count).by(1)
 			end
 			describe "using delete 'destroy'" do		
@@ -73,8 +70,7 @@ describe RelationshipsController do
 			describe "with Ajax" do
 			it "should send a notification email" do
 				lambda do
-					xhr :delete, :destroy, id: @relationship.id
-					
+					xhr :delete, :destroy, id: @relationship.id					
 				end.should change(Mailer.deliveries, :count).by(1)
 			end			
 	    it "should decrement the Relationship count" do

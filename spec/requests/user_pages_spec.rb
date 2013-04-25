@@ -388,8 +388,9 @@ describe "User" do
           end
           it "should have right parameters" do
             Mailer.deliveries.last.to.should == []<<followed.email
-            Mailer.deliveries.last.subject =~ /"#{follower.name} is now following you"/
-            Mailer.deliveries.last.from ==  []<<"me@sample.app"
+            Mailer.deliveries.last.subject.should =~ /#{follower.name} is now following you/
+            Mailer.deliveries.last.from.should ==  []<<"me@sample.app"
+            Mailer.deliveries.last.html_part.body.should =~ /#{follower.name} is now following you/
           end
         end        
       end
