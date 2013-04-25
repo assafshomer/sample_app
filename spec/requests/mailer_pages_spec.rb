@@ -20,6 +20,7 @@ describe "Mailer Pages" do
 		end
 		describe "description" do
 			before do
+				click_link 'Sign out'
 				test_sign_in(follower)
 		  	visit user_path(followed)
 			end

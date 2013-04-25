@@ -212,6 +212,7 @@ describe "User" do
           let(:admin) { FactoryGirl.create(:user, admin: true) }
           let(:nonadmin) { FactoryGirl.create(:user) }
           before(:each) do
+            click_link 'Sign out'
             test_sign_in admin
             visit users_path
           end
@@ -409,14 +410,14 @@ describe "User" do
             click_button 'Unfollow'                     
           end.to change(followed.followers, :count).by(-1)
         end
-        # This test keeps failing intermittently, I'm not sure why
-        # describe "notification" do           
-        #   it "should be sent" do
-        #     expect do
-        #       click_button 'Unfollow'                   
-        #     end.to change(Mailer.deliveries, :count).by(1)
-        #   end                 
-        # end             
+       
+        describe "notification" do           
+          it "should be sent" do
+            expect do
+              click_button 'Unfollow'                   
+            end.to change(Mailer.deliveries, :count).by(1)
+          end                 
+        end             
         describe "should toggle the button back" do
           before { click_button 'Unfollow' }
           it { should have_selector('input#Follow_button') }

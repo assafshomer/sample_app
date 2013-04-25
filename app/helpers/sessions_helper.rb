@@ -52,4 +52,8 @@ module SessionsHelper
 		clear_stored_location
 	end
 
+	def need_to_sign_out_first
+		(redirect_to root_path, notice: "Please sign out first") if signed_in?
+	end
+
 end
