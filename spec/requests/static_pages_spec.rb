@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+include TestUtilities
 describe "Static pages" do
 
   subject { page }
@@ -12,12 +12,12 @@ describe "Static pages" do
   describe "Home page" do
     before { visit root_path }
     let(:page_title) {''}
-    let(:heading) {'Sample App'}
+    let(:heading) {signup_title}
     it_should_behave_like "all static pages"
     it { should_not have_selector 'title', text: '| Home' }
 
     describe "for non signed in users should show the signup button" do
-      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
+      it { should have_selector('h1', text: signup_title) }  
       it { should have_link('Sign up now!') }
     end
 
@@ -99,10 +99,10 @@ describe "Static pages" do
     click_link "Contact"
     page.should have_selector 'title', text: full_title('Contact')
     click_link "Home"
-    page.should have_selector 'h1', text: 'Welcome to the Sample App'
+    page.should have_selector 'h1', text: signup_title
     click_link "Sign up now!"
     page.should have_selector 'title', text: full_title('Sign Up')
-    click_link "sample app"
-    page.should have_selector 'h2', text: 'This is the home page of my sample application'
+    click_link "Twitter clone"
+    page.should have_selector 'h2', text: 'Based on'
   end
 end

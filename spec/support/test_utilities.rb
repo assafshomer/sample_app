@@ -31,4 +31,8 @@ module TestUtilities
 		Faker::Lorem.sentence(5)		
 	end
 
+	def signup_title
+		"Welcome to my Twitter clone"
+	end
+
 end

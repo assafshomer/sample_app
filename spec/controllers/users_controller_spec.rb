@@ -1,5 +1,5 @@
   require 'spec_helper'
-
+  include TestUtilities
   describe UsersController do 
 
   	render_views
@@ -119,8 +119,7 @@
           visit edit_user_path(user)
           fill_in "Email",    with: wrong_user.email
           fill_in "Password", with: wrong_user.password 
-          click_button 'Sign in'    
-          # page.should have_selector('h1',text: /to the sample app/i)
+          click_button 'Sign in'              
           response.should render_template('static_pages/home')
         end
 
@@ -168,8 +167,7 @@
           end
 
           it "should deny access to 'update' and redirect to root" do
-            put :update, id: wrong_user, user: {}
-            # page.should have_selector('h1',text: /to the sample app/i)
+            put :update, id: wrong_user, user: {}            
             response.should redirect_to(root_path)
           end     
         end

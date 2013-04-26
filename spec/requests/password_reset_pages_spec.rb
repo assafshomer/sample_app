@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+include TestUtilities
 describe "PasswordResetPages" do
 	subject { page }
 	describe "password reset form" do
@@ -30,7 +30,7 @@ describe "PasswordResetPages" do
 			end
 			describe "should redirect home and flash sucess" do
 				before { click_button 'Send email' }
-	      it { should have_selector('h1', text: /Welcome to the sample app/i) }  
+	      it { should have_selector('h1', text: signup_title) }  
 	      it { should have_selector('div.alert.alert-notice', 
 	      	text: /A password reset link was sent/i) }
 	      it { should have_link('Sign in', href: signin_path) }
