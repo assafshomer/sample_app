@@ -1,5 +1,6 @@
 require 'spec_helper'
 include TestUtilities
+
 describe "PasswordResetPages" do
 	subject { page }
 	describe "password reset form" do
@@ -80,7 +81,7 @@ describe "PasswordResetPages" do
 		end
 	
 		describe "submitting should send an email with the right parameters" do
-      subject {Mailer.deliveries.last}
+      subject {Mailer.deliveries.last}      
       before(:each) do
       	visit reset_password_path
 		  	fill_in 'Email', with: user.email  
@@ -91,7 +92,8 @@ describe "PasswordResetPages" do
       it "and the right body" do
       	Mailer.deliveries.last.html_part.body.should =~ /to reset your password please click/i   
       	Mailer.deliveries.last.html_part.body.should have_selector('b', text: "#{user.name}") 
-      	Mailer.deliveries.last.html_part.body.should have_link('Reset password') 	
+      	Mailer.deliveries.last.html_part.body.should have_link('Reset password',
+      		href: edit_password_reset_path(user.password_resets.last.password_reset_token) ) 	
       end      
     end
 	end
