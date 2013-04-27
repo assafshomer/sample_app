@@ -17,7 +17,7 @@ describe "Authentication" do
       before { click_link 'forgot?' }  
       it { should have_selector('title', text: 'Reset password') }
       it { should have_selector('input#password_reset_email') }
-      it { should have_selector('input#reset_password_button') }
+      it { should have_selector('input#send_reset_password_email') }
     end
 
   	describe "with invalid info" do

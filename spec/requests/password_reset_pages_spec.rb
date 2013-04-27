@@ -3,14 +3,14 @@ include TestUtilities
 
 describe "PasswordResetPages" do
 	subject { page }
-	describe "password reset form" do
+	describe "send password reset email form" do
 		let!(:user) { FactoryGirl.create(:user) }
 
 		describe "should have the right fields" do
 			before { visit reset_password_path }
       it { should have_selector('title', text: 'Reset password') }
       it { should have_selector('input#password_reset_email') }
-      it { should have_selector('input#reset_password_button') }			
+      it { should have_selector('input#send_reset_password_email') }			
 		end
 
 		describe "submitting valid user email" do
@@ -48,7 +48,7 @@ describe "PasswordResetPages" do
 	      it { should have_selector('h1', text: /Reset password/i) }  
 	      it { should have_selector('div.alert.alert-error', 
 	      	text: /No user with email address /i) }
-	      it { should have_selector('input#reset_password_button') }	
+	      it { should have_selector('input#send_reset_password_email') }	
 			end					
 		end
 
@@ -72,7 +72,7 @@ describe "PasswordResetPages" do
 	      it { should have_selector('h1', text: /Reset password/i) }  
 	      it { should have_selector('div.alert.alert-error', 
 	      	text: /No user with email address /i) }
-	      it { should have_selector('input#reset_password_button') }							
+	      it { should have_selector('input#send_reset_password_email') }							
 			end
 	      describe "flash doesn't linger" do
 	      	before { visit current_path }	
@@ -92,10 +92,40 @@ describe "PasswordResetPages" do
       it "and the right body" do
       	Mailer.deliveries.last.html_part.body.should =~ /to reset your password please click/i   
       	Mailer.deliveries.last.html_part.body.should have_selector('b', text: "#{user.name}") 
+      	# Mailer.deliveries.last.html_part.body.should be_nil
       	Mailer.deliveries.last.html_part.body.should have_link('Reset password',
-      		href: edit_password_reset_path(user.password_resets.last.password_reset_token) ) 	
+      		href: edit_password_reset_url(user.password_resets.last.password_reset_token) ) 	
+
       end      
     end
 	end
 
+	describe "password reset form layout" do
+    let!(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+    	visit reset_password_path
+	  	fill_in 'Email', with: user.email  
+			click_button 'Send email'
+			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
+    end   
+    it { should have_selector('title', text: "Reset password") }
+    it { should have_selector('h1', text: 'Reset your password') }
+    it { should have_selector('input#user_password') }
+    it { should have_selector('input#user_password_confirmation') }
+    it { should have_selector('input#reset_password_button') }
+	end
+	describe "password reset form submission" do
+    let!(:user) { FactoryGirl.create(:user) }
+    before(:each) do
+    	visit reset_password_path
+	  	fill_in 'Email', with: user.email  
+			click_button 'Send email'
+			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
+      fill_in "Password",     with: "foobar"
+      fill_in "Confirmation", with: "foobar"
+      click_button 'Reset password'
+    end   
+		it { should have_link('Sign out', href: signout_path) }
+		it { should_not have_link('Sign in', href: signin_path) }
+	end
 end
