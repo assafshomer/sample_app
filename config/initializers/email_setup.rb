@@ -9,6 +9,10 @@ ActionMailer::Base.smtp_settings = {
 	authentication: "plain",
 	enable_starttls_auto: true
 }
-
-ActionMailer::Base.default_url_options[:host] = "localhost:3000"
+if Rails.env.production?
+	ActionMailer::Base.default_url_options = { :protocol => 'https',
+																						 :host => 'devsampleapp.herokuapp.com' } 	
+else
+	ActionMailer::Base.default_url_options[:host] = "localhost:3000" 
+end
 ActionMailer::Base.register_interceptor(DevMailInterceptor) if Rails.env.development?

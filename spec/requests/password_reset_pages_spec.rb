@@ -79,6 +79,13 @@ describe "PasswordResetPages" do
 	      	it { should_not have_selector('div.alert') }							
 				end															
 		end
+
+		describe "visiting an invalid token path" do
+      it "and redirect home" do
+        get edit_password_reset_path('foobar')
+        response.should redirect_to(root_path)          
+      end		
+		end
 	
 		describe "submitting should send an email with the right parameters" do
       subject {Mailer.deliveries.last}      

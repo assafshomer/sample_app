@@ -7,7 +7,7 @@ class StaticPagesController < ApplicationController
     end
   end
 
-  def help 
+  def help     
   	@title="Help"
   end
 
