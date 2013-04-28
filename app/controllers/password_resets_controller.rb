@@ -22,8 +22,10 @@ class PasswordResetsController < ApplicationController
 
   def edit
     @title="Reset password"
-    @password_reset=PasswordReset.find_by_password_reset_token(params[:id])    
-    if @password_reset && !@password_reset.expired?
+    @password_reset = PasswordReset.find_by_password_reset_token(params[:id])     
+    @minutes_left=@password_reset.minutes_left 
+    if @password_reset && @password_reset.active_and_not_expired?
+      @password_reset.toggle!(:active)
       @user=User.find_by_id(@password_reset.user_id)        
       sign_in @user    
     else

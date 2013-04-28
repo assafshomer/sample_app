@@ -7,6 +7,7 @@
 #  password_reset_token :string(255)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  active               :boolean          default(TRUE)
 #
 
 class PasswordReset < ActiveRecord::Base
@@ -20,7 +21,19 @@ class PasswordReset < ActiveRecord::Base
   @@token_expiration_minutes=120
 
   def expired?
-  	((Time.now-self.created_at)/1.minute).round > @@token_expiration_minutes
+  	time_passed > @@token_expiration_minutes
+  end
+
+  def active_and_not_expired?
+  	active && !expired?
+  end
+
+  def time_passed
+  	((Time.now-self.created_at)/1.minute).round
+  end
+
+  def minutes_left
+  	@@token_expiration_minutes-time_passed
   end
 
   def self.expiration_time_in_minutes
@@ -30,7 +43,7 @@ class PasswordReset < ActiveRecord::Base
   private
 
 	  def generate_password_reset_token
-	    self.password_reset_token = SecureRandom.urlsafe_base64    
+	    self.password_reset_token = SecureRandom.urlsafe_base64 if active?
 	  end
 
 	  def real_user?

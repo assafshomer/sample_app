@@ -1,6 +1,6 @@
 require 'spec_helper'
 include TestUtilities
-
+  	
 describe "PasswordResetPages" do
 	subject { page }
 	describe "send password reset email form" do
@@ -115,6 +115,7 @@ describe "PasswordResetPages" do
     it { should have_selector('input#reset_password_button') }
 	end
 	describe "password reset form submission" do
+
     let!(:user) { FactoryGirl.create(:user) }
     before(:each) do
     	visit reset_password_path
@@ -128,6 +129,16 @@ describe "PasswordResetPages" do
 		it { should have_link('Sign out', href: signout_path) }
 		it { should_not have_link('Sign in', href: signin_path) }
 		it { should have_selector('div.alert.alert-success', text: "User data was sucess") }
+		describe "visiting the link twice" do
+			before { visit edit_password_reset_path(user.password_resets.last.password_reset_token) }
+			describe "should flash an error" do
+				it { should have_selector('div.alert.alert-error', text: "Invalid reset token") }				
+        it "and redirect home" do
+          get edit_password_reset_path(user.password_resets.last.password_reset_token)
+          response.should redirect_to(root_path)          
+        end				
+			end						
+		end
 	end
 	describe "password reset token should expire after 2 hours" do
 		let!(:expiration_time_in_minutes) { PasswordReset.expiration_time_in_minutes }
@@ -145,7 +156,4 @@ describe "PasswordResetPages" do
 		it { should have_selector('title', text: "Reset password") }
     it { should have_selector('h2', text: 'you have another') }
 	end	
-	describe "password reset links that were used to reset a password" do
-		it "should be inactive"
-	end
 end
