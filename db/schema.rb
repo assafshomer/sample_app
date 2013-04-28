@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130421213031) do
+ActiveRecord::Schema.define(:version => 20130428102455) do
 
   create_table "messages", :force => true do |t|
     t.string   "content"
@@ -36,8 +36,9 @@ ActiveRecord::Schema.define(:version => 20130421213031) do
   create_table "password_resets", :force => true do |t|
     t.integer  "user_id"
     t.string   "password_reset_token"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.boolean  "active",               :default => true
   end
 
   create_table "relationships", :force => true do |t|

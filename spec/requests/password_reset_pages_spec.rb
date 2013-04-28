@@ -145,4 +145,7 @@ describe "PasswordResetPages" do
 		it { should have_selector('title', text: "Reset password") }
     it { should have_selector('h2', text: 'you have another') }
 	end	
+	describe "password reset links that were used to reset a password" do
+		it "should be inactive"
+	end
 end

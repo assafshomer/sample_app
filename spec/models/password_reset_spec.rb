@@ -21,6 +21,7 @@ describe PasswordReset do
 
   it { should respond_to('password_reset_token') }
   it { should respond_to('user_id') }
+  it { should respond_to('active') }
   its(:user_id) { should == user.id }
 
   describe "validations" do
@@ -34,5 +35,11 @@ describe PasswordReset do
   		before { reset.user_id=max_user_id+100 }
 	  	it { should_not be_valid }
   	end  	
+  end
+  describe "activation" do
+    let!(:expiration_time_in_minutes) { PasswordReset.expiration_time_in_minutes }
+    let!(:pr) { FactoryGirl.create(:password_reset, created_at: (expiration_time_in_minutes+1).minutes.ago) }
+    it { should be_active }
+    specify {pr.should_not be_active}
   end
 end
