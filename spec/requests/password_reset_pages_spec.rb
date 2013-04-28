@@ -129,10 +129,20 @@ describe "PasswordResetPages" do
 		it { should_not have_link('Sign in', href: signin_path) }
 		it { should have_selector('div.alert.alert-success', text: "User data was sucess") }
 	end
-	describe "password reset should check at most 2 hours old" do
-		let!(:pr) { FactoryGirl.create(:password_reset, created_at: 121.minutes.ago) }
+	describe "password reset token should expire after 2 hours" do
+		let!(:expiration_time_in_minutes) { PasswordReset.expiration_time_in_minutes }
+		let!(:pr) { FactoryGirl.create(:password_reset, created_at: (expiration_time_in_minutes+1).minutes.ago) }
 		before { visit edit_password_reset_path(pr.password_reset_token) }
 		it { should have_selector('h1', text: "Twitter clone") }
-		it { should have_selector('div.alert.alert-error', text: "The reset token has expired") }
+		it { should have_selector('div.alert.alert-error', text: "Invalid reset token") }
 	end
+	describe "password reset token should not expire before 2 hours" do
+		let!(:expiration_time_in_minutes) { PasswordReset.expiration_time_in_minutes }
+		let!(:pr) { FactoryGirl.create(:password_reset, created_at: (expiration_time_in_minutes-1).minutes.ago) }
+		before { visit edit_password_reset_path(pr.password_reset_token) }
+		it { should_not have_selector('h1', text: "Twitter clone") }
+		it { should_not have_selector('div.alert.alert-error', text: "Invalid reset token") }
+		it { should have_selector('title', text: "Reset password") }
+    it { should have_selector('h2', text: 'you have another') }
+	end	
 end

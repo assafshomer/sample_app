@@ -16,6 +16,16 @@ class PasswordReset < ActiveRecord::Base
 
   validates :user_id, presence: true  
   validate :real_user?
+  
+  @@token_expiration_minutes=120
+
+  def expired?
+  	((Time.now-self.created_at)/1.minute).round > @@token_expiration_minutes
+  end
+
+  def self.expiration_time_in_minutes
+  	@@token_expiration_minutes
+  end
 
   private
 
@@ -27,5 +37,5 @@ class PasswordReset < ActiveRecord::Base
 	  	err_msg="no user with this ID exists"
 	  	errors.add(:user_id, err_msg) unless User.find_by_id(user_id)
 	  end
-  
+
 end
