@@ -109,7 +109,7 @@ describe "PasswordResetPages" do
 			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
     end   
     it { should have_selector('title', text: "Reset password") }
-    it { should have_selector('h2', text: 'you can now reset your password') }
+    it { should have_selector('h2', text: 'you have another') }
     it { should have_selector('input#user_password') }
     it { should have_selector('input#user_password_confirmation') }
     it { should have_selector('input#reset_password_button') }
@@ -121,11 +121,18 @@ describe "PasswordResetPages" do
 	  	fill_in 'Email', with: user.email  
 			click_button 'Send email'
 			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
-      fill_in "Password",     with: "foobar"
+      fill_in "New password",     with: "foobar"
       fill_in "Confirmation", with: "foobar"
       click_button 'Reset password'      
     end   
 		it { should have_link('Sign out', href: signout_path) }
 		it { should_not have_link('Sign in', href: signin_path) }
+		it { should have_selector('div.alert.alert-success', text: "User data was sucess") }
+	end
+	describe "password reset should check at most 2 hours old" do
+		let!(:pr) { FactoryGirl.create(:password_reset, created_at: 121.minutes.ago) }
+		before { visit edit_password_reset_path(pr.password_reset_token) }
+		it { should have_selector('h1', text: "Twitter clone") }
+		it { should have_selector('div.alert.alert-error', text: "The reset token has expired") }
 	end
 end
