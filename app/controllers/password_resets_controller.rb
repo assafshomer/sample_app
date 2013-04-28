@@ -24,7 +24,7 @@ class PasswordResetsController < ApplicationController
     @title="Reset password"
     @password_reset=PasswordReset.find_by_password_reset_token(params[:id])
     @user=User.find_by_id(@password_reset.user_id)   
-    sign_in @user 
+    sign_in @user    
   end  
 
 end

@@ -109,7 +109,7 @@ describe "PasswordResetPages" do
 			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
     end   
     it { should have_selector('title', text: "Reset password") }
-    it { should have_selector('h1', text: 'Reset your password') }
+    it { should have_selector('h2', text: 'you can now reset your password') }
     it { should have_selector('input#user_password') }
     it { should have_selector('input#user_password_confirmation') }
     it { should have_selector('input#reset_password_button') }
