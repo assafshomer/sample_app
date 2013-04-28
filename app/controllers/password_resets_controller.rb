@@ -24,7 +24,7 @@ class PasswordResetsController < ApplicationController
     @title="Reset password"
     @password_reset=PasswordReset.find_by_password_reset_token(params[:id])
     @minutes_left=((Time.now-@password_reset.created_at)/1.minute).round
-    if @password_reset && @minutes_left<1
+    if @password_reset && @minutes_left<121
       @user=User.find_by_id(@password_reset.user_id)        
       sign_in @user    
     else
