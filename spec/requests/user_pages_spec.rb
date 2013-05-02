@@ -118,23 +118,46 @@ describe "User" do
         it "should create a new user" do
           expect {click_button submit}.to change(User,:count).by(1)  
         end
-
-        it "should send a verification email" do
+        it "should send an activation email" do
           expect {click_button submit}.to change(Mailer.deliveries, :count).by(1)
-        end   
-        
-        describe "should show flash" do
-          before {click_button submit }
-          let(:user) { User.find_by_email('example@example.com') }
-          it { should have_selector('div.alert.alert-success',
-                                     text: /welcome to my twitter clone/i) }  
         end
+        describe "submitting the form" do
+          before { click_button submit }          
+          
+          describe "should send an activation email with correct content" do            
+          subject {Mailer.deliveries.last}      
+          let!(:user) { User.find_by_email("example@example.com") }
+          its(:to) { should == []<< user.email }
+          its(:subject) { should =~ /email verification for/ }
+            it "and the right body" do
+              Mailer.deliveries.last.html_part.body.should =~ /to verify your email address and activate your account please click/i   
+              Mailer.deliveries.last.html_part.body.should have_selector('b', text: user.name)                 
+              Mailer.deliveries.last.html_part.body.should =~ /#{user.email_verification.token}/  
+              Mailer.deliveries.last.html_part.body.should have_link("Activate my account")   
+            end
+          end
+        end   
 
-        describe "should be signed in" do
+        describe "should not be signed in" do
           before {click_button submit }
-          it { should have_link('Sign out',href: signout_path) }
-          it { should_not have_link('Sign in',href: signin_path) }
+          it { should_not have_link('Sign out',href: signout_path) }
+          it { should have_link('Sign in',href: signin_path) }
+          it { should have_selector('div.alert.alert-success', text: /verification email was sent/i) }
+          it { should have_selector('h1', text: /welcome/i) }
         end 
+
+
+        # describe "should show flash" do
+        #   before {click_button submit }          
+        #   it { should have_selector('div.alert.alert-success',
+        #                              text: /welcome to my twitter clone/i) }  
+        # end
+
+        # describe "should be signed in" do
+        #   before {click_button submit }
+        #   it { should have_link('Sign out',href: signout_path) }
+        #   it { should_not have_link('Sign in',href: signin_path) }
+        # end 
               
       end
 

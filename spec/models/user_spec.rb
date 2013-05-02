@@ -46,10 +46,13 @@ describe "User" do
 	  it { should respond_to(:messages) } #messages sent by the user
 	  it { should respond_to(:recieved_messages) }
 	  it { should respond_to(:password_resets) }
+	  it { should respond_to(:active) }
+	  it { should respond_to(:email_verification) }
 	end
 
 	it { should be_valid } 
 	it { should_not be_admin }
+	it { should_not be_active }
 
 	describe "valid data" do
 		describe "should be rejected without a name" do
@@ -153,15 +156,30 @@ describe "User" do
 			end
 			it { should be_admin }			
 		end
+	end
 
-		describe "accessible attriubtes" do
-			it "should not allow access to the 'admin' attribute" do
-				expect do
-					User.new(name: "my name", email: "admin@admin.org", admin: true)
-				end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-			end			
+	describe "active" do
+		describe "can be created by toggling a non-active" do
+			before do
+		  	@user.save!
+		  	@user.toggle!(:active)
+			end
+			it { should be_active }			
 		end
 	end
+
+	describe "accessible attriubtes" do
+		it "should not allow access to the 'admin' attribute" do
+			expect do
+				User.new(name: "my name", email: "admin@admin.org", admin: true)
+			end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+		end	
+		it "should not allow access to the 'active' attribute" do
+			expect do
+				User.new(name: "my name", email: "admin@admin.org", active: true)
+			end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+		end							
+	end	
 
 	describe "microposts association" do
 		before { @user.save }

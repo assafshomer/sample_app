@@ -43,10 +43,12 @@ class UsersController < ApplicationController
   def create
     @user=User.new(params[:user])    
     if @user.save
-      sign_in @user
       Mailer.send_registration_confirmation_email(@user)
-      flash[:success] = "Welcome to my Twitter clone"
-      redirect_to @user
+      flash[:success] = "Verification email was sent to #{@user.email}"
+      redirect_to root_path
+      # sign_in @user
+      # flash[:success] = "Welcome to my Twitter clone"
+      # redirect_to @user
     else      
       render 'new'
     end
