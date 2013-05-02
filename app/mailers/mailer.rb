@@ -24,6 +24,12 @@ class Mailer < ActionMailer::Base
 		send_email(@user.email,subject)
 	end
 
+	def send_registration_confirmation_email(user)
+		@user=user		
+		subject="email verification for #{@user.name}"		
+		send_email(@user.email,subject)
+	end	
+
 	private
 		def send_email(address, subject) 		 
 			@address=address

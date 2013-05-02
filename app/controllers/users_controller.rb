@@ -44,7 +44,8 @@ class UsersController < ApplicationController
     @user=User.new(params[:user])    
     if @user.save
       sign_in @user
-      flash[:success] = "Welcome to the my Twitter clone"
+      Mailer.send_registration_confirmation_email(@user)
+      flash[:success] = "Welcome to my Twitter clone"
       redirect_to @user
     else      
       render 'new'

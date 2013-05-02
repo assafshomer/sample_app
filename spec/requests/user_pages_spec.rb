@@ -105,8 +105,7 @@ describe "User" do
           it "should not create a new user" do
             expect {click_button submit}.not_to change(User,:count)  
           end       
-        end             
-
+        end
       end      
       
       describe "valid data" do 
@@ -118,12 +117,17 @@ describe "User" do
         end
         it "should create a new user" do
           expect {click_button submit}.to change(User,:count).by(1)  
+        end
+
+        it "should send a verification email" do
+          expect {click_button submit}.to change(Mailer.deliveries, :count).by(1)
         end   
         
         describe "should show flash" do
           before {click_button submit }
           let(:user) { User.find_by_email('example@example.com') }
-          it { should have_selector('div.alert.alert-success') }  
+          it { should have_selector('div.alert.alert-success',
+                                     text: /welcome to my twitter clone/i) }  
         end
 
         describe "should be signed in" do
@@ -234,7 +238,6 @@ describe "User" do
           end
         end
       end
-
     end    
   end
   
@@ -314,8 +317,7 @@ describe "User" do
                                   href: followers_user_path(other_user)) }
         it { should have_content("#{other_user.followed_users.count} following") }
         it { should have_content("#{other_user.followers.count} followers") }
-      end 
-      
+      end
     end
       
     describe "microposts list" do

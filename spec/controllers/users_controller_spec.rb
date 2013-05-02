@@ -1,5 +1,6 @@
   require 'spec_helper'
   include TestUtilities
+
   describe UsersController do 
 
   	render_views
