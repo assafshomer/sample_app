@@ -35,4 +35,9 @@ FactoryGirl.define do
 		user
 	end
 
+	factory :email_verification do
+		token "foobar"
+		user
+	end
+
 end
