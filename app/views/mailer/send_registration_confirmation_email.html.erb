@@ -1,3 +1,3 @@
 Hello <b><%= @user.name %></b>
 To verify your email address and activate your account please click<br />
-<%= link_to "Activate my account", root_path %>
+<%= link_to "Activate my account", edit_email_verification_url(@email_verification.token) %>

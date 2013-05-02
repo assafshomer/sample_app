@@ -24,8 +24,9 @@ class Mailer < ActionMailer::Base
 		send_email(@user.email,subject)
 	end
 
-	def send_registration_confirmation_email(user)
-		@user=user		
+	def send_registration_confirmation_email(email_verification)
+		@email_verification=email_verification
+		@user=User.find_by_id(@email_verification.user_id)		
 		subject="email verification for #{@user.name}"		
 		send_email(@user.email,subject)
 	end	

@@ -43,7 +43,8 @@ class UsersController < ApplicationController
   def create
     @user=User.new(params[:user])    
     if @user.save
-      Mailer.send_registration_confirmation_email(@user)
+      @email_verification=@user.create_email_verification
+      Mailer.send_registration_confirmation_email(@email_verification)
       flash[:success] = "Verification email was sent to #{@user.email}"
       redirect_to root_path
       # sign_in @user

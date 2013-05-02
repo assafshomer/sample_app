@@ -10,7 +10,8 @@ SampleApp::Application.routes.draw do
   resources :relationships, only: [:create, :destroy]  
   resources :messages, only: [:create, :index]
   resources :password_resets, only: [:new, :create, :edit]
-
+  resources :email_verifications, only: :edit
+  
   root              to: 'static_pages#home'
   
   match "/help",    to: 'static_pages#help'
