@@ -18,7 +18,7 @@ class Mailer < ActionMailer::Base
 	end
 
 	def send_password_reset_email(password_reset)
-		@user=User.find_by_id(password_reset.user_id)
+		@user=password_reset.user
 		@password_reset_token=password_reset.password_reset_token
 		subject="password reset token : #{@password_reset_token}"		
 		send_email(@user.email,subject)
@@ -26,7 +26,7 @@ class Mailer < ActionMailer::Base
 
 	def send_email_verification_email(email_verification)
 		@email_verification=email_verification
-		@user=User.find_by_id(@email_verification.user_id)		
+		@user=@email_verification.user
 		subject="email verification for #{@user.name}"		
 		send_email(@user.email,subject)
 	end	

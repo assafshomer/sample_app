@@ -11,6 +11,7 @@
 #  remember_token        :string(255)
 #  admin                 :boolean          default(FALSE)
 #  recieve_notifications :boolean          default(TRUE)
+#  active                :boolean          default(FALSE)
 #
 
 require 'spec_helper'

@@ -5,7 +5,6 @@
 #  id         :integer          not null, primary key
 #  user_id    :integer
 #  token      :string(255)
-#  active     :boolean          default(TRUE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -19,8 +18,7 @@ describe EmailVerification do
   subject { email_verification }  
 
   it { should respond_to('token') }
-  it { should respond_to('user_id') }
-  it { should respond_to('active') }  
+  it { should respond_to('user_id') }  
   its(:user_id) { should == user.id }
 
   describe "validations" do

@@ -26,7 +26,7 @@ class PasswordResetsController < ApplicationController
     if @password_reset && @password_reset.active_and_not_expired?
       @minutes_left=@password_reset.minutes_left 
       @password_reset.toggle!(:active)
-      @user=User.find_by_id(@password_reset.user_id)        
+      @user=@password_reset.user
       sign_in @user    
     else
       flash[:error] = "Invalid reset token"

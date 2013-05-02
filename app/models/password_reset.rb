@@ -48,7 +48,7 @@ class PasswordReset < ActiveRecord::Base
 
 	  def real_user?
 	  	err_msg="no user with this ID exists"
-	  	errors.add(:user_id, err_msg) unless User.find_by_id(user_id)
+	  	errors.add(:user_id, err_msg) unless user
 	  end
 
 end

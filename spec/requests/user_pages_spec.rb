@@ -118,13 +118,13 @@ describe "User" do
         it "should create a new user" do
           expect {click_button submit}.to change(User,:count).by(1)  
         end
-        it "should send an activation email" do
+        it "should send a verification email" do
           expect {click_button submit}.to change(Mailer.deliveries, :count).by(1)
         end
         describe "submitting the form" do
           before { click_button submit }          
           
-          describe "should send an activation email with correct content" do            
+          describe "should send a verification email with correct content" do            
           subject {Mailer.deliveries.last}      
           let!(:user) { User.find_by_email("example@example.com") }
           its(:to) { should == []<< user.email }
@@ -162,6 +162,28 @@ describe "User" do
       end
 
     end
+  end
+
+  describe "signing in" do
+    let!(:user) { FactoryGirl.create(:user) }
+    before do
+      visit signin_path      
+      fill_in "Email",            with: user.email
+      fill_in "Password",         with: "foobar"      
+      click_button 'Sign in'       
+    end  
+    describe "before verification of email address" do
+      it { should_not have_link('Sign out', href: signout_path) }
+      it { should have_link('Sign out', href: signin_path) }
+      it { should have_selector('div.alert.alert-error', 
+                              text: "Please click on the activation link sent to #{user.email}") }
+    end
+    describe "after verification of email address" do
+      before { visit edit_email_verification_url(user.email_verification.token) }
+      it { should have_link('Sign out', href: signout_path) }
+      it { should_not have_link('Sign out', href: signin_path) }  
+      it { should have_selector('div.alert.alert-success', text: "#{user.email}, Welcome to my Twitter clone") }
+    end  
   end
 
   describe "Index" do

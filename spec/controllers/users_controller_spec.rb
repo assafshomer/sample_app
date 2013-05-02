@@ -199,6 +199,7 @@
       let(:user) { FactoryGirl.create(:user)}    
       before { controller.sign_in(user) }
       specify { controller.signed_in?.should be_true }
+      specify { controller.should be_signed_in }
       specify { controller.current_user.email.should == user.email }
       specify { cookies['remember_token'].should == user.remember_token }
       describe "GET index" do

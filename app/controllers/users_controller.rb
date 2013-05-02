@@ -47,9 +47,6 @@ class UsersController < ApplicationController
       Mailer.send_email_verification_email(@email_verification)
       flash[:success] = "Verification email was sent to #{@user.email}"
       redirect_to root_path
-      # sign_in @user
-      # flash[:success] = "Welcome to my Twitter clone"
-      # redirect_to @user
     else      
       render 'new'
     end

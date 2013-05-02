@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
 	def create			
 		@title ='Sign in'
 		user=User.find_by_email(params[:session][:email].downcase)
-		if user && user.authenticate(params[:session][:password])
+		if user && user.authenticate(params[:session][:password]) #part of has_secure_password?
 			sign_in user, params[:session][:remember_me]
 			flash[:success]="Welcome back #{user.name}"
 			redirect_back_or user 
