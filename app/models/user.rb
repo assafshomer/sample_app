@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
   has_many :recieved_messages,      foreign_key: "recipient_id", 
                                       dependent: :destroy, 
                                      class_name: "Message"                                     
-  has_many :password_resets, dependent: :destroy                                     
+  has_many :password_resets, dependent: :destroy  
+  has_one :email_verification, dependent: :destroy                                   
 
 	before_save { |user| user.email = email.downcase } 
   before_save :create_remember_token
