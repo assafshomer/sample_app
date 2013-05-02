@@ -100,13 +100,13 @@ describe "PasswordResetPages" do
       	Mailer.deliveries.last.html_part.body.should =~ /to reset your password please click/i   
       	Mailer.deliveries.last.html_part.body.should have_selector('b', text: "#{user.name}")       	      	
       	Mailer.deliveries.last.html_part.body.should =~ /#{user.password_resets.last.password_reset_token}/  
-      	# The test below fails for a mystrious reason, though it does work if instead of _url i use _path
+      	# The test below fails for a mysterious reason, though it does work if instead of _url i use _path
       	# Mailer.deliveries.last.html_part.body.should have_link('Reset password',
       	# 	href: edit_password_reset_url(user.password_resets.last.password_reset_token)) 
       end      
     end
 	end
-
+	# testing 
 	describe "password reset form layout" do
     let!(:user) { FactoryGirl.create(:user) }
     before(:each) do
