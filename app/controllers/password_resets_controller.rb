@@ -9,10 +9,16 @@ class PasswordResetsController < ApplicationController
   	@user=User.find_by_email(params[:password_reset][:email])
     if @user
       @password_reset=@user.password_resets.build  	
-      if @password_reset.save!
+      if @user.active
+        if @password_reset.save!
         Mailer.send_password_reset_email(@password_reset) if @user        
         redirect_to root_path, notice: "A password reset link was sent to #{@user.email}"
-      end  
+        end  
+      else
+        flash[:error] = "Before resetting your password,
+                           activate your account by clicking the link sent to #{@user.email}"
+        redirect_to root_path                           
+      end
     else
       flash[:error] = "No user with email address 
                       \'#{params[:password_reset][:email]}\' was found"	

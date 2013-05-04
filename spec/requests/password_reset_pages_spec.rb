@@ -49,7 +49,28 @@ describe "PasswordResetPages" do
 	      it { should have_selector('div.alert.alert-error', 
 	      	text: /No user with email address /i) }
 	      it { should have_selector('input#send_reset_password_email') }	
-			end					
+			end
+			describe "inactive user should first activate email" do
+				before { user.toggle!(:active) }
+				it "should not send an email" do
+					expect do
+						click_button 'Send email'					
+					end.not_to change(Mailer.deliveries, :count).by(1)
+				end
+				it "should create a new password reset entry in the database" do
+					expect do
+						click_button 'Send email'					
+					end.not_to change(PasswordReset, :count).by(1)
+				end
+				describe "should redirect home and flash sucess" do
+					before { click_button 'Send email' }
+		      it { should_not have_link('Sign out', href: signout_path) }
+		      it { should_not have_selector('div.alert.alert-notice', 
+		      	text: /A password reset link was sent/i) }
+		      it { should have_selector('div.alert.alert-error',
+		       text: "Before resetting your password") }
+				end				
+			end								
 		end
 
 		describe "submitting invalid email" do
