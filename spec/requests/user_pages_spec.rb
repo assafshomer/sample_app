@@ -123,49 +123,42 @@ describe "User" do
         end
         describe "submitting the form" do
           before { click_button submit }          
-          
+          let!(:user) { User.find_by_email("example@example.com") }
           describe "should send a verification email with correct content" do            
           subject {Mailer.deliveries.last}      
-          let!(:user) { User.find_by_email("example@example.com") }
+          
           its(:to) { should == []<< user.email }
           its(:subject) { should =~ /email verification for/ }
             it "and the right body" do
-              Mailer.deliveries.last.html_part.body.should =~ /to verify your email address and activate your account please click/i   
+              Mailer.deliveries.last.html_part.body.should =~
+               /to verify your email address and activate your account please click/i   
               Mailer.deliveries.last.html_part.body.should have_selector('b', text: user.name)                 
               Mailer.deliveries.last.html_part.body.should =~ /#{user.email_verification.token}/  
-              Mailer.deliveries.last.html_part.body.should have_link("Activate my account")   
+              Mailer.deliveries.last.html_part.body.should have_link("Activate my account")                 
             end
           end
-        end   
-
-        describe "should not be signed in" do
-          before {click_button submit }
-          it { should_not have_link('Sign out',href: signout_path) }
-          it { should have_link('Sign in',href: signin_path) }
-          it { should have_selector('div.alert.alert-success', text: /verification email was sent/i) }
-          it { should have_selector('h1', text: /welcome/i) }
-        end 
-
-
-        # describe "should show flash" do
-        #   before {click_button submit }          
-        #   it { should have_selector('div.alert.alert-success',
-        #                              text: /welcome to my twitter clone/i) }  
-        # end
-
-        # describe "should be signed in" do
-        #   before {click_button submit }
-        #   it { should have_link('Sign out',href: signout_path) }
-        #   it { should_not have_link('Sign in',href: signin_path) }
-        # end 
-              
+          describe "should not be signed in" do                 
+            it { should_not have_link('Sign out',href: signout_path) }
+            it { should have_link('Sign in',href: signin_path) }
+            it { should have_selector('div.alert.alert-success',
+             text: /verification email was sent to #{user.email}/i) }
+            it { should have_selector('h1', text: /welcome/i) } 
+            describe 'However, clicking the email verification link should sign the user in' do                          
+              before(:each) do              
+                visit edit_email_verification_path(user.email_verification.token)
+              end                        
+              it { should have_selector('div.alert.alert-success', text: /your email was verified/i) }
+              it { should have_link('Sign out',href: signout_path) }
+              it { should_not have_link('Sign in',href: signin_path) }
+            end                      
+          end           
+        end           
       end
-
     end
   end
 
   describe "signing in" do
-    let!(:user) { FactoryGirl.create(:user) }
+    let!(:user) { FactoryGirl.create(:user, active: false) }
     before do
       visit signin_path      
       fill_in "Email",            with: user.email
@@ -174,15 +167,17 @@ describe "User" do
     end  
     describe "before verification of email address" do
       it { should_not have_link('Sign out', href: signout_path) }
-      it { should have_link('Sign out', href: signin_path) }
+      it { should have_link('Sign in', href: signin_path) }
       it { should have_selector('div.alert.alert-error', 
-                              text: "Please click on the activation link sent to #{user.email}") }
+                              text: "Please click the activation link sent to #{user.email}") }
+      specify { current_path.should == root_path }
     end
     describe "after verification of email address" do
-      before { visit edit_email_verification_url(user.email_verification.token) }
+      let!(:ev) { FactoryGirl.create(:email_verification, user: user) }
+      before { visit edit_email_verification_path(user.email_verification.token) }
       it { should have_link('Sign out', href: signout_path) }
-      it { should_not have_link('Sign out', href: signin_path) }  
-      it { should have_selector('div.alert.alert-success', text: "#{user.email}, Welcome to my Twitter clone") }
+      it { should_not have_link('Sign in', href: signin_path) }  
+      it { should have_selector('div.alert.alert-success', text: "#{user.name}, your email was verified") }
     end  
   end
 
@@ -209,7 +204,7 @@ describe "User" do
     describe "list after signing in" do
       
       before(:each) do
-        test_sign_in FactoryGirl.create(:user)
+        test_sign_in FactoryGirl.create(:user, active: true)
         FactoryGirl.create(:user, name: "Bob", email: "bob@example.com")
         FactoryGirl.create(:user, name: "Ben", email: "ben@example.com")        
       end
@@ -388,7 +383,8 @@ describe "User" do
 
       describe "with pagination" do
         
-        15.times {|n| let!(:"mipo#{n}") { FactoryGirl.create(:micropost, user: user, content: "foobazquux")} }
+        15.times {|n| let!(:"mipo#{n}") { FactoryGirl.create(:micropost,
+                                                             user: user, content: "foobazquux")} }
         before(:each) do        
           test_sign_in user
           visit user_path(user)
@@ -537,7 +533,8 @@ describe "User" do
             describe "and show the new message on the messages page" do
               it { should have_selector('span.message',
                text: "test message from #{sender.name}") }
-              it { should have_selector('span.timestamp', text: "from #{sender.name} to #{recipient.name}") }
+              it { should have_selector('span.timestamp', 
+                                          text: "from #{sender.name} to #{recipient.name}") }
             end
           end
           describe "should show a success flash" do

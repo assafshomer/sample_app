@@ -5,7 +5,7 @@ class EmailVerificationsController < ApplicationController
   	@user=@email_verification.user      	
   	@user.toggle!(:active) unless @user.active?
 	  sign_in @user
-	  flash[:success] = "Welcome to my Twitter clone"
+	  flash[:success] = "#{@user.name}, your email was verified. Welcome to my twitter clone"
 	  redirect_to @user  	
   end
 end

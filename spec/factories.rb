@@ -13,6 +13,7 @@ FactoryGirl.define do
 		sequence(:email) {|n| "Person_#{n}_#{Random.rand(0..999)}@example.edu"}
 		password "foobar"
 		password_confirmation "foobar"
+		active true
 	end
 
 	factory :admin do
