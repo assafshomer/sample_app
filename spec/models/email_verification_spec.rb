@@ -32,10 +32,5 @@ describe EmailVerification do
   		before { ev.user_id=max_user_id+100 }
 	  	it { should_not be_valid }
   	end  	
-  end
-  describe "activation" do
-  	it "something to test activation"
   end 
-
- 
 end
