@@ -1,0 +1,17 @@
+<div class="row">
+	<div class="span6">
+		<%= form_tag users_path, method: 'get' do %>
+			<table cellpadding="5">
+				<tr>
+					<td>
+						<%= text_field_tag :search, params[:search] %>
+					</td>
+					<td>
+						<%= submit_tag "Search", name: nil,
+						 id: "users_search_button", class: "btn btn-primary aligned_button" %>
+					</td>
+				</tr>
+			</table>			
+		<% end %>
+	</div>
+</div>

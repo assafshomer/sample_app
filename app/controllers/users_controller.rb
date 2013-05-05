@@ -99,7 +99,7 @@ class UsersController < ApplicationController
   end
 
   def search_users(space_separated_terms)    
-    if space_separated_terms      
+    if !space_separated_terms.blank?      
       User.where(search(space_separated_terms, 'name', 'email'))
     else
       User
