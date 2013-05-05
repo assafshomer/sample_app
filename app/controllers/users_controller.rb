@@ -7,7 +7,9 @@ class UsersController < ApplicationController
 	def index
 		@title="All users"
 		# @users=User.all.sort_by {|user| user.name}    
-    @users=User.paginate(page: params[:page], per_page: 10).order('name')    
+    @users=User.paginate(page: params[:page], per_page: 10).order('name') 
+    @filtered_users=User.search_name_and_email(params[:search])
+    # @filtered_users.paginate(page: params[:page], per_page: 10).order('name') 
 	end
 
 	def show		 
