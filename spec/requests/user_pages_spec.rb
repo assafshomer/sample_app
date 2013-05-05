@@ -248,6 +248,10 @@ describe "User" do
               page.should have_link(user.name, href: user_path(user.id))
             end             
           end          
+        end
+        describe "search" do
+          it { should have_selector('input#search') }          
+          it { should have_selector('input#users_search_button', value: "Search") }
         end        
       end
       
