@@ -4,8 +4,7 @@
 
 <%= form_tag users_path, method: 'get' do %>
 	<%= text_field_tag :search, params[:search] %>
-	<%= submit_tag "Search", name: nil, id: "users_search_button" %>
-	<%= @filtered_users.count %>	
+	<%= submit_tag "Search", name: nil, id: "users_search_button" %>	
 <% end %>
 
 <ul class="users">

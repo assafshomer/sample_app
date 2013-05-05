@@ -7,9 +7,8 @@ class UsersController < ApplicationController
 	def index
 		@title="All users"
 		# @users=User.all.sort_by {|user| user.name}    
-    @users=User.paginate(page: params[:page], per_page: 10).order('name') 
-    @filtered_users=User.search_name_and_email(params[:search])
-    # @filtered_users.paginate(page: params[:page], per_page: 10).order('name') 
+    # @users=User.paginate(page: params[:page], per_page: 10).order('name') 
+    @users=search_users_by_name_or_email(params[:search]).paginate(page: params[:page], per_page: 10).order('name') 
 	end
 
 	def show		 
@@ -96,5 +95,19 @@ class UsersController < ApplicationController
 
   def no_visits
     redirect_to root_path unless !signed_in?
+  end
+
+  def search_users_by_name_or_email(space_separated_terms)
+    array = space_separated_terms.split.map {|term| "%#{term}%" } if space_separated_terms
+    while array && array.size<2
+      array << "%"
+    end
+    if array && array.size==2
+      query=array      
+      sql='name LIKE ? or email LIKE ?'
+      User.where([sql, *query])
+    else
+      User
+    end
   end
 end

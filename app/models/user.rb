@@ -78,13 +78,26 @@ class User < ActiveRecord::Base
     self.reversed_relationships.find_by_follower_id(user)
   end
 
-  def self.search_name_and_email(search)
-    if search
-      find(:all, :conditions => ['name LIKE ? or email LIKE ?', "%#{search}%","%#{search}%" ])
-    else
-      find(:all)
-    end
-  end
+  # def self.search_name_and_email(search)
+  #   if search
+  #     find(:all, :conditions => ['name LIKE ? or email LIKE ?', "%#{search}%","%#{search}%" ])
+  #   else
+  #     find(:all)
+  #   end
+  # end
+
+  # def self.search_one(term)
+  #   no_spaces = term.split.join
+  #   query="%#{no_spaces}%"
+  #   sql='name LIKE ? or email LIKE ?'
+  #   User.where([sql, query, query])
+  # end
+
+  # def self.search_many(terms)
+  #   query = terms.split(',').map {|term| "%#{term}%" }
+  #   sql='name LIKE ? or email LIKE ?'
+  #   User.where([sql, query, query])
+  # end
 
   private
 
@@ -97,5 +110,4 @@ class User < ActiveRecord::Base
     # def create_remember_token
     #   generate_token(:remember_token)
     # end
-
 end
