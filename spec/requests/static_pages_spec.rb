@@ -18,7 +18,7 @@ describe "Static pages" do
 
     describe "for non signed in users should show the signup button" do
       it { should have_selector('h1', text: signup_title) }  
-      it { should have_link('Sign up now!') }
+      it { should have_link('Sign up now!') }      
     end
 
     describe "for signed in users" do
@@ -65,7 +65,6 @@ describe "Static pages" do
       it { page.should have_selector('h3', text: "Microposts #{other_user.microposts.count}") }
       it { page.should have_link('reply') } 
     end
-
   end
 
   describe "Help page" do

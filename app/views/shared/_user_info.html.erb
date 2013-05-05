@@ -17,7 +17,9 @@
 	<tr>
 		<td>
 			<span>
-				<%= link_to "view my profile", user %>
+				<% unless request.fullpath == user_path(user) %>				
+					<%= link_to "view my profile", user %>					
+				<% end %>
 			</span>		
 		</td>
 	</tr>

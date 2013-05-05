@@ -320,6 +320,7 @@ describe "User" do
 
         it { should have_selector('h1', text: user.name) }
         it { should have_selector('title', text: user.name) }
+        it { should_not have_link('view my profile') }
       end
 
       describe "for admins" do
