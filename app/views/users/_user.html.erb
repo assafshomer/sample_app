@@ -1,16 +1,16 @@
-<li>
-  <table>
+
     <tr>
       <td><%= gravatar_for user, size: 30 %></td>
       <td><%= link_to user.name, user %></td>
-      <td>|</td> 
-      <td><%= mail_to user.email, 'Email' %></td>      
-      <% if (current_user.admin? && !current_user?(user) )%>
-        <td>|</td> 
-        <td><%= link_to 'delete', user, method: :delete, data: {confirm: "Sure?"} %></td>
-      <% end %>
-      <td>|</td> 
+      <td class="list_separator"> | </td> 
+      <td><%= mail_to user.email, 'Email' %></td>    
+      <td class="list_separator"> | </td> 
+      <td>
+        <% if (current_user.admin? && !current_user?(user) )%>    
+          <%= link_to 'delete', user, method: :delete, class: "btn btn-danger remove_fields", data: {confirm: "Sure?"} %>          
+        <% end %>
+      </td>
+      <td class="list_separator"> | </td> 
       <td id="micropost_count"><%= user.microposts.count %> microposts</td>   
-    </tr> 
-  </table><br/>      
-</li> 
+    </tr>
+    <tr><td><br/></td></tr> 

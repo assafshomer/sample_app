@@ -85,6 +85,11 @@ footer a {
   color: #555;
 }  
 
+.list_separator {
+  color: $grayLight; 
+  padding: 5px;
+}
+
 .forgot_password_link {  
   vertical-align: bottom;
   padding-bottom: 5px;
