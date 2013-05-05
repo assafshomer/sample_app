@@ -252,6 +252,32 @@ describe "User" do
         describe "search" do
           it { should have_selector('input#search') }          
           it { should have_selector('input#users_search_button', value: "Search") }
+          describe "should find a user by name" do
+            let!(:marlon) { FactoryGirl.create(:user, name: 'Marlon Brando', email: 'marlon@holliwood.com') }
+            let!(:barack) { FactoryGirl.create(:user, name: 'Barack Obama', email: 'barack@president.gov') }
+            let!(:bill) { FactoryGirl.create(:user, name: 'Bill Clinton', email: 'billwaspresident@monica.xxx') }
+            let!(:marlo) { FactoryGirl.create(:user, name: 'Marlo Stanfield', email: 'marlo@wire.org') }
+            before do
+              fill_in 'search', with: 'marlo a.x'
+              click_button 'Search'
+            end
+            it "should find marlon, marlo and bill" do
+              page.should have_selector('li', text: marlon.name)
+              page.should have_link 'Email' , href: "mailto:#{marlon.email}"
+              page.should have_link(marlon.name, href: user_path(marlon.id))
+              page.should have_selector('li', text: marlo.name)
+              page.should have_link 'Email' , href: "mailto:#{marlo.email}"
+              page.should have_link(marlo.name, href: user_path(marlo.id))
+              page.should have_selector('li', text: bill.name)
+              page.should have_link 'Email' , href: "mailto:#{bill.email}"
+              page.should have_link(bill.name, href: user_path(bill.id))              
+            end
+            it "should not find barack" do
+              page.should_not have_selector('li', text: barack.name)
+              page.should_not have_link 'Email' , href: "mailto:#{barack.email}"
+              page.should_not have_link(barack.name, href: user_path(barack.id))                
+            end            
+          end
         end        
       end
       
