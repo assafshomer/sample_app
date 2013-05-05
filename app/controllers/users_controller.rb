@@ -8,7 +8,8 @@ class UsersController < ApplicationController
 		@title="All users"
 		# @users=User.all.sort_by {|user| user.name}    
     # @users=User.paginate(page: params[:page], per_page: 10).order('name') 
-    @users=search_users_by_name_or_email(params[:search]).paginate(page: params[:page], per_page: 10).order('name') 
+    @users=search_users_by_name_or_email(params[:search]).paginate(page: params[:page],
+                                                                   per_page: 10).order('name') 
 	end
 
 	def show		 
@@ -97,15 +98,9 @@ class UsersController < ApplicationController
     redirect_to root_path unless !signed_in?
   end
 
-  def search_users_by_name_or_email(space_separated_terms)
-    array = space_separated_terms.split.map {|term| "%#{term}%" } if space_separated_terms
-    while array && array.size<2
-      array << "%"
-    end
-    if array && array.size==2
-      query=array      
-      sql='name LIKE ? or email LIKE ?'
-      User.where([sql, *query])
+  def search_users_by_name_or_email(space_separated_terms)    
+    if space_separated_terms      
+      User.where(search(space_separated_terms, 'name', 'email'))
     else
       User
     end
