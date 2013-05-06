@@ -253,11 +253,12 @@ describe "User" do
           it { should have_selector('input#search') }          
           it { should have_selector('input#users_search_button', value: "Search") }
           describe 'should not filter on empty search' do
-          before(:all) { 30.times {FactoryGirl.create(:user)}  }
-          after(:all) { User.delete_all }
-          before { click_button 'Search' }
-          it { should have_selector('div.pagination') }          
+            before(:all) { 30.times {FactoryGirl.create(:user)}  }
+            after(:all) { User.delete_all }
+            before { click_button 'Search' }
+            it { should have_selector('div.pagination') }          
           end
+          
 
           describe "should find a user by name" do
             let!(:marlon) { FactoryGirl.create(:user, name: 'Marlon Brando', email: 'marlon@holliwood.com') }
