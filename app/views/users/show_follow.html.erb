@@ -18,7 +18,11 @@
 		<h3><%= @title %></h3>
 		<% if @users.any? %>
 			<ul class="users">
-				<%= render @users %>
+				<li>
+				  <table>  
+			  		<%= render @users %>
+			    </table>
+				</li>   
 			</ul>
 			<%= will_paginate %>
 		<% end %>
