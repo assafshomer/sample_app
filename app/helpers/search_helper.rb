@@ -2,7 +2,7 @@ module SearchHelper
 
 	def generate_sql(space_separated_terms, *field_names)
 		sql_query=""
-		search_terms=extract_minimal_search_terms(space_separated_terms.split)
+		search_terms=extract_minimal_search_terms(space_separated_terms[0,40].split)
 		wrap_percent=search_terms.map {|term| "%#{term}%" } 
 		field_names.each do |field|
 			if Rails.configuration.database_configuration[Rails.env]["adapter"] =~ /postgresql/

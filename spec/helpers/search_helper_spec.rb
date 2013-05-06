@@ -23,6 +23,10 @@ describe SearchHelper do
     it "should collapse duplicates up to case" do
       generate_sql("foo FoO Foo buZ BUZ fOo", 'bar').should ==
       ["bar LIKE ?  OR bar LIKE ? ", "%foo%", "%buz%"]
-    end                         
+    end
+    it "should truncate search terms after 41 characters" do
+      generate_sql("f"*50, 'bar').should == generate_sql("f"*40, 'bar')      
+      generate_sql("f"*50, 'bar').should_not == generate_sql("f"*39, 'bar')
+    end                                
   end
 end

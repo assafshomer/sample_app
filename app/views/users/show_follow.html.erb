@@ -16,7 +16,8 @@
 	</aside>
 	<div class="span8">
 		<h3><%= @title %></h3>
-		<% if @users.any? %>
+		<% if @users_100.any? %>
+			<%= render 'search_followers' %>
 			<ul class="users">
 				<li>
 				  <table>  
