@@ -1,4 +1,4 @@
-module MessagesHelper
+module SearchHelper
 
 	def generate_sql(space_separated_terms, *field_names)
 		sql_query=""
@@ -25,5 +25,5 @@ module MessagesHelper
 		end	
 		search_array
 	end  
-				
+					
 end

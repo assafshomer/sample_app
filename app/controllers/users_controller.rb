@@ -98,9 +98,9 @@ class UsersController < ApplicationController
     redirect_to root_path unless !signed_in?
   end
 
-  def search_users(space_separated_terms)    
-    if !space_separated_terms.blank?      
-      User.where(search(space_separated_terms, 'name', 'email'))
+  def search_users(space_separated_search_terms)    
+    if !space_separated_search_terms.blank?      
+      User.where(generate_sql(space_separated_search_terms, 'name', 'email'))
     else
       User
     end
