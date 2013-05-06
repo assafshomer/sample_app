@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
 	def extract_minimal_search_terms(search_array)
-		search_array=search_array.compact.uniq
+		search_array=search_array.compact.map(&:downcase).uniq
 		search_array.each do |x|
 			search_array.each do |y|
 				search_array=search_array-([]<<y) if y.include?(x) and y!=x
