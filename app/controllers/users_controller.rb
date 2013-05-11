@@ -24,7 +24,8 @@ class UsersController < ApplicationController
   def following
     @title='Following'
     @user=User.find(params[:id])
-    @users=@user.followed_users.paginate(page: params[:page], per_page: 10)
+    # @users=@user.followed_users.paginate(page: params[:page], per_page: 10)
+    @users=search_following(params[:search], @user).paginate(page: params[:page], per_page: 10)
     @users_100=@user.followed_users.first(100) #for the status area
     render 'show_follow'
   end
@@ -111,6 +112,13 @@ class UsersController < ApplicationController
       user.followers.where(generate_sql(space_separated_search_terms, 'name', 'email'))
     else
       user.followers
+    end
+  end
+  def search_following(space_separated_search_terms, user)    
+    if !space_separated_search_terms.blank?      
+      user.followed_users.where(generate_sql(space_separated_search_terms, 'name', 'email'))
+    else
+      user.followed_users
     end
   end
 
