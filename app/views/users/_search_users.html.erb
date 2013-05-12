@@ -3,13 +3,17 @@
 		<%= form_tag request.fullpath, method: 'get' do %>
 			<table cellpadding="5">
 				<tr>
+					<td>												
+						<%= text_field_tag :search,params[:search] %>						
+					</td>					
 					<td>
-						<%= text_field_tag :search, params[:search] %>
-					</td>
-					<td>
-						<%= submit_tag "Search", name: nil,
+						<%= submit_tag "Search",  
 						 id: "users_search_button", class: "btn btn-primary btn-align" %>
 					</td>
+					<td>
+						<%= submit_tag "Clear", 
+						 id: "users_clear_search_button", class: "btn btn-primary btn-align" %>
+					</td>					
 				</tr>
 			</table>			
 		<% end %>

@@ -4,12 +4,13 @@ class UsersController < ApplicationController
   before_filter :non_admins,           only: :destroy
   before_filter :no_visits,            only: [:new, :create]
 
-	def index
-		@title="All users"
+	def index    
+		@title="All users"      
 		# @users=User.all.sort_by {|user| user.name}    
     # @users=User.paginate(page: params[:page], per_page: 10).order('name') 
-    @users=search_users(params[:search]).paginate(page: params[:page],
-      per_page: 10).order('name') 
+    @users=search_users(params[:search]).paginate(page: params[:page], 
+                          per_page: 10).order('name')
+    redirect_to users_path if params[:commit]=='Clear'
 	end
 
 	def show		 
