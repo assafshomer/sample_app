@@ -28,7 +28,11 @@ class UsersController < ApplicationController
     # @users=@user.followed_users.paginate(page: params[:page], per_page: 10)
     @users=search_following(params[:search], @user).paginate(page: params[:page], per_page: 10)
     @users_100=@user.followed_users.first(100) #for the status area
-    render 'show_follow'
+    if params[:commit]=='Clear'
+      redirect_to following_user_path(@user) 
+    else
+      render 'show_follow' 
+    end
   end
 
   def followers
@@ -37,7 +41,11 @@ class UsersController < ApplicationController
     # @users=@user.followers.paginate(page: params[:page], per_page: 10)
     @users=search_followers(params[:search], @user).paginate(page: params[:page], per_page: 10)
     @users_100=@user.followers.first(100)
-    render 'show_follow'
+    if params[:commit]=='Clear'
+      redirect_to followers_user_path(@user) 
+    else
+      render 'show_follow' 
+    end
   end
 
   def new
