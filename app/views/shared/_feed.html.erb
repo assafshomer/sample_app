@@ -2,7 +2,7 @@
 	<h3>Micropost Feed</h3>
 	<%= render 'shared/search_microposts' %>
 	<ol class="microposts">
-		<%= render partial: 'shared/feed_item', collection: @feed_items %>
+		<%= render partial: 'shared/feed_item', collection: @filtered_feed %>
 	</ol>
-	<%= will_paginate @feed_items %>
+	<%= will_paginate @filtered_feed %>
 <% end %>
