@@ -112,28 +112,28 @@ class UsersController < ApplicationController
 
   def search_users(space_separated_search_terms)    
     if !space_separated_search_terms.blank?      
-      User.where(generate_sql(space_separated_search_terms, 'name', 'email'))
+      User.where(generate_sql(space_separated_search_terms, 'name email', User))
     else
       User
     end
   end
   def search_followers(space_separated_search_terms, user)    
     if !space_separated_search_terms.blank?      
-      user.followers.where(generate_sql(space_separated_search_terms, 'name', 'email'))
+      user.followers.where(generate_sql(space_separated_search_terms, 'name email', User))
     else
       user.followers
     end
   end
   def search_following(space_separated_search_terms, user)    
     if !space_separated_search_terms.blank?      
-      user.followed_users.where(generate_sql(space_separated_search_terms, 'name', 'email'))
+      user.followed_users.where(generate_sql(space_separated_search_terms, 'name email', User))
     else
       user.followed_users
     end
   end
   def search_microposts_content(space_separated_search_terms, user)    
     if !space_separated_search_terms.blank?      
-      user.microposts.where(generate_sql(space_separated_search_terms, 'content'))
+      user.microposts.where(generate_sql(space_separated_search_terms, 'content', Micropost))
     else
       user.microposts
     end

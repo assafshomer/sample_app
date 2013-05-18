@@ -29,7 +29,7 @@ class StaticPagesController < ApplicationController
         # The search below creates the correct array, but braks paginate
         # current_user.feed.where(generate_sql(space_separated_search_terms, 'content')) +
         # current_user.feed.where("user_id IN (#{User.where(generate_sql(space_separated_search_terms,'name', 'email')).map(&:id).join(',')})")
-        current_user.feed.where(generate_sql(space_separated_search_terms, 'content'))
+        current_user.feed.where(generate_sql(space_separated_search_terms, 'content',Micropost))
       else
         current_user.feed
       end
