@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe "SearchMicroposts" do
+describe "Search Microposts" do
 	subject { page }
-	let!(:user) { FactoryGirl.create(:user, active: true) }
-	let!(:leader) { FactoryGirl.create(:user) }
+	let!(:user) { FactoryGirl.create(:user, active: true, name: 'Neil Young') }
+	let!(:leader) { FactoryGirl.create(:user, name: 'Bruce Springsteen') }
 	let!(:other_user) { FactoryGirl.create(:user) }
 	before(:all) do
 		20.times {user.microposts.create!(content: Faker::Lorem.sentence(10))}	
@@ -47,7 +47,17 @@ describe "SearchMicroposts" do
 			it { should_not have_content('laughing') }
 			it { should have_content('here to stay') }
 			it { should_not have_content('pitcture') }
-		end					
+		end
+		describe "should search feed by user name" do
+			before do
+				fill_in 'search', with: "Neil"		  
+				click_button 'Search'
+			end		
+			it { should have_content('Rock & Roll') }
+			it { should have_content('laughing') }
+			it { should_not have_content('here to stay') }
+			it { should_not have_content('picture') }
+		end									
 	end
 
 	describe "user profile" do
