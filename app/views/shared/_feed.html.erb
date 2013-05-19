@@ -1,6 +1,6 @@
 <% if @feed_items.any? %>
 	<h3>Micropost Feed</h3>
-	<%= render 'shared/search_microposts' %>
+	<%= render 'shared/search_microposts', title: "Search microposts by content and user info" %>
 	<ol class="microposts">
 		<%= render partial: 'shared/feed_item', collection: @filtered_feed %>
 	</ol>
