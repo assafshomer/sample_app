@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
-ruby "1.9.3"
+ruby "2.0.0"
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 gem 'bootstrap-sass', '2.1'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'jquery-rails','2.0.2'
@@ -14,7 +14,7 @@ group :development , :test do
   gem 'rspec-rails','2.11.0'  
   gem 'libv8', '~> 3.11.8'
   gem 'therubyracer', :platforms=>:ruby
-  gem 'rb-readline'
+  gem 'rb-readline', '~> 0.4.2'
   gem 'spork','0.9.2'  
   gem 'guard-rspec','1.2.1'  
   gem 'guard-spork', :git => 'git://github.com/guard/guard-spork.git'
