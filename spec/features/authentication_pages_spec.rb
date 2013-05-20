@@ -69,7 +69,7 @@ describe "Authentication" do
 
       describe "visiting the edit page" do
         before { visit edit_user_path(user) }
-        it { should have_selector 'title', text: 'Sign in' }
+        it { should have_title 'Sign in' }
         it { should have_selector 'div.alert.alert-notice', text: 'Please sign in' }                
       end 
 
