@@ -18,7 +18,7 @@ class Micropost < ActiveRecord::Base
   validates :content, presence: true, length: {maximum: 140, minimum: 2}
   validates :user_id, presence: true
 
-  default_scope order: 'microposts.created_at DESC'
+  default_scope -> { order('created_at DESC') }
   scope :from_users_followed_by, lambda {|user| followed_by(user)}
   scope :smart_feed, lambda{|user| followed_by_not_reply(user)}
 

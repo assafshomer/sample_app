@@ -21,7 +21,7 @@ class Message < ActiveRecord::Base
   validates :content, presence: true, length: {maximum: 140, minimum: 2}
   validate :recipient_follows_sender?
 
-  default_scope order: 'messages.created_at DESC'
+  default_scope -> { order('created_at DESC') }
   scope :inbox, lambda{|user| mailbox(user)}  
 
   private  

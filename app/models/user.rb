@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 	before_save { |user| user.email = email.downcase } 
   before_save :create_remember_token
 
-  VALID_EMAIL_REGEX=/^(\d|\w)(\d|\w|[.\-])*@((\d|\w)+\.)*(\d|\w)+$/
+  VALID_EMAIL_REGEX=/\A(\d|\w)(\d|\w|[.\-])*@((\d|\w)+\.)*(\d|\w)+\z/
   validates :name, 	    presence: true, 
   										    length: {maximum: 50}
   validates :email,     presence: true, 
