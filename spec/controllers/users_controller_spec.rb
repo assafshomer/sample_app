@@ -36,7 +36,7 @@
         describe ": blank password and password confirmation" do
           before { click_button "Save changes" }  
 
-          it { should have_content('This form has 3 errors') }        
+          it { should have_content('This form has 2 errors') }        
         end
 
         describe ": blank form" do
@@ -46,7 +46,7 @@
             click_button "Save changes"   
           end
 
-          it { should have_content('This form has 6 errors') }        
+          it { should have_content('This form has 5 errors') }        
         end
       end
       
