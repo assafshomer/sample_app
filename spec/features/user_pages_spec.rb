@@ -191,11 +191,6 @@ describe "User" do
       describe "deny access to users index" do
         before { visit users_path }
         it { should have_title "Sign in"}
-        
-        it "should deny access to users index" do
-          get 'users'
-          response.should redirect_to(signin_path)          
-        end
       end 
     end   
 
