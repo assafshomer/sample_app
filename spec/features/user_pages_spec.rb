@@ -235,9 +235,10 @@ describe "User" do
         end
 
         describe "pagination" do
-          before { 30.times {FactoryGirl.create(:user)}  }
-          after(:all) { User.delete_all }
-
+          before do 
+            30.times {FactoryGirl.create(:user)}
+            visit users_path            
+          end
           it { should have_selector('div.pagination') }
           it "should list all users" do
             User.paginate(page: 1, :per_page => 10).order('name').each do |user|
@@ -271,7 +272,7 @@ describe "User" do
           end
 
           it "redirect to the users list and flash if successfuly deleted the user " do
-            click_link('delete')
+            first(:link, 'delete').click
             page.should have_selector('h1' , text: "Listing users")
             page.should have_selector('div.alert.alert-success', text: "deleted")
           end
