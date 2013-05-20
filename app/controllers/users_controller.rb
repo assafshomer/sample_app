@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user=User.new(params[:user])    
+    @user=User.new(user_params)    
     if @user.save
       @email_verification=@user.create_email_verification
       Mailer.send_email_verification_email(@email_verification)
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
   end
 
   def update    
-    if @user.update_attributes(params[:user])      
+    if @user.update_attributes(user_params)      
       sign_in @user
       flash[:success] = "User data was sucessfully updated"
       redirect_to @user      
@@ -90,6 +90,10 @@ class UsersController < ApplicationController
   end
   
   private
+
+  def user_params
+    params.require(:user).permit(:email, :name, :password, :password_confirmation, :recieve_notifications)
+  end
 
   def verify_correct_user
     @user=User.find_by_id(params[:id])     

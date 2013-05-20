@@ -14,8 +14,7 @@
 #  active                :boolean          default(FALSE)
 #
 
-class User < ActiveRecord::Base
-  attr_accessible :email, :name, :password, :password_confirmation, :recieve_notifications
+class User < ActiveRecord::Base  
   has_secure_password
   has_many :microposts, dependent: :destroy
   has_many :relationships,foreign_key: "follower_id",dependent: :destroy
@@ -44,8 +43,7 @@ class User < ActiveRecord::Base
   validates :email,     presence: true, 
   										    format: {with: VALID_EMAIL_REGEX}, 
   								    uniqueness: {case_sensitive: false}
-  validates :password,  presence: true, 
-                          length: { in: 6..20 }                  
+  validates :password, length: { in: 6..20 }                  
   validates :password_confirmation, presence: true                          
 
   def feed

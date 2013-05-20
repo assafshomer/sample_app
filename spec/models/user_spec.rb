@@ -108,8 +108,8 @@ describe "User" do
 	describe "user authentication" do
 		
 		describe "reject users with no password" do
-			before {@user.password=@user.password_confirmation=""}
-			it {should_not be_valid}			
+			let!(:user) { User.new(name: 'test', email: 'a@b.c', password:'', password_confirmation: '') }
+			it {user.should_not be_valid}			
 		end
 
 		describe "when password doesn't match password_confirmation" do
@@ -118,8 +118,9 @@ describe "User" do
 		end
 
 		describe "password_confirmation should not be nil" do
-			before {@user.password_confirmation=nil}
-			it {should_not be_valid}
+			let!(:user) { User.new(name: 'test', email: 'a@b.c', password:'foobar', password_confirmation: 'foobar') }
+			before { user.password_confirmation.clear }
+			it {user.should_not be_valid}
 		end
 
 		describe "return value of authenticate method" do
@@ -169,18 +170,18 @@ describe "User" do
 		end
 	end
 
-	describe "accessible attriubtes" do
-		it "should not allow access to the 'admin' attribute" do
-			expect do
-				User.new(name: "my name", email: "admin@admin.org", admin: true)
-			end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-		end	
-		it "should not allow access to the 'active' attribute" do
-			expect do
-				User.new(name: "my name", email: "admin@admin.org", active: true)
-			end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
-		end							
-	end	
+	# describe "accessible attriubtes" do
+	# 	it "should not allow access to the 'admin' attribute" do
+	# 		expect do
+	# 			User.new(name: "my name", email: "admin@admin.org", admin: true)
+	# 		end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+	# 	end	
+	# 	it "should not allow access to the 'active' attribute" do
+	# 		expect do
+	# 			User.new(name: "my name", email: "admin@admin.org", active: true)
+	# 		end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+	# 	end							
+	# end	
 
 	describe "microposts association" do
 		before { @user.save }
@@ -195,18 +196,15 @@ describe "User" do
 			@user.microposts.should==[newer_mp, older_mp]			
 		end
 
-		it "should destroy associated microposts" do
-			microposts=@user.microposts.dup
-			@user.destroy
-			microposts.should_not be_empty
-			microposts.size.should==2
-			microposts.each do |micropost|
-				Micropost.find_by_id(micropost.id).should be_nil
-				lambda do
-					Micropost.find(micropost.id)
-				end.should raise_error(ActiveRecord::RecordNotFound)
-			end								
-		end
+    it "should destroy associated microposts" do
+      microposts = @user.microposts.to_a
+      @user.destroy
+      expect(microposts).not_to be_empty
+      microposts.each do |micropost|
+        expect(Micropost.where(id: micropost.id)).to be_empty
+      end
+    end
+    
 		describe "feed" do
 			let(:unfollowed_user) { FactoryGirl.create(:user) }
 			let(:unfollowed_post) { FactoryGirl.create(:micropost, user: unfollowed_user) }
