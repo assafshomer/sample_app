@@ -103,8 +103,8 @@ describe "PasswordResetPages" do
 
 		describe "visiting an invalid token path" do
       it "and redirect home" do
-        get edit_password_reset_path('foobar')
-        response.should redirect_to(root_path)          
+        visit edit_password_reset_path('foobar')
+        current_path.should == root_path          
       end		
 		end
 	
@@ -163,8 +163,8 @@ describe "PasswordResetPages" do
 			describe "should flash an error" do
 				it { should have_selector('div.alert.alert-error', text: "Invalid reset token") }				
         it "and redirect home" do
-          get edit_password_reset_path(user.password_resets.last.password_reset_token)
-          response.should redirect_to(root_path)          
+          visit edit_password_reset_path(user.password_resets.last.password_reset_token)
+          current_path.should == root_path
         end				
 			end						
 		end
