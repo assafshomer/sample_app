@@ -11,14 +11,14 @@ describe "following/followers" do
      test_sign_in user
      visit following_user_path(user)
    end
-    it { should have_selector('title', text: 'Following') }
+    it { should have_title 'Following' }
     it { should have_selector('h3',text: 'Following') }
     it { should have_link(other_user.name, href: user_path(other_user)) }
     describe "search following" do
       it { should have_selector('input#search') }          
-      it { should have_selector('input#users_search_button', value: "Search") }
+      it { should have_selector('input#users_search_button') }
       describe 'should not filter on empty search' do
-        before(:all) do
+        before do
           30.times do
             user.follow!(FactoryGirl.create(:user))
           end 
@@ -32,9 +32,9 @@ describe "following/followers" do
           fill_in 'search', with: 'supercalifrajilisticexpialidocious'
           click_button 'Search'
         end
-        it { should have_selector('title', text: 'Following') }
+        it { should have_title 'Following' }
         it { should have_selector('input#search') }          
-        it { should have_selector('input#users_search_button', value: "Search") }
+        it { should have_selector('input#users_search_button') }
       end
       describe "should search following correctly" do
         let!(:marlon) { FactoryGirl.create(:user, name: 'Marlon Brando', email: 'marlon@holliwood.com') }
@@ -65,14 +65,14 @@ describe "following/followers" do
      test_sign_in other_user
      visit followers_user_path(other_user)
    end
-    it { should have_selector('title', text: 'Followers') }
+    it { should have_title 'Followers' }
     it { should have_selector('h3',text: 'Followers') }
     it { should have_link(user.name, href: user_path(user)) }
     describe "search followers" do
       it { should have_selector('input#search') }          
-      it { should have_selector('input#users_search_button', value: "Search") }
+      it { should have_selector('input#users_search_button') }
       describe 'should not filter on empty search' do
-        before(:all) do
+        before do
           30.times do
             FactoryGirl.create(:user).follow!(other_user)
           end 
@@ -86,9 +86,9 @@ describe "following/followers" do
           fill_in 'search', with: 'supercalifrajilisticexpialidocious'
           click_button 'Search'
         end
-        it { should have_selector('title', text: 'Followers') }
+        it { should have_title 'Followers' }
         it { should have_selector('input#search') }          
-        it { should have_selector('input#users_search_button', value: "Search") }
+        it { should have_selector('input#users_search_button') }
       end
       describe "should search followers correctly" do
         let!(:marlon) { FactoryGirl.create(:user, name: 'Marlon Brando', email: 'marlon@holliwood.com') }

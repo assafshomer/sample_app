@@ -11,21 +11,19 @@ describe StaticPagesController do
     end 
     it "should have the content 'Sample App'" do
       visit root_path
-      page.should have_content('Sample App')
+      page.should have_content('Twitter clone')
     end 
     it "should have the correct title" do
       visit root_path
-      page.should have_selector('title', 
-                                text: "#{base_title}")
+      page.should have_title "#{base_title}"
     end  
     it "should have the base title EXACTLY" do
       visit root_path
-      page.should have_selector('title', text: /^ #{base_title}$/)
+      page.should have_title /^ #{base_title}$/
     end
     it "should not end with pipe home" do
       visit root_path
-      page.should_not have_selector('title', 
-                                text: "| Home")
+      page.should_not have_title "| Home"
     end   
   end
 
@@ -40,8 +38,7 @@ describe StaticPagesController do
     end
     it "should have the correct title" do
       visit help_path
-      page.should have_selector('title', 
-                                text: "#{base_title} | Help")
+      page.should have_title "#{base_title} | Help"
     end 
   end   
 
@@ -52,8 +49,7 @@ describe StaticPagesController do
     end
     it "should have the correct title" do
       visit about_path
-      page.should have_selector('title', 
-                                text: "#{base_title} | About Us")
+      page.should have_title "#{base_title} | About Us"
     end
   end
 
@@ -64,8 +60,7 @@ describe StaticPagesController do
     end
     it "should have the correct title" do
       visit contact_path
-      page.should have_selector('title', 
-                                text: "#{base_title} | Contact")
+      page.should have_title "#{base_title} | Contact"
     end 
   end    
 end

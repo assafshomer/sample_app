@@ -7,7 +7,7 @@ describe "Authentication" do
   	before { visit signin_path }  
 
   	it { should have_selector('h1', text: 'Sign in') }
-  	it { should have_selector('title', text: 'Sign in') }  
+  	it { should have_title 'Sign in' }  
     it { should have_selector('input#session_email') }
     it { should have_selector('input#session_password') }
     it { should have_selector('input#session_remember_me') }    
@@ -15,7 +15,7 @@ describe "Authentication" do
 
     describe "forgot password link" do
       before { click_link 'forgot?' }  
-      it { should have_selector('title', text: 'Reset password') }
+      it { should have_title 'Reset password' }
       it { should have_selector('input#password_reset_email') }
       it { should have_selector('input#send_reset_password_email') }
     end
@@ -23,7 +23,7 @@ describe "Authentication" do
   	describe "with invalid info" do
   		before { click_button "Sign in" }
 
-  		it { should have_selector('title', text: 'Sign in')}
+  		it { should have_title 'Sign in' }
   		it { should have_selector('div.alert.alert-error', text: 'Invalid') }	
       it { should_not have_link('Users', href: users_path) }
       it { should_not have_link('Messages', href: messages_path) }
@@ -42,7 +42,7 @@ describe "Authentication" do
 
       before { test_sign_in user }     
 
-      it { should have_selector('title', text: user.name) }
+      it { should have_title user.name }
 
       it { should have_link('Users', href: users_path) }
       it { should have_link('Messages', href: messages_path) }
@@ -80,12 +80,12 @@ describe "Authentication" do
 
       describe "visiting the users index" do
         before { visit users_path }
-        it { should have_selector('title',text: 'Sign in') }        
+        it { should have_title 'Sign in' }        
       end
 
       describe "visiting the messages index" do
         before { visit messages_path }
-        it { should have_selector('title',text: 'Sign in') }        
+        it { should have_title 'Sign in' }        
       end
 
       describe "in the Microposts controller" do
@@ -127,7 +127,7 @@ describe "Authentication" do
 
       describe "visiting the followers page" do
         before { visit followers_user_path(1) }
-        it { should have_selector('title', text: 'Sign in') }
+        it { should have_title 'Sign in' }
       end
 
       describe "getting the following page" do
@@ -137,7 +137,7 @@ describe "Authentication" do
 
       describe "visiting the following page" do
          before { visit following_user_path(1) }
-         it { should have_selector('title', text: 'Sign in') }
+         it { should have_title 'Sign in' }
        end 
     end        
   end

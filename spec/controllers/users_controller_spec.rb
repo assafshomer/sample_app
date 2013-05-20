@@ -14,7 +14,7 @@
 
   	it "should have the right title" do
   		visit signup_path
-  		page.should have_selector('title',text: "Sign Up")
+  		page.should have_title "Sign Up"
   	end 
 
     describe "Edit" do 
@@ -26,10 +26,9 @@
       end
       
       describe "page" do
-        it { should have_selector('title', text: "Edit user") }
+        it { should have_title "Edit user" }
         it { should have_selector('h1', text: "Update your profile") }
-        it { should have_link('change', href: 'http://gravatar.com/emails', 
-                                      target: "_blank") } # doesn't actually test the _blank
+        it { should have_link('change', href: 'http://gravatar.com/emails') } 
       end  
 
       describe "with inavlid information" do
@@ -62,7 +61,7 @@
           click_button "Save changes"
         end
           
-        it { should have_selector('title', text: new_name) }
+        it { should have_title new_name }
         it { should have_selector('div.alert.alert-success', text: /data was sucessfully updated/i) }
         it { should have_link('Sign out', href: signout_path) }
         
@@ -148,7 +147,7 @@
 
         describe "attempting to edit their own settings" do
           before { visit edit_user_path(user) }
-          it { should have_selector('title', text: "Edit user") }
+          it { should have_title "Edit user" }
           it { should have_selector('h1', text: "Update your profile") }   
           it { should have_selector('input#user_name') }
           it { should have_selector('input#user_email') }
@@ -159,7 +158,7 @@
 
         describe "attempting to edit another user's settings" do
           before { visit edit_user_path(wrong_user) }
-          it { should_not have_selector('title', text: "Edit user") }
+          it { should_not have_title "Edit user" }
           it { should_not have_selector('h1', text: "Update your profile") }    
 
           it "should denty access to 'edit' and redirect to root" do

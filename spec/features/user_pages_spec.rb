@@ -9,7 +9,7 @@ describe "User" do
     let(:submit) { "Create account" }      
 
     it { should have_selector('h1',    text: 'Sign Up') }
-    it { should have_selector('title', text: full_title('Sign Up')) }
+    it { should have_title full_title('Sign Up') }
 
     describe "form submission with" do       
 
@@ -190,7 +190,7 @@ describe "User" do
       end
       describe "deny access to users index" do
         before { visit users_path }
-        it { should have_selector('title', text: "Sign in")}
+        it { should have_title "Sign in"}
         
         it "should deny access to users index" do
           get 'users'
@@ -216,7 +216,7 @@ describe "User" do
 
         before { visit users_path }
 
-        it { should have_selector('title', text: "All users") }
+        it { should have_title "All users" }
         it { should have_selector('h1', text: "Listing users") }
         it { should have_link 'New User', href: new_user_path }
         it { should_not have_link 'delete' }
@@ -235,7 +235,7 @@ describe "User" do
         end
 
         describe "pagination" do
-          before(:all) { 30.times {FactoryGirl.create(:user)}  }
+          before { 30.times {FactoryGirl.create(:user)}  }
           after(:all) { User.delete_all }
 
           it { should have_selector('div.pagination') }
@@ -267,7 +267,7 @@ describe "User" do
           end
 
           it "should delete the user" do
-            expect {click_link('delete')}.to change(User, :count).by(-1)            
+            expect {first(:link, 'delete').click}.to change(User, :count).by(-1)            
           end
 
           it "redirect to the users list and flash if successfuly deleted the user " do
@@ -292,7 +292,7 @@ describe "User" do
         end
 
         it { should have_selector('h1', text: user.name) }
-        it { should have_selector('title', text: user.name) }
+        it { should have_title user.name }
         it { should_not have_link('view my profile') }
       end
 
@@ -482,7 +482,7 @@ describe "User" do
         visit user_path(recipient)
       end
       it { should have_selector('textarea#message_content', text: "")}
-      it { should have_selector('input#Send_button', title: 'Send') }      
+      it { should have_selector('input#Send_button') }      
 
       describe "message creation" do
         describe "with invalid data" do

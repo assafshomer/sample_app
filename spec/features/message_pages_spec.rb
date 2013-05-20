@@ -17,7 +17,7 @@ describe "MessagePages" do
 
   describe "layout" do
   	it { should have_selector('h1', text: "Messages") }
-  	it { should have_selector('title', text: full_title('Messages')) }
+  	it { should have_title full_title('Messages') }
   end
 
   describe "should list all the messages sent by the current user" do

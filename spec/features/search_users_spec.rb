@@ -7,7 +7,7 @@ describe "Search Users" do
   let!(:barack) { FactoryGirl.create(:user, name: 'Barack Obama', email: 'barack@president.gov') }
   let!(:bill) { FactoryGirl.create(:user, name: 'Bill Clinton', email: 'billwaspresident@monica.xxx') }
   let!(:marlo) { FactoryGirl.create(:user, name: 'Marlo Stanfield', email: 'marlo@wire.org') } 
-  before(:all) { 30.times {FactoryGirl.create(:user, name: "testuser")}  }
+  before { 30.times {FactoryGirl.create(:user, name: "testuser")}  }
   after(:all) { User.delete_all }
   before(:each) do
     test_sign_in user    

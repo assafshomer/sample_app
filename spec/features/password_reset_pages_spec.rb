@@ -8,7 +8,7 @@ describe "PasswordResetPages" do
 
 		describe "should have the right fields" do
 			before { visit reset_password_path }
-      it { should have_selector('title', text: 'Reset password') }
+      it { should have_title 'Reset password' }
       it { should have_selector('input#password_reset_email') }
       it { should have_selector('input#send_reset_password_email') }			
 		end
@@ -137,7 +137,7 @@ describe "PasswordResetPages" do
 			click_button 'Send email'
 			visit edit_password_reset_path(user.password_resets.last.password_reset_token)				
     end   
-    it { should have_selector('title', text: "Reset password") }
+    it { should have_title "Reset password" }
     it { should have_selector('h2', text: 'you have another') }
     it { should have_selector('input#user_password') }
     it { should have_selector('input#user_password_confirmation') }
@@ -182,7 +182,7 @@ describe "PasswordResetPages" do
 		before { visit edit_password_reset_path(pr.password_reset_token) }
 		it { should_not have_selector('h1', text: "Twitter clone") }
 		it { should_not have_selector('div.alert.alert-error', text: "Invalid reset token") }
-		it { should have_selector('title', text: "Reset password") }
+		it { should have_title "Reset password" }
     it { should have_selector('h2', text: 'you have another') }
 	end	
 end

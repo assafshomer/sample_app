@@ -5,7 +5,7 @@ describe "Search Microposts" do
 	let!(:user) { FactoryGirl.create(:user, active: true, name: 'Neil Young') }
 	let!(:leader) { FactoryGirl.create(:user, name: 'Bruce Springsteen') }
 	let!(:other_user) { FactoryGirl.create(:user) }
-	before(:all) do
+	before do
 		20.times {user.microposts.create!(content: Faker::Lorem.sentence(10))}	
 		user.microposts.create(content: "Hey hey my my, Rock & Roll may never die")					
 		user.microposts.create(content: "But his laughing lady's loving ain't the kind he can keep")
