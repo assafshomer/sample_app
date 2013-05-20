@@ -73,11 +73,6 @@ describe "Authentication" do
         it { should have_selector 'div.alert.alert-notice', text: 'Please sign in' }                
       end 
 
-      describe "submitting to the update action" do
-        before { put user_path(user) }
-        specify { response.should redirect_to(signin_path) }        
-      end 
-
       describe "visiting the users index" do
         before { visit users_path }
         it { should have_title 'Sign in' }        
@@ -87,53 +82,11 @@ describe "Authentication" do
         before { visit messages_path }
         it { should have_title 'Sign in' }        
       end
-
-      describe "in the Microposts controller" do
-
-        describe "submitting to the create action" do
-          before { post microposts_path }
-          specify { response.should redirect_to(signin_path) }
-        end
-
-        describe "submitting to the destroy action" do
-          before { delete micropost_path(FactoryGirl.create(:micropost)) }
-          specify { response.should redirect_to(signin_path) }
-        end
-      end 
-
-      describe "in the Relationships controller" do
-        describe "submitting to the create action" do
-          before { post relationships_path }
-          specify { response.should redirect_to(signin_path) }
-        end
-
-        describe "submitting to the destroy action" do 
-          before { delete relationship_path(1) }
-          specify { response.should redirect_to(signin_path) }
-        end
-      end     
-
-      describe "in the Messages controller" do
-        describe "submitting to the create action" do
-          before { post messages_path }
-          specify { response.should redirect_to(signin_path) }
-        end     
-      end 
-
-      describe "getting the followers page" do
-        before { get followers_user_path(1) }
-        specify {response.should redirect_to(signin_path)}
-      end  
-
+      
       describe "visiting the followers page" do
         before { visit followers_user_path(1) }
         it { should have_title 'Sign in' }
-      end
-
-      describe "getting the following page" do
-        before { get following_user_path(1) }
-        specify {response.should redirect_to(signin_path)}
-      end 
+      end      
 
       describe "visiting the following page" do
          before { visit following_user_path(1) }
