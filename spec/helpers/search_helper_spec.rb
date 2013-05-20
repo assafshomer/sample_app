@@ -117,9 +117,12 @@ describe SearchHelper do
       end
       describe "should find the right microposts" do
         it "with one search term" do
-          Micropost.where(generate_search_microposts_sql('assaf')).should == [mp1]          
-          Micropost.where(generate_search_microposts_sql('cling')).should == [mp2]
-          Micropost.where(generate_search_microposts_sql('edu')).should == [mp3]         
+          Micropost.where(generate_search_microposts_sql('assaf')).should include(mp1)
+          Micropost.where(generate_search_microposts_sql('assaf')).should_not include(mp2,mp3)
+          Micropost.where(generate_search_microposts_sql('cling')).should include(mp2)
+          Micropost.where(generate_search_microposts_sql('cling')).should_not include(mp1,mp3)
+          Micropost.where(generate_search_microposts_sql('edu')).should include(mp3)
+          Micropost.where(generate_search_microposts_sql('edu')).should_not include(mp1,mp2)
         end
       end
       it "work with two search terms" do
