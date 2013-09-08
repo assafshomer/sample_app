@@ -8,19 +8,25 @@ namespace :db do
 	end
 
 	def make_users
-		assaf=User.create!(name: 										"Assaf shomer", 
-									email: 									"assafshomer@gmail.com" ,
-									password: 							"foobar",
-									password_confirmation: 	"foobar")
-		assaf.toggle!(:admin)
+		unless User.where( email: 'assafshomer@gmail.com')
+			assaf=User.create!(							name: "Assaf shomer", 
+																		 email: "assafshomer@gmail.com" ,
+										 							password: "foobar", 
+										 password_confirmation: "foobar", 
+										 								active: true)
+			assaf.toggle!(:admin)			
+		end
 		99.times do |n|
 			name=Faker::Name.name
 			email="example-#{n+2}@example.org"
 			password="password"
-			User.create!(name: name, 
-										email: email, 
-										password: password,
-										password_confirmation: password)
+			unless User.where(email: email)
+				User.create!(name: name, 
+											email: email, 
+											password: password,
+											password_confirmation: password, 
+																		 active: true)				
+			end
 		end
 	end
 

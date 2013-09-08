@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'rails', '4.0.0.rc1'
+gem 'rails', '4.0.0'
 gem 'bootstrap-sass', '2.3.0.1'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'faker', '1.1.2'
@@ -14,7 +14,7 @@ group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem 'therubyracer', :platforms=>:ruby
   gem 'guard-rspec', '2.5.0'
-  gem 'spork-rails', github: 'railstutorial/spork-rails'
+  gem 'spork-rails', github: 'sporkrb/spork-rails'
   gem 'guard-spork', '1.5.0'
   gem 'childprocess', '0.3.6'
 end
@@ -22,8 +22,8 @@ end
 group :test do
   # gem 'xpath',    github: 'jnicklas/xpath'
   # gem 'capybara', github: 'jnicklas/capybara'
-  gem 'selenium-webdriver', '2.0'
-  gem 'capybara', '2.1.0.beta1'
+  gem 'selenium-webdriver', '2.35.1'
+  gem 'capybara', '2.1.0'
   gem 'rb-fsevent', '0.9.3', :require => false
   gem 'growl', '1.0.3'
   gem 'launchy', '2.2.0'

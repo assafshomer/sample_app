@@ -1,5 +1,5 @@
 require 'spec_helper'
-
+include MicropostsHelper
 describe "User" do
   
   subject { page }
@@ -340,9 +340,10 @@ describe "User" do
         before(:each) do        
           test_sign_in user
           visit user_path(user)
+          # save_and_open_page
         end
         it { should have_selector('li', text: mp1.content) }
-        it { should have_selector('li', text: mp2.content) }
+        it { should have_selector('li', text: mp2.content) }        
         it { should have_selector('span.content', text: mp1.content) }
         it { should have_selector('span.content', text: mp2.content) }       
         it { should have_content user.microposts.count }  

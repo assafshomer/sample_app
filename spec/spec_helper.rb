@@ -86,4 +86,11 @@ RSpec.configure do |config|
   config.order = "random"
 
   # config.include ShowMeTheCookies, type: :feature
+
+  Capybara.configure do |config|
+    config.match = :one
+    config.exact_options = true
+    config.ignore_hidden_elements = true
+    config.visible_text_only = true
+  end  
 end
